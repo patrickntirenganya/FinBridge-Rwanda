@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56" role="img" aria-label="FinBridge">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8FD0A8"/><stop offset="1" stop-color="#C2922A"/></linearGradient></defs>
+  <g transform="translate(4,4)">
+    <rect width="48" height="48" rx="13" fill="#2F6B4F"/>
+    <path d="M9 31 Q24 8 39 31" fill="none" stroke="url(#g)" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M7 36 H41" stroke="#E8F0EA" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M16 36 V27 M24 36 V21 M32 36 V27" stroke="#E8F0EA" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+  <text x="64" y="37" font-family="Atkinson Hyperlegible, Segoe UI, system-ui, sans-serif" font-size="29" font-weight="700" fill="#F2F7F3" letter-spacing="-0.3">FinBridge</text>
+</svg>

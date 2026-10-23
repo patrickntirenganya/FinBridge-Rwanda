@@ -249,6 +249,14 @@ STR: dict[str, tuple[str, str]] = {
                 "cyangwa umukoresha. Amazina y'inzira ari mu Cyongereza.",
                 "Share of all loans, by source. Green = regulated lender (bank, SACCO, microfinance); "
                 "ochre = informal; grey = government programme or employer."),
+    # ---- hero banner
+    "hero.pill": ("NISR 2026 Big Data Hackathon · AHS na FinScope 2024", "NISR 2026 Big Data Hackathon · AHS and FinScope 2024"),
+    "hero.title": ("Andika umurima wawe. Erekana ibyo winjiza.", "Record your farm. Show what you earn."),
+    "hero.lede": ("Igikoresho cyoroshye kigufasha kwandika isarura, igurisha n'ibyo wakoresheje, ukabona incamake "
+                  "ushobora kwereka banki cyangwa SACCO nubishaka. Gikora no kuri telefone isanzwe.",
+                  "A simple tool to record harvests, sales and costs, and get a summary you can show a bank or "
+                  "SACCO if you choose. It also works on a basic phone."),
+    "hero.why": ("Impamvu bikenewe", "Why it is needed"),
     # ---- Kinyarwanda summaries shown above pages that stay in English
     "sum.why_records": ("Incamake: {smart}% gusa by'abahinzi bakuru ni bo bafite smartphone, bityo igikoresho gikeneye "
                         "no kuboneka kuri telefone isanzwe (USSD). Abandika amafaranga yabo buri gihe bafite inguzanyo "

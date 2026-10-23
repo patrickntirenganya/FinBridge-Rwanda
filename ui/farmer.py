@@ -46,9 +46,20 @@ def _periods(records):
     return labels, dict(zip(labels, [None] + seasons))
 
 
+def _hero_chips():
+    nat = D["ahs_national"].set_index("indicator").est
+    seg = D["ahs_segments"].set_index("segment").est
+    hh = D["meta"]["ahs_weighted_households"]
+    informal = seg["Account, borrowed only informally"]
+    return [(f"{nat['acct_formal']:.1f}%", t("ov.f1"), ""),
+            (f"{nat['loan_formal']:.1f}%", t("ov.f2"), "gap"),
+            (f"≈{informal / 100 * hh / 1000:,.0f}k", t("ov.f3"), "")]
+
+
 def my_records():
     ss = _state()
-    st.title(t("fr.title"))
+    T.hero(t("hero.title"), t("hero.lede"), t("hero.pill"), _hero_chips())
+    st.subheader(t("fr.title"))
     st.markdown(f'<p class="lede">{t("fr.lede")}</p>', unsafe_allow_html=True)
 
     if not ss.records:

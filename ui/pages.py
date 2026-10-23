@@ -50,9 +50,7 @@ def compare_sentence(df):
 def overview():
     seg = D["ahs_segments"].set_index("segment")
     gap = D["ahs_national"].set_index("indicator").loc["banked_not_financed"]
-    st.title(t("ov.title"))
-    st.markdown(f'<p class="lede">{t("ov.lede", g=f"{gap.est:.1f}", lo=f"{gap.lo:.1f}", hi=f"{gap.hi:.1f}")}</p>',
-                unsafe_allow_html=True)
+    T.hero(t("ov.title"), t("ov.lede", g=f"{gap.est:.1f}", lo=f"{gap.lo:.1f}", hi=f"{gap.hi:.1f}"), t("hero.pill"))
 
     parts = [("Account and formal loan", T.TEA), ("Account, borrowed only informally", T.SOIL),
              ("Account, did not borrow", "#8FB5A0"), ("No formal account", T.LINE)]
@@ -65,7 +63,7 @@ def overview():
                     insidetextanchor="middle",
                     textfont=dict(color="white" if col in (T.TEA, T.SOIL) else T.INK, size=16),
                     hovertemplate=f"{name}: {r.est:.1f}% (95% CI {r.lo:.1f}–{r.hi:.1f})<extra></extra>")
-    T.layout(fig, height=200, barmode="stack", showlegend=True,
+    T.layout(fig, height=240, barmode="stack", showlegend=True,
              legend=dict(orientation="h", y=-0.6, x=0, font=dict(size=13), traceorder="normal"))
     fig.update_xaxes(range=[0, 100], ticksuffix="%", showgrid=False)
     fig.update_yaxes(showticklabels=False)

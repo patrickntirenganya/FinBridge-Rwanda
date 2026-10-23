@@ -9,6 +9,10 @@ from ui import theme as T  # noqa: E402
 from ui.data import load  # noqa: E402
 
 T.apply()
+from pathlib import Path  # noqa: E402
+
+_A = Path(__file__).parent / "ui" / "assets"
+st.logo(str(_A / "logo.svg"), icon_image=str(_A / "icon.svg"), size="large")
 from src.i18n import LANGS, DEFAULT, t  # noqa: E402
 
 st.session_state.setdefault("lang", DEFAULT)

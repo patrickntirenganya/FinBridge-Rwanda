@@ -1,0 +1,8 @@
+code,category,est,se,lo,hi,n,reliability,formal,kind
+1,Employer,0.1,0.06,0.0,0.2,4150,caution,False,other
+2,Commercial Bank,6.3,0.53,5.3,7.4,4150,ok,True,formal
+3,Relative/friend,25.1,0.96,23.2,27.0,4150,ok,False,informal
+4,Savings & Credit Cooperatives (SACCO),6.0,0.45,5.1,6.8,4150,ok,True,formal
+5,Tontine/Solidarity fund,58.1,1.24,55.7,60.5,4150,ok,False,informal
+6,Microfinance,1.5,0.23,1.1,2.0,4150,ok,True,formal
+7,VUP financial services,2.8,0.34,2.1,3.5,4150,ok,False,other

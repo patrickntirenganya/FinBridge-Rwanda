@@ -1,0 +1,13 @@
+dataset,indicator,ours,published,source,difference,status
+AHS,Household has bank/SACCO/MFI account,62.7,62.7,"AHS 2024 Main Report, Table 32",0.0,match
+AHS,Household requested a loan,71.1,71.1,"AHS 2024 Main Report, Table 34",0.0,match
+AHS,Loans from tontines (share of loans),58.1,58.1,"AHS 2024 Main Report, Table 35",0.0,match
+AHS,Loans from relatives/friends,25.1,25.1,"AHS 2024 Main Report, Table 35",0.0,match
+AHS,Loans from commercial banks,6.3,6.4,"AHS 2024 Main Report, Table 35",-0.1,match
+AHS,Loans from SACCOs,6.0,6.0,"AHS 2024 Main Report, Table 35",0.0,match
+AHS,Cooperative membership,11.8,11.8,"AHS 2024 Main Report, Table 30",0.0,match
+FinScope,Registered mobile-money users,76.2,77.0,FinScope 2024 Report,-0.8,match
+FinScope,Bank account in own name,20.2,22.0,FinScope 2024 (banked strand),-1.8,close
+FinScope,Formal saving,42.9,59.0,FinScope 2024 savings strand,-16.1,definition differs
+FinScope,Formal credit,13.3,24.0,FinScope 2024 credit strand,-10.7,definition differs
+FinScope,Insured,17.4,27.0,FinScope 2024 insurance strand,-9.6,definition differs

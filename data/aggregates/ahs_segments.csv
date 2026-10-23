@@ -1,0 +1,5 @@
+segment,est,se,lo,hi,n,reliability
+Account and formal loan,12.5,0.81,10.9,14.1,3724,ok
+"Account, borrowed only informally",35.1,0.83,33.5,36.7,3724,ok
+"Account, did not borrow",15.1,0.92,13.3,16.9,3724,ok
+No formal account,37.3,0.94,35.5,39.1,3724,ok

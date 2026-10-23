@@ -1,0 +1,45 @@
+variable,meaning,dataset,data_type,missingness,analytical_use,limitations,verified_in_file
+pop_wt,"Person weight, adults 16+ (sums to 8.156M)",FinScope,float64,0.0%,All population estimates,No PSU/strata in public file: SEs understated,yes
+a1,Province,FinScope,int64,0.0%,Province comparisons,—,yes
+a2,District (30),FinScope,int64,0.0%,District estimates with CIs; implicit stratum,~466 resp/district avg; no league tables,yes
+a6,Urban/rural,FinScope,int64,0.0%,Group comparison,—,yes
+b1,Respondent age,FinScope,int64,0.0%,Demographic segmentation,—,yes
+b2,Respondent sex,FinScope,int64,0.0%,Gender gap analysis,—,yes
+c4a,Respondent highest education,FinScope,int64,0.0%,Segmentation / control,—,yes
+c13a,Ubudehe category,FinScope,int64,0.0%,Socio-economic proxy,Self-reported; 'don't know' code 99,yes
+m1,Household farming status (only farming / farming+other / none),FinScope,int64,0.0%,Defines farmer segment,"Household-level, reported by individual",yes
+m5a_10,Uses formal loans to finance farm inputs,FinScope,object,20.1%,Agri-finance source,Asked of farming households only,yes
+m9_3,Barrier to commercialising farm: no collateral,FinScope,object,82.7%,Agri barrier,Asked only of those who considered commercialising,yes
+k1,Has bank account in own name,FinScope,int64,0.0%,Banked indicator (20.2% vs published 22%),Published strand uses wider definition,yes
+k17,Main reason no bank account,FinScope,object,20.8%,Barrier analysis,Single main reason,yes
+f5,Mobile-money registration/usage status,FinScope,int64,0.0%,"Registered MoMo = codes 3,4,6 (76.2%; published 77%)",—,yes
+h3_01–h3_18,Borrowing sources past 12 months,FinScope,int64,0.0%,Formal/informal credit (transparent definition),Formal credit 13.3% vs published 24%: official strand definition not public,yes
+h7,Main reason not borrowed,FinScope,object,57.7%,Credit barrier analysis,Non-borrowers only,yes
+h8a/h8b,Refused a loan; reason,FinScope,str,0.0%,Supply-side barrier,Very small n per institution,yes
+i4a / i6_12,Micro-insurance; agricultural insurance,FinScope,int64,0.0%,Insurance uptake,Rare outcome,yes
+i7,Main reason no insurance,FinScope,object,30.7%,Barrier,—,yes
+g11a,Contributes to pension fund,FinScope,int64,0.0%,Long-term savings,—,yes
+e9b / e9c,"Emergency fund; ability to raise 56,000 Rwf in a month",FinScope,int64,0.0%,Resilience,Self-reported,yes
+n1a_6 / n1b,Income from farming; main income source,FinScope,int64,0.0%,Livelihood segmentation,—,yes
+cc7_*,Plans to cope with climate shocks,FinScope,see family,see family,Climate-finance gap,—,family
+weight,"Household weight, Season A (sums to 2.164M ag. households)",AHS (Section0),float64,0.0%,All AHS estimates,—,yes
+clust,Cluster / EA (581 PSUs),AHS (Section0),float64,0.0%,Design-based variance; grouped CV,—,yes
+district,District (30),AHS (Section0),float64,0.0%,Implicit stratum; district estimates,~124 HH and ~19 PSUs per district: wide CIs,yes
+s0q14,Main livelihood = agriculture (88.4%),AHS (Section0),int64,0.0%,Segmentation,—,yes
+s10q5,Account institution: bank / MFI / SACCO,AHS (Saving),float64,64.9%,"Formal account (62.7%, matches report)",Person-account rows; aggregated to household,yes
+s10cq8,Participates in tontine,AHS (Saving),float64,31.3%,Informal savings,—,yes
+loan,"Any member requested a loan (71.1%, matches report)",AHS (Credits),float64,0.0%,Credit demand,Household flag,yes
+s10q6,Source of loan,AHS (Credits),float64,20.6%,Formal vs informal credit (loan shares match report),—,yes
+s10aq7,Main purpose of loan,AHS (Credits),float64,20.3%,Agri vs consumption credit,—,yes
+s10aq1 / s10aq2,Loan denial; main denial reason,AHS (Credits),float64,0.0%,Supply-side barrier,Label ambiguous; n=295 denial rows: wide CIs,yes
+s2q7,Plot in titled parcel,AHS (Section2),object,19.1%,Collateral potential,19% missing (non-owned plots skip),yes
+s2q8,Members with right to use land as loan guarantee,AHS (Section2),str,0.0%,Collateral right,Coded member list; '99' = none,yes
+total_agr_land,Agricultural land per household (ha),AHS (Section2),float64,25.0%,Farm size,25% missing at plot level,yes
+quintile,Real consumption quintile per adult equivalent (EICV7),AHS (Section2),float64,0.0%,Welfare gradient,Inherited from EICV7,yes
+pov_jan / epov_jan,Poor / extremely poor,AHS (Section2),float64,0.0%,Vulnerability,Inherited from EICV7,yes
+s6q10,"Member of agricultural cooperative (11.8%, matches report)",AHS (Section6),int64,0.0%,Association with credit,—,yes
+s6q8 / s6q9,Crop / livestock insurance this season,AHS (Section6),int64,0.0%,Insurance uptake,Rare (1.7% crop),yes
+s6q1 = 11,Received financial-literacy extension,AHS (Section6),int64,0.0%,Programme exposure,—,yes
+s1q1 / s1q2,Sex; relation to head,AHS (Section1),int64,0.0%,Female-headed household flag,—,yes
+s4bq4 / s4bq7,Can read; can do written calculation,AHS (Section1),object,24.5%,Capability,24% missing (age-skipped),yes
+s4bq23c,Uses mobile financial services,AHS (Section1),object,92.3%,Digital readiness,92% missing (asked of internet/phone users),yes

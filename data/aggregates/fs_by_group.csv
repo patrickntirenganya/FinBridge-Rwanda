@@ -1,0 +1,628 @@
+indicator,label,group_var,group_label,group,est,lo,hi,se,n,reliability
+bank_acct,Bank account in own name,farm_status,Household farming status,Farming + other work,21.6,20.1,23.2,0.8,4409,ok
+bank_acct,Bank account in own name,farm_status,Household farming status,Farming only,9.3,8.4,10.2,0.46,6766,ok
+bank_acct,Bank account in own name,farm_status,Household farming status,Not farming,43.7,41.3,46.1,1.23,2819,ok
+momo_registered,Registered mobile-money user,farm_status,Household farming status,Farming + other work,81.1,79.5,82.8,0.85,4409,ok
+momo_registered,Registered mobile-money user,farm_status,Household farming status,Farming only,68.7,67.2,70.2,0.76,6766,ok
+momo_registered,Registered mobile-money user,farm_status,Household farming status,Not farming,86.0,84.3,87.7,0.87,2819,ok
+formal_saving,Saves with a formal provider,farm_status,Household farming status,Farming + other work,51.1,49.1,53.0,1.0,4409,ok
+formal_saving,Saves with a formal provider,farm_status,Household farming status,Farming only,31.5,30.0,32.9,0.74,6766,ok
+formal_saving,Saves with a formal provider,farm_status,Household farming status,Not farming,56.8,54.3,59.2,1.23,2819,ok
+formal_credit,Borrowed from a formal provider (past 12 months),farm_status,Household farming status,Farming + other work,16.3,14.9,17.7,0.72,4409,ok
+formal_credit,Borrowed from a formal provider (past 12 months),farm_status,Household farming status,Farming only,8.5,7.7,9.3,0.42,6766,ok
+formal_credit,Borrowed from a formal provider (past 12 months),farm_status,Household farming status,Not farming,19.8,18.0,21.6,0.94,2819,ok
+informal_credit,Borrowed from an informal source (past 12 months),farm_status,Household farming status,Farming + other work,48.8,46.9,50.8,0.99,4409,ok
+informal_credit,Borrowed from an informal source (past 12 months),farm_status,Household farming status,Farming only,45.1,43.5,46.7,0.8,6766,ok
+informal_credit,Borrowed from an informal source (past 12 months),farm_status,Household farming status,Not farming,28.3,26.2,30.5,1.09,2819,ok
+insured,Holds any insurance (excl. RSSB/pension),farm_status,Household farming status,Farming + other work,17.2,15.8,18.6,0.72,4409,ok
+insured,Holds any insurance (excl. RSSB/pension),farm_status,Household farming status,Farming only,16.0,14.8,17.1,0.59,6766,ok
+insured,Holds any insurance (excl. RSSB/pension),farm_status,Household farming status,Not farming,21.0,19.1,23.0,0.98,2819,ok
+emergency_fund,Has an emergency fund,farm_status,Household farming status,Farming + other work,27.3,25.6,29.1,0.87,4409,ok
+emergency_fund,Has an emergency fund,farm_status,Household farming status,Farming only,16.0,14.9,17.1,0.58,6766,ok
+emergency_fund,Has an emergency fund,farm_status,Household farming status,Not farming,21.3,19.3,23.3,1.0,2819,ok
+own_phone,Owns a mobile phone,farm_status,Household farming status,Farming + other work,73.7,71.9,75.5,0.91,4409,ok
+own_phone,Owns a mobile phone,farm_status,Household farming status,Farming only,57.6,56.0,59.2,0.81,6766,ok
+own_phone,Owns a mobile phone,farm_status,Household farming status,Not farming,79.7,77.6,81.7,1.04,2819,ok
+smartphone,Owns a smartphone,farm_status,Household farming status,Farming + other work,23.0,21.4,24.7,0.84,4409,ok
+smartphone,Owns a smartphone,farm_status,Household farming status,Farming only,7.0,6.1,7.9,0.46,6766,ok
+smartphone,Owns a smartphone,farm_status,Household farming status,Not farming,48.7,46.3,51.1,1.22,2819,ok
+tracks_money,Always keeps track of money received and spent,farm_status,Household farming status,Farming + other work,59.7,57.2,62.2,1.28,2562,ok
+tracks_money,Always keeps track of money received and spent,farm_status,Household farming status,Farming only,50.7,48.5,53.0,1.15,3140,ok
+tracks_money,Always keeps track of money received and spent,farm_status,Household farming status,Not farming,66.3,63.2,69.3,1.57,1528,ok
+budgets,Always budgets,farm_status,Household farming status,Farming + other work,45.8,43.3,48.3,1.29,2562,ok
+budgets,Always budgets,farm_status,Household farming status,Farming only,40.0,37.8,42.3,1.13,3140,ok
+budgets,Always budgets,farm_status,Household farming status,Not farming,52.2,48.9,55.5,1.68,1528,ok
+bank_acct,Bank account in own name,sex,Sex,Female,15.5,14.4,16.5,0.53,7808,ok
+bank_acct,Bank account in own name,sex,Sex,Male,25.3,24.0,26.7,0.69,6186,ok
+momo_registered,Registered mobile-money user,sex,Sex,Female,72.2,70.8,73.5,0.69,7808,ok
+momo_registered,Registered mobile-money user,sex,Sex,Male,80.7,79.3,82.0,0.69,6186,ok
+formal_saving,Saves with a formal provider,sex,Sex,Female,36.8,35.4,38.2,0.71,7808,ok
+formal_saving,Saves with a formal provider,sex,Sex,Male,49.6,48.0,51.2,0.83,6186,ok
+formal_credit,Borrowed from a formal provider (past 12 months),sex,Sex,Female,11.1,10.2,12.0,0.46,7808,ok
+formal_credit,Borrowed from a formal provider (past 12 months),sex,Sex,Male,15.7,14.6,16.8,0.57,6186,ok
+informal_credit,Borrowed from an informal source (past 12 months),sex,Sex,Female,45.9,44.4,47.4,0.75,7808,ok
+informal_credit,Borrowed from an informal source (past 12 months),sex,Sex,Male,39.8,38.2,41.4,0.8,6186,ok
+insured,Holds any insurance (excl. RSSB/pension),sex,Sex,Female,14.5,13.5,15.5,0.52,7808,ok
+insured,Holds any insurance (excl. RSSB/pension),sex,Sex,Male,20.5,19.2,21.8,0.65,6186,ok
+emergency_fund,Has an emergency fund,sex,Sex,Female,19.6,18.4,20.7,0.6,7808,ok
+emergency_fund,Has an emergency fund,sex,Sex,Male,22.1,20.8,23.4,0.67,6186,ok
+own_phone,Owns a mobile phone,sex,Sex,Female,60.5,59.1,62.0,0.74,7808,ok
+own_phone,Owns a mobile phone,sex,Sex,Male,74.6,73.2,76.1,0.74,6186,ok
+smartphone,Owns a smartphone,sex,Sex,Female,16.9,15.9,18.0,0.55,7808,ok
+smartphone,Owns a smartphone,sex,Sex,Male,24.5,23.1,25.9,0.7,6186,ok
+tracks_money,Always keeps track of money received and spent,sex,Sex,Female,55.4,53.3,57.5,1.06,3864,ok
+tracks_money,Always keeps track of money received and spent,sex,Sex,Male,59.3,57.2,61.4,1.08,3366,ok
+budgets,Always budgets,sex,Sex,Female,42.8,40.7,44.9,1.06,3864,ok
+budgets,Always budgets,sex,Sex,Male,46.7,44.5,48.8,1.1,3366,ok
+bank_acct,Bank account in own name,age_band,Age group,16–17,11.5,7.6,15.4,1.99,388,ok
+bank_acct,Bank account in own name,age_band,Age group,18–30,18.3,16.7,20.0,0.83,2975,ok
+bank_acct,Bank account in own name,age_band,Age group,31–45,25.2,23.9,26.6,0.68,5432,ok
+bank_acct,Bank account in own name,age_band,Age group,46–60,21.7,19.9,23.4,0.89,2808,ok
+bank_acct,Bank account in own name,age_band,Age group,61+,16.1,14.3,17.9,0.93,2391,ok
+momo_registered,Registered mobile-money user,age_band,Age group,16–17,40.3,34.7,45.9,2.85,388,ok
+momo_registered,Registered mobile-money user,age_band,Age group,18–30,80.1,78.4,81.9,0.89,2975,ok
+momo_registered,Registered mobile-money user,age_band,Age group,31–45,84.8,83.6,85.9,0.57,5432,ok
+momo_registered,Registered mobile-money user,age_band,Age group,46–60,78.3,76.5,80.1,0.92,2808,ok
+momo_registered,Registered mobile-money user,age_band,Age group,61+,58.2,55.8,60.6,1.2,2391,ok
+formal_saving,Saves with a formal provider,age_band,Age group,16–17,21.6,16.9,26.3,2.38,388,ok
+formal_saving,Saves with a formal provider,age_band,Age group,18–30,41.2,39.1,43.2,1.06,2975,ok
+formal_saving,Saves with a formal provider,age_band,Age group,31–45,50.5,49.0,52.1,0.79,5432,ok
+formal_saving,Saves with a formal provider,age_band,Age group,46–60,46.7,44.6,48.9,1.11,2808,ok
+formal_saving,Saves with a formal provider,age_band,Age group,61+,35.9,33.5,38.2,1.18,2391,ok
+formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age group,16–17,5.4,2.6,8.2,1.44,388,ok
+formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age group,18–30,10.3,9.0,11.5,0.66,2975,ok
+formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age group,31–45,17.7,16.5,19.0,0.62,5432,ok
+formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age group,46–60,17.8,16.1,19.5,0.87,2808,ok
+formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age group,61+,10.0,8.5,11.5,0.78,2391,ok
+informal_credit,Borrowed from an informal source (past 12 months),age_band,Age group,16–17,13.6,9.7,17.6,2.01,388,ok
+informal_credit,Borrowed from an informal source (past 12 months),age_band,Age group,18–30,41.1,39.0,43.2,1.06,2975,ok
+informal_credit,Borrowed from an informal source (past 12 months),age_band,Age group,31–45,50.0,48.4,51.6,0.8,5432,ok
+informal_credit,Borrowed from an informal source (past 12 months),age_band,Age group,46–60,49.5,47.3,51.7,1.11,2808,ok
+informal_credit,Borrowed from an informal source (past 12 months),age_band,Age group,61+,39.2,36.8,41.5,1.21,2391,ok
+insured,Holds any insurance (excl. RSSB/pension),age_band,Age group,16–17,11.6,7.8,15.4,1.93,388,ok
+insured,Holds any insurance (excl. RSSB/pension),age_band,Age group,18–30,14.7,13.2,16.2,0.77,2975,ok
+insured,Holds any insurance (excl. RSSB/pension),age_band,Age group,31–45,20.9,19.6,22.2,0.66,5432,ok
+insured,Holds any insurance (excl. RSSB/pension),age_band,Age group,46–60,20.6,18.8,22.4,0.91,2808,ok
+insured,Holds any insurance (excl. RSSB/pension),age_band,Age group,61+,15.8,14.0,17.5,0.9,2391,ok
+emergency_fund,Has an emergency fund,age_band,Age group,16–17,12.2,8.4,15.9,1.92,388,ok
+emergency_fund,Has an emergency fund,age_band,Age group,18–30,20.1,18.4,21.8,0.88,2975,ok
+emergency_fund,Has an emergency fund,age_band,Age group,31–45,23.2,21.9,24.5,0.68,5432,ok
+emergency_fund,Has an emergency fund,age_band,Age group,46–60,22.3,20.6,24.1,0.91,2808,ok
+emergency_fund,Has an emergency fund,age_band,Age group,61+,19.5,17.5,21.5,1.01,2391,ok
+own_phone,Owns a mobile phone,age_band,Age group,16–17,35.7,30.1,41.3,2.87,388,ok
+own_phone,Owns a mobile phone,age_band,Age group,18–30,69.7,67.7,71.7,1.01,2975,ok
+own_phone,Owns a mobile phone,age_band,Age group,31–45,76.3,74.9,77.6,0.67,5432,ok
+own_phone,Owns a mobile phone,age_band,Age group,46–60,69.3,67.3,71.3,1.03,2808,ok
+own_phone,Owns a mobile phone,age_band,Age group,61+,50.5,48.1,52.9,1.22,2391,ok
+smartphone,Owns a smartphone,age_band,Age group,16–17,13.0,9.2,16.8,1.91,388,ok
+smartphone,Owns a smartphone,age_band,Age group,18–30,22.5,20.8,24.3,0.9,2975,ok
+smartphone,Owns a smartphone,age_band,Age group,31–45,24.4,23.0,25.7,0.67,5432,ok
+smartphone,Owns a smartphone,age_band,Age group,46–60,18.5,16.9,20.1,0.82,2808,ok
+smartphone,Owns a smartphone,age_band,Age group,61+,10.8,9.3,12.2,0.75,2391,ok
+tracks_money,Always keeps track of money received and spent,age_band,Age group,16–17,57.6,47.8,67.4,5.0,124,ok
+tracks_money,Always keeps track of money received and spent,age_band,Age group,18–30,56.6,53.7,59.5,1.48,1534,ok
+tracks_money,Always keeps track of money received and spent,age_band,Age group,31–45,60.1,58.0,62.2,1.07,2885,ok
+tracks_money,Always keeps track of money received and spent,age_band,Age group,46–60,57.5,54.6,60.4,1.48,1525,ok
+tracks_money,Always keeps track of money received and spent,age_band,Age group,61+,51.6,48.2,55.0,1.75,1162,ok
+budgets,Always budgets,age_band,Age group,16–17,41.4,32.6,50.2,4.49,124,ok
+budgets,Always budgets,age_band,Age group,18–30,43.7,40.8,46.7,1.5,1534,ok
+budgets,Always budgets,age_band,Age group,31–45,48.0,45.8,50.1,1.1,2885,ok
+budgets,Always budgets,age_band,Age group,46–60,45.9,42.9,48.8,1.5,1525,ok
+budgets,Always budgets,age_band,Age group,61+,38.4,35.1,41.8,1.71,1162,ok
+bank_acct,Bank account in own name,education,Education,No formal education,6.0,4.6,7.5,0.75,2510,ok
+bank_acct,Bank account in own name,education,Education,Primary,13.0,12.1,14.0,0.5,7550,ok
+bank_acct,Bank account in own name,education,Education,Secondary,29.5,27.5,31.6,1.04,2991,ok
+bank_acct,Bank account in own name,education,Education,University / higher,78.7,74.8,82.6,1.98,799,ok
+bank_acct,Bank account in own name,education,Education,Vocational,34.9,25.3,44.6,4.9,144,ok
+momo_registered,Registered mobile-money user,education,Education,No formal education,55.0,52.5,57.5,1.28,2510,ok
+momo_registered,Registered mobile-money user,education,Education,Primary,76.6,75.3,77.9,0.67,7550,ok
+momo_registered,Registered mobile-money user,education,Education,Secondary,81.6,79.5,83.6,1.04,2991,ok
+momo_registered,Registered mobile-money user,education,Education,University / higher,98.9,98.1,99.7,0.39,799,ok
+momo_registered,Registered mobile-money user,education,Education,Vocational,94.5,89.0,100.0,2.85,144,ok
+formal_saving,Saves with a formal provider,education,Education,No formal education,24.9,22.7,27.1,1.13,2510,ok
+formal_saving,Saves with a formal provider,education,Education,Primary,38.2,36.8,39.6,0.73,7550,ok
+formal_saving,Saves with a formal provider,education,Education,Secondary,51.7,49.4,54.1,1.2,2991,ok
+formal_saving,Saves with a formal provider,education,Education,University / higher,87.2,83.9,90.5,1.68,799,ok
+formal_saving,Saves with a formal provider,education,Education,Vocational,75.0,66.8,83.1,4.15,144,ok
+formal_credit,Borrowed from a formal provider (past 12 months),education,Education,No formal education,5.3,4.2,6.5,0.59,2510,ok
+formal_credit,Borrowed from a formal provider (past 12 months),education,Education,Primary,11.3,10.4,12.2,0.46,7550,ok
+formal_credit,Borrowed from a formal provider (past 12 months),education,Education,Secondary,15.4,13.9,17.0,0.8,2991,ok
+formal_credit,Borrowed from a formal provider (past 12 months),education,Education,University / higher,43.6,39.1,48.1,2.3,799,ok
+formal_credit,Borrowed from a formal provider (past 12 months),education,Education,Vocational,14.9,8.4,21.5,3.36,144,ok
+informal_credit,Borrowed from an informal source (past 12 months),education,Education,No formal education,45.1,42.6,47.6,1.27,2510,ok
+informal_credit,Borrowed from an informal source (past 12 months),education,Education,Primary,48.5,47.0,50.0,0.76,7550,ok
+informal_credit,Borrowed from an informal source (past 12 months),education,Education,Secondary,35.7,33.5,37.9,1.13,2991,ok
+informal_credit,Borrowed from an informal source (past 12 months),education,Education,University / higher,20.0,16.6,23.4,1.75,799,ok
+informal_credit,Borrowed from an informal source (past 12 months),education,Education,Vocational,38.5,28.4,48.7,5.18,144,ok
+insured,Holds any insurance (excl. RSSB/pension),education,Education,No formal education,12.3,10.7,13.9,0.81,2510,ok
+insured,Holds any insurance (excl. RSSB/pension),education,Education,Primary,15.4,14.3,16.4,0.53,7550,ok
+insured,Holds any insurance (excl. RSSB/pension),education,Education,Secondary,17.6,15.9,19.3,0.88,2991,ok
+insured,Holds any insurance (excl. RSSB/pension),education,Education,University / higher,50.7,46.1,55.3,2.35,799,ok
+insured,Holds any insurance (excl. RSSB/pension),education,Education,Vocational,10.0,4.3,15.7,2.91,144,ok
+emergency_fund,Has an emergency fund,education,Education,No formal education,13.9,12.1,15.6,0.88,2510,ok
+emergency_fund,Has an emergency fund,education,Education,Primary,19.1,18.0,20.3,0.58,7550,ok
+emergency_fund,Has an emergency fund,education,Education,Secondary,22.4,20.5,24.3,0.97,2991,ok
+emergency_fund,Has an emergency fund,education,Education,University / higher,45.2,40.7,49.8,2.32,799,ok
+emergency_fund,Has an emergency fund,education,Education,Vocational,31.7,22.1,41.4,4.91,144,ok
+own_phone,Owns a mobile phone,education,Education,No formal education,40.6,38.0,43.1,1.28,2510,ok
+own_phone,Owns a mobile phone,education,Education,Primary,66.6,65.1,68.0,0.73,7550,ok
+own_phone,Owns a mobile phone,education,Education,Secondary,75.5,73.3,77.7,1.13,2991,ok
+own_phone,Owns a mobile phone,education,Education,University / higher,99.1,98.1,100.0,0.51,799,ok
+own_phone,Owns a mobile phone,education,Education,Vocational,91.0,85.7,96.2,2.66,144,ok
+smartphone,Owns a smartphone,education,Education,No formal education,3.2,1.9,4.4,0.64,2510,ok
+smartphone,Owns a smartphone,education,Education,Primary,10.0,9.1,10.9,0.45,7550,ok
+smartphone,Owns a smartphone,education,Education,Secondary,35.9,33.7,38.0,1.1,2991,ok
+smartphone,Owns a smartphone,education,Education,University / higher,90.7,88.0,93.4,1.38,799,ok
+smartphone,Owns a smartphone,education,Education,Vocational,38.3,28.3,48.3,5.1,144,ok
+tracks_money,Always keeps track of money received and spent,education,Education,No formal education,46.6,42.9,50.2,1.86,1091,ok
+tracks_money,Always keeps track of money received and spent,education,Education,Primary,53.5,51.5,55.6,1.05,3790,ok
+tracks_money,Always keeps track of money received and spent,education,Education,Secondary,64.5,61.4,67.5,1.58,1660,ok
+tracks_money,Always keeps track of money received and spent,education,Education,University / higher,75.9,71.3,80.4,2.33,598,ok
+tracks_money,Always keeps track of money received and spent,education,Education,Vocational,53.2,40.4,65.9,6.5,91,ok
+budgets,Always budgets,education,Education,No formal education,31.0,27.6,34.3,1.7,1091,ok
+budgets,Always budgets,education,Education,Primary,41.6,39.6,43.7,1.04,3790,ok
+budgets,Always budgets,education,Education,Secondary,51.0,47.9,54.2,1.62,1660,ok
+budgets,Always budgets,education,Education,University / higher,65.2,60.2,70.3,2.58,598,ok
+budgets,Always budgets,education,Education,Vocational,45.5,32.2,58.9,6.81,91,ok
+bank_acct,Bank account in own name,area,Urban / rural,Rural,12.6,11.7,13.5,0.46,8205,ok
+bank_acct,Bank account in own name,area,Urban / rural,Urban,37.1,35.3,38.8,0.91,5789,ok
+momo_registered,Registered mobile-money user,area,Urban / rural,Rural,71.6,70.3,72.8,0.64,8205,ok
+momo_registered,Registered mobile-money user,area,Urban / rural,Urban,86.6,85.3,87.8,0.64,5789,ok
+formal_saving,Saves with a formal provider,area,Urban / rural,Rural,36.6,35.3,37.9,0.66,8205,ok
+formal_saving,Saves with a formal provider,area,Urban / rural,Urban,57.1,55.3,58.9,0.92,5789,ok
+formal_credit,Borrowed from a formal provider (past 12 months),area,Urban / rural,Rural,11.1,10.3,11.9,0.42,8205,ok
+formal_credit,Borrowed from a formal provider (past 12 months),area,Urban / rural,Urban,18.2,16.8,19.5,0.69,5789,ok
+informal_credit,Borrowed from an informal source (past 12 months),area,Urban / rural,Rural,46.6,45.2,47.9,0.69,8205,ok
+informal_credit,Borrowed from an informal source (past 12 months),area,Urban / rural,Urban,35.0,33.3,36.7,0.86,5789,ok
+insured,Holds any insurance (excl. RSSB/pension),area,Urban / rural,Rural,16.1,15.1,17.1,0.5,8205,ok
+insured,Holds any insurance (excl. RSSB/pension),area,Urban / rural,Urban,20.2,18.8,21.6,0.74,5789,ok
+emergency_fund,Has an emergency fund,area,Urban / rural,Rural,19.4,18.4,20.5,0.54,8205,ok
+emergency_fund,Has an emergency fund,area,Urban / rural,Urban,23.8,22.3,25.4,0.8,5789,ok
+own_phone,Owns a mobile phone,area,Urban / rural,Rural,61.2,59.9,62.6,0.69,8205,ok
+own_phone,Owns a mobile phone,area,Urban / rural,Urban,80.7,79.2,82.2,0.75,5789,ok
+smartphone,Owns a smartphone,area,Urban / rural,Rural,11.8,10.9,12.7,0.47,8205,ok
+smartphone,Owns a smartphone,area,Urban / rural,Urban,40.2,38.4,41.9,0.92,5789,ok
+tracks_money,Always keeps track of money received and spent,area,Urban / rural,Rural,54.0,52.1,55.9,0.96,4093,ok
+tracks_money,Always keeps track of money received and spent,area,Urban / rural,Urban,64.1,61.8,66.4,1.19,3137,ok
+budgets,Always budgets,area,Urban / rural,Rural,41.7,39.8,43.6,0.95,4093,ok
+budgets,Always budgets,area,Urban / rural,Urban,50.8,48.4,53.3,1.26,3137,ok
+bank_acct,Bank account in own name,ubudehe,Ubudehe category,Category 1,6.2,4.1,8.2,1.05,1372,ok
+bank_acct,Bank account in own name,ubudehe,Ubudehe category,Category 2,15.5,14.4,16.6,0.58,6476,ok
+bank_acct,Bank account in own name,ubudehe,Ubudehe category,Category 3,27.8,26.3,29.2,0.74,5880,ok
+bank_acct,Bank account in own name,ubudehe,Ubudehe category,Category 4,89.0,76.3,100.0,6.47,38,ok
+bank_acct,Bank account in own name,ubudehe,Ubudehe category,Not yet classified,15.1,4.0,26.2,5.66,56,caution
+momo_registered,Registered mobile-money user,ubudehe,Ubudehe category,Category 1,57.6,54.0,61.1,1.83,1372,ok
+momo_registered,Registered mobile-money user,ubudehe,Ubudehe category,Category 2,76.2,74.8,77.6,0.72,6476,ok
+momo_registered,Registered mobile-money user,ubudehe,Ubudehe category,Category 3,80.3,78.9,81.7,0.71,5880,ok
+momo_registered,Registered mobile-money user,ubudehe,Ubudehe category,Category 4,93.3,85.7,100.0,3.88,38,ok
+momo_registered,Registered mobile-money user,ubudehe,Ubudehe category,Not yet classified,62.2,50.9,73.4,5.75,56,ok
+formal_saving,Saves with a formal provider,ubudehe,Ubudehe category,Category 1,30.7,27.4,34.0,1.69,1372,ok
+formal_saving,Saves with a formal provider,ubudehe,Ubudehe category,Category 2,39.2,37.6,40.7,0.8,6476,ok
+formal_saving,Saves with a formal provider,ubudehe,Ubudehe category,Category 3,49.5,47.9,51.2,0.85,5880,ok
+formal_saving,Saves with a formal provider,ubudehe,Ubudehe category,Category 4,85.1,76.6,93.5,4.33,38,ok
+formal_saving,Saves with a formal provider,ubudehe,Ubudehe category,Not yet classified,32.9,18.3,47.5,7.46,56,ok
+formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe category,Category 1,5.7,3.9,7.5,0.91,1372,ok
+formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe category,Category 2,11.0,10.0,12.0,0.5,6476,ok
+formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe category,Category 3,17.3,16.2,18.5,0.6,5880,ok
+formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe category,Category 4,72.2,54.6,89.8,8.98,38,ok
+formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe category,Not yet classified,5.7,0.0,11.6,3.01,56,caution
+informal_credit,Borrowed from an informal source (past 12 months),ubudehe,Ubudehe category,Category 1,35.9,32.5,39.3,1.73,1372,ok
+informal_credit,Borrowed from an informal source (past 12 months),ubudehe,Ubudehe category,Category 2,46.9,45.3,48.5,0.82,6476,ok
+informal_credit,Borrowed from an informal source (past 12 months),ubudehe,Ubudehe category,Category 3,40.4,38.7,42.0,0.82,5880,ok
+informal_credit,Borrowed from an informal source (past 12 months),ubudehe,Ubudehe category,Category 4,10.3,2.2,18.4,4.12,38,caution
+informal_credit,Borrowed from an informal source (past 12 months),ubudehe,Ubudehe category,Not yet classified,43.1,30.5,55.7,6.43,56,ok
+insured,Holds any insurance (excl. RSSB/pension),ubudehe,Ubudehe category,Category 1,11.8,9.4,14.1,1.2,1372,ok
+insured,Holds any insurance (excl. RSSB/pension),ubudehe,Ubudehe category,Category 2,15.1,13.9,16.2,0.58,6476,ok
+insured,Holds any insurance (excl. RSSB/pension),ubudehe,Ubudehe category,Category 3,21.0,19.7,22.3,0.67,5880,ok
+insured,Holds any insurance (excl. RSSB/pension),ubudehe,Ubudehe category,Category 4,74.3,56.4,92.3,9.17,38,ok
+insured,Holds any insurance (excl. RSSB/pension),ubudehe,Ubudehe category,Not yet classified,20.2,7.6,32.8,6.45,56,caution
+emergency_fund,Has an emergency fund,ubudehe,Ubudehe category,Category 1,9.4,7.4,11.4,1.03,1372,ok
+emergency_fund,Has an emergency fund,ubudehe,Ubudehe category,Category 2,17.8,16.6,19.0,0.62,6476,ok
+emergency_fund,Has an emergency fund,ubudehe,Ubudehe category,Category 3,26.4,24.9,27.9,0.74,5880,ok
+emergency_fund,Has an emergency fund,ubudehe,Ubudehe category,Category 4,71.1,50.4,91.8,10.58,38,ok
+emergency_fund,Has an emergency fund,ubudehe,Ubudehe category,Not yet classified,20.2,9.4,31.0,5.51,56,ok
+own_phone,Owns a mobile phone,ubudehe,Ubudehe category,Category 1,38.8,35.2,42.3,1.82,1372,ok
+own_phone,Owns a mobile phone,ubudehe,Ubudehe category,Category 2,65.8,64.2,67.3,0.79,6476,ok
+own_phone,Owns a mobile phone,ubudehe,Ubudehe category,Category 3,75.0,73.5,76.5,0.77,5880,ok
+own_phone,Owns a mobile phone,ubudehe,Ubudehe category,Category 4,100.0,100.0,100.0,0.0,38,ok
+own_phone,Owns a mobile phone,ubudehe,Ubudehe category,Not yet classified,52.1,38.3,66.0,7.09,56,ok
+smartphone,Owns a smartphone,ubudehe,Ubudehe category,Category 1,3.4,1.8,4.9,0.79,1372,ok
+smartphone,Owns a smartphone,ubudehe,Ubudehe category,Category 2,15.0,13.8,16.1,0.59,6476,ok
+smartphone,Owns a smartphone,ubudehe,Ubudehe category,Category 3,29.8,28.3,31.3,0.76,5880,ok
+smartphone,Owns a smartphone,ubudehe,Ubudehe category,Category 4,98.8,98.5,99.2,0.17,38,ok
+smartphone,Owns a smartphone,ubudehe,Ubudehe category,Not yet classified,6.9,0.0,15.7,4.51,56,caution
+tracks_money,Always keeps track of money received and spent,ubudehe,Ubudehe category,Category 1,49.9,44.5,55.2,2.72,607,ok
+tracks_money,Always keeps track of money received and spent,ubudehe,Ubudehe category,Category 2,54.7,52.5,57.0,1.15,3197,ok
+tracks_money,Always keeps track of money received and spent,ubudehe,Ubudehe category,Category 3,61.1,59.0,63.3,1.1,3289,ok
+tracks_money,Always keeps track of money received and spent,ubudehe,Ubudehe category,Category 4,87.8,75.7,99.9,6.18,34,ok
+tracks_money,Always keeps track of money received and spent,ubudehe,Ubudehe category,Not yet classified,,,,,26,suppressed
+budgets,Always budgets,ubudehe,Ubudehe category,Category 1,34.7,29.2,40.3,2.83,607,ok
+budgets,Always budgets,ubudehe,Ubudehe category,Category 2,42.6,40.4,44.9,1.14,3197,ok
+budgets,Always budgets,ubudehe,Ubudehe category,Category 3,48.2,46.0,50.4,1.13,3289,ok
+budgets,Always budgets,ubudehe,Ubudehe category,Category 4,81.9,69.1,94.6,6.51,34,ok
+budgets,Always budgets,ubudehe,Ubudehe category,Not yet classified,,,,,26,suppressed
+bank_acct,Bank account in own name,province,Province,East,16.0,14.4,17.6,0.81,3375,ok
+bank_acct,Bank account in own name,province,Province,Kigali,52.5,49.5,55.5,1.53,1903,ok
+bank_acct,Bank account in own name,province,Province,North,14.3,12.3,16.3,1.01,2174,ok
+bank_acct,Bank account in own name,province,Province,South,13.5,12.0,15.0,0.76,3519,ok
+bank_acct,Bank account in own name,province,Province,West,13.9,12.3,15.5,0.82,3023,ok
+momo_registered,Registered mobile-money user,province,Province,East,77.3,75.3,79.2,1.0,3375,ok
+momo_registered,Registered mobile-money user,province,Province,Kigali,92.0,90.3,93.6,0.84,1903,ok
+momo_registered,Registered mobile-money user,province,Province,North,72.5,69.9,75.0,1.3,2174,ok
+momo_registered,Registered mobile-money user,province,Province,South,71.4,69.3,73.4,1.04,3519,ok
+momo_registered,Registered mobile-money user,province,Province,West,71.8,69.5,74.0,1.14,3023,ok
+formal_saving,Saves with a formal provider,province,Province,East,38.8,36.7,41.0,1.1,3375,ok
+formal_saving,Saves with a formal provider,province,Province,Kigali,68.7,65.9,71.6,1.46,1903,ok
+formal_saving,Saves with a formal provider,province,Province,North,39.6,36.9,42.4,1.4,2174,ok
+formal_saving,Saves with a formal provider,province,Province,South,38.1,35.9,40.2,1.08,3519,ok
+formal_saving,Saves with a formal provider,province,Province,West,37.1,34.9,39.3,1.13,3023,ok
+formal_credit,Borrowed from a formal provider (past 12 months),province,Province,East,10.5,9.2,11.8,0.65,3375,ok
+formal_credit,Borrowed from a formal provider (past 12 months),province,Province,Kigali,22.7,20.3,25.0,1.2,1903,ok
+formal_credit,Borrowed from a formal provider (past 12 months),province,Province,North,12.8,11.0,14.7,0.95,2174,ok
+formal_credit,Borrowed from a formal provider (past 12 months),province,Province,South,12.8,11.4,14.3,0.73,3519,ok
+formal_credit,Borrowed from a formal provider (past 12 months),province,Province,West,10.7,9.4,12.1,0.69,3023,ok
+informal_credit,Borrowed from an informal source (past 12 months),province,Province,East,47.1,44.9,49.4,1.14,3375,ok
+informal_credit,Borrowed from an informal source (past 12 months),province,Province,Kigali,30.7,28.1,33.4,1.35,1903,ok
+informal_credit,Borrowed from an informal source (past 12 months),province,Province,North,44.2,41.4,47.0,1.41,2174,ok
+informal_credit,Borrowed from an informal source (past 12 months),province,Province,South,48.3,46.1,50.4,1.1,3519,ok
+informal_credit,Borrowed from an informal source (past 12 months),province,Province,West,39.7,37.4,42.0,1.16,3023,ok
+insured,Holds any insurance (excl. RSSB/pension),province,Province,East,20.4,18.7,22.1,0.88,3375,ok
+insured,Holds any insurance (excl. RSSB/pension),province,Province,Kigali,20.9,18.5,23.3,1.21,1903,ok
+insured,Holds any insurance (excl. RSSB/pension),province,Province,North,15.9,13.9,17.8,1.0,2174,ok
+insured,Holds any insurance (excl. RSSB/pension),province,Province,South,15.3,13.7,16.8,0.8,3519,ok
+insured,Holds any insurance (excl. RSSB/pension),province,Province,West,14.4,12.8,16.0,0.81,3023,ok
+emergency_fund,Has an emergency fund,province,Province,East,23.4,21.6,25.3,0.94,3375,ok
+emergency_fund,Has an emergency fund,province,Province,Kigali,25.7,23.1,28.3,1.32,1903,ok
+emergency_fund,Has an emergency fund,province,Province,North,20.6,18.4,22.8,1.13,2174,ok
+emergency_fund,Has an emergency fund,province,Province,South,17.5,15.8,19.2,0.85,3519,ok
+emergency_fund,Has an emergency fund,province,Province,West,17.6,15.9,19.3,0.86,3023,ok
+own_phone,Owns a mobile phone,province,Province,East,66.5,64.3,68.7,1.11,3375,ok
+own_phone,Owns a mobile phone,province,Province,Kigali,88.1,85.9,90.3,1.12,1903,ok
+own_phone,Owns a mobile phone,province,Province,North,64.3,61.6,67.0,1.38,2174,ok
+own_phone,Owns a mobile phone,province,Province,South,60.9,58.7,63.1,1.11,3519,ok
+own_phone,Owns a mobile phone,province,Province,West,62.3,60.0,64.7,1.2,3023,ok
+smartphone,Owns a smartphone,province,Province,East,16.4,14.7,18.1,0.86,3375,ok
+smartphone,Owns a smartphone,province,Province,Kigali,56.7,53.7,59.7,1.52,1903,ok
+smartphone,Owns a smartphone,province,Province,North,12.7,10.7,14.6,1.0,2174,ok
+smartphone,Owns a smartphone,province,Province,South,13.7,12.1,15.2,0.78,3519,ok
+smartphone,Owns a smartphone,province,Province,West,13.0,11.5,14.6,0.8,3023,ok
+tracks_money,Always keeps track of money received and spent,province,Province,East,53.6,50.5,56.6,1.56,1687,ok
+tracks_money,Always keeps track of money received and spent,province,Province,Kigali,68.1,64.5,71.6,1.82,1177,ok
+tracks_money,Always keeps track of money received and spent,province,Province,North,57.8,53.9,61.6,1.94,1155,ok
+tracks_money,Always keeps track of money received and spent,province,Province,South,55.8,52.8,58.8,1.53,1808,ok
+tracks_money,Always keeps track of money received and spent,province,Province,West,53.7,50.3,57.0,1.71,1403,ok
+budgets,Always budgets,province,Province,East,41.2,38.2,44.2,1.54,1687,ok
+budgets,Always budgets,province,Province,Kigali,54.3,50.5,58.1,1.92,1177,ok
+budgets,Always budgets,province,Province,North,47.3,43.5,51.1,1.95,1155,ok
+budgets,Always budgets,province,Province,South,46.2,43.1,49.2,1.56,1808,ok
+budgets,Always budgets,province,Province,West,35.9,32.8,39.0,1.6,1403,ok
+bank_acct,Bank account in own name,district,District,Bugesera,21.2,16.7,25.7,2.27,560,ok
+bank_acct,Bank account in own name,district,District,Burera,9.6,5.2,14.0,2.24,416,ok
+bank_acct,Bank account in own name,district,District,Gakenke,17.4,12.8,21.9,2.34,447,ok
+bank_acct,Bank account in own name,district,District,Gasabo,47.2,42.9,51.5,2.19,848,ok
+bank_acct,Bank account in own name,district,District,Gatsibo,21.0,15.9,26.0,2.57,400,ok
+bank_acct,Bank account in own name,district,District,Gicumbi,6.5,4.4,8.7,1.1,512,ok
+bank_acct,Bank account in own name,district,District,Gisagara,9.5,6.0,13.0,1.79,400,ok
+bank_acct,Bank account in own name,district,District,Huye,13.9,10.3,17.6,1.86,480,ok
+bank_acct,Bank account in own name,district,District,Kamonyi,15.2,11.4,19.0,1.94,623,ok
+bank_acct,Bank account in own name,district,District,Karongi,7.2,4.4,10.0,1.42,399,ok
+bank_acct,Bank account in own name,district,District,Kayonza,10.6,6.9,14.4,1.91,448,ok
+bank_acct,Bank account in own name,district,District,Kicukiro,59.5,54.1,64.9,2.77,607,ok
+bank_acct,Bank account in own name,district,District,Kirehe,5.4,3.1,7.7,1.19,464,ok
+bank_acct,Bank account in own name,district,District,Muhanga,16.3,11.6,21.0,2.39,400,ok
+bank_acct,Bank account in own name,district,District,Musanze,23.3,18.0,28.7,2.73,399,ok
+bank_acct,Bank account in own name,district,District,Ngoma,8.4,4.6,12.1,1.92,400,ok
+bank_acct,Bank account in own name,district,District,Ngororero,8.7,5.4,12.0,1.67,400,ok
+bank_acct,Bank account in own name,district,District,Nyabihu,12.5,9.1,15.9,1.73,400,ok
+bank_acct,Bank account in own name,district,District,Nyagatare,15.5,12.2,18.8,1.67,639,ok
+bank_acct,Bank account in own name,district,District,Nyamagabe,9.3,4.9,13.7,2.25,400,ok
+bank_acct,Bank account in own name,district,District,Nyamasheke,11.7,7.9,15.4,1.92,432,ok
+bank_acct,Bank account in own name,district,District,Nyanza,15.9,11.4,20.4,2.3,400,ok
+bank_acct,Bank account in own name,district,District,Nyarugenge,54.3,47.7,60.8,3.34,448,ok
+bank_acct,Bank account in own name,district,District,Nyaruguru,6.1,1.6,10.7,2.34,400,caution
+bank_acct,Bank account in own name,district,District,Rubavu,20.7,15.5,25.8,2.61,512,ok
+bank_acct,Bank account in own name,district,District,Ruhango,19.8,15.1,24.5,2.4,416,ok
+bank_acct,Bank account in own name,district,District,Rulindo,13.3,8.7,17.9,2.35,400,ok
+bank_acct,Bank account in own name,district,District,Rusizi,21.5,16.9,26.0,2.32,480,ok
+bank_acct,Bank account in own name,district,District,Rutsiro,9.3,5.5,13.0,1.93,400,ok
+bank_acct,Bank account in own name,district,District,Rwamagana,26.2,21.1,31.4,2.63,464,ok
+momo_registered,Registered mobile-money user,district,District,Bugesera,81.7,77.4,86.0,2.19,560,ok
+momo_registered,Registered mobile-money user,district,District,Burera,86.8,83.2,90.4,1.85,416,ok
+momo_registered,Registered mobile-money user,district,District,Gakenke,65.7,59.4,72.1,3.24,447,ok
+momo_registered,Registered mobile-money user,district,District,Gasabo,91.9,89.5,94.3,1.22,848,ok
+momo_registered,Registered mobile-money user,district,District,Gatsibo,72.3,66.1,78.6,3.18,400,ok
+momo_registered,Registered mobile-money user,district,District,Gicumbi,64.0,58.6,69.5,2.79,512,ok
+momo_registered,Registered mobile-money user,district,District,Gisagara,69.3,63.5,75.1,2.98,400,ok
+momo_registered,Registered mobile-money user,district,District,Huye,70.7,64.8,76.7,3.03,480,ok
+momo_registered,Registered mobile-money user,district,District,Kamonyi,77.0,72.6,81.4,2.25,623,ok
+momo_registered,Registered mobile-money user,district,District,Karongi,66.6,60.3,72.8,3.18,399,ok
+momo_registered,Registered mobile-money user,district,District,Kayonza,76.0,70.9,81.2,2.62,448,ok
+momo_registered,Registered mobile-money user,district,District,Kicukiro,90.3,87.1,93.6,1.65,607,ok
+momo_registered,Registered mobile-money user,district,District,Kirehe,73.9,68.4,79.4,2.8,464,ok
+momo_registered,Registered mobile-money user,district,District,Muhanga,72.5,66.7,78.3,2.95,400,ok
+momo_registered,Registered mobile-money user,district,District,Musanze,81.7,77.1,86.2,2.32,399,ok
+momo_registered,Registered mobile-money user,district,District,Ngoma,67.5,60.9,74.2,3.39,400,ok
+momo_registered,Registered mobile-money user,district,District,Ngororero,78.0,72.0,83.9,3.02,400,ok
+momo_registered,Registered mobile-money user,district,District,Nyabihu,69.6,62.7,76.4,3.48,400,ok
+momo_registered,Registered mobile-money user,district,District,Nyagatare,81.3,77.1,85.6,2.17,639,ok
+momo_registered,Registered mobile-money user,district,District,Nyamagabe,77.0,71.2,82.7,2.92,400,ok
+momo_registered,Registered mobile-money user,district,District,Nyamasheke,76.8,71.7,82.0,2.64,432,ok
+momo_registered,Registered mobile-money user,district,District,Nyanza,72.1,66.0,78.1,3.1,400,ok
+momo_registered,Registered mobile-money user,district,District,Nyarugenge,94.4,91.3,97.4,1.56,448,ok
+momo_registered,Registered mobile-money user,district,District,Nyaruguru,54.3,47.3,61.2,3.54,400,ok
+momo_registered,Registered mobile-money user,district,District,Rubavu,70.9,65.8,76.0,2.6,512,ok
+momo_registered,Registered mobile-money user,district,District,Ruhango,74.2,68.0,80.4,3.16,416,ok
+momo_registered,Registered mobile-money user,district,District,Rulindo,63.6,56.7,70.6,3.54,400,ok
+momo_registered,Registered mobile-money user,district,District,Rusizi,78.9,73.3,84.4,2.84,480,ok
+momo_registered,Registered mobile-money user,district,District,Rutsiro,58.9,52.3,65.5,3.35,400,ok
+momo_registered,Registered mobile-money user,district,District,Rwamagana,83.5,79.1,87.9,2.25,464,ok
+formal_saving,Saves with a formal provider,district,District,Bugesera,50.4,45.0,55.7,2.73,560,ok
+formal_saving,Saves with a formal provider,district,District,Burera,37.5,31.3,43.7,3.16,416,ok
+formal_saving,Saves with a formal provider,district,District,Gakenke,27.1,21.9,32.3,2.67,447,ok
+formal_saving,Saves with a formal provider,district,District,Gasabo,70.2,66.2,74.1,2.02,848,ok
+formal_saving,Saves with a formal provider,district,District,Gatsibo,41.1,34.8,47.4,3.22,400,ok
+formal_saving,Saves with a formal provider,district,District,Gicumbi,36.9,31.7,42.1,2.66,512,ok
+formal_saving,Saves with a formal provider,district,District,Gisagara,25.3,19.8,30.7,2.78,400,ok
+formal_saving,Saves with a formal provider,district,District,Huye,25.3,20.5,30.1,2.45,480,ok
+formal_saving,Saves with a formal provider,district,District,Kamonyi,51.5,46.2,56.8,2.7,623,ok
+formal_saving,Saves with a formal provider,district,District,Karongi,26.3,20.9,31.7,2.75,399,ok
+formal_saving,Saves with a formal provider,district,District,Kayonza,25.3,20.0,30.7,2.74,448,ok
+formal_saving,Saves with a formal provider,district,District,Kicukiro,64.6,59.1,70.1,2.79,607,ok
+formal_saving,Saves with a formal provider,district,District,Kirehe,39.1,33.0,45.2,3.11,464,ok
+formal_saving,Saves with a formal provider,district,District,Muhanga,29.9,24.2,35.5,2.89,400,ok
+formal_saving,Saves with a formal provider,district,District,Musanze,44.0,37.6,50.4,3.27,399,ok
+formal_saving,Saves with a formal provider,district,District,Ngoma,31.7,25.4,38.0,3.2,400,ok
+formal_saving,Saves with a formal provider,district,District,Ngororero,27.1,21.8,32.5,2.73,400,ok
+formal_saving,Saves with a formal provider,district,District,Nyabihu,42.3,35.7,48.9,3.36,400,ok
+formal_saving,Saves with a formal provider,district,District,Nyagatare,36.9,32.1,41.8,2.48,639,ok
+formal_saving,Saves with a formal provider,district,District,Nyamagabe,43.6,36.6,50.6,3.56,400,ok
+formal_saving,Saves with a formal provider,district,District,Nyamasheke,34.3,28.6,40.0,2.9,432,ok
+formal_saving,Saves with a formal provider,district,District,Nyanza,42.2,35.9,48.6,3.26,400,ok
+formal_saving,Saves with a formal provider,district,District,Nyarugenge,71.3,65.4,77.3,3.04,448,ok
+formal_saving,Saves with a formal provider,district,District,Nyaruguru,22.8,17.0,28.7,3.0,400,ok
+formal_saving,Saves with a formal provider,district,District,Rubavu,45.8,40.3,51.4,2.83,512,ok
+formal_saving,Saves with a formal provider,district,District,Ruhango,57.0,50.4,63.6,3.37,416,ok
+formal_saving,Saves with a formal provider,district,District,Rulindo,51.7,44.7,58.6,3.54,400,ok
+formal_saving,Saves with a formal provider,district,District,Rusizi,40.1,34.3,45.9,2.97,480,ok
+formal_saving,Saves with a formal provider,district,District,Rutsiro,38.1,31.9,44.2,3.15,400,ok
+formal_saving,Saves with a formal provider,district,District,Rwamagana,41.7,36.0,47.4,2.9,464,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Bugesera,13.2,9.6,16.9,1.86,560,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Burera,10.8,7.1,14.4,1.88,416,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Gakenke,9.7,6.6,12.9,1.6,447,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Gasabo,22.3,18.9,25.7,1.72,848,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Gatsibo,15.5,10.9,20.1,2.33,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Gicumbi,11.9,8.4,15.5,1.79,512,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Gisagara,9.7,5.7,13.6,2.02,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Huye,10.2,6.9,13.4,1.64,480,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Kamonyi,13.7,10.4,17.0,1.67,623,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Karongi,6.6,3.8,9.4,1.42,399,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Kayonza,5.3,3.1,7.6,1.14,448,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Kicukiro,26.7,22.1,31.2,2.33,607,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Kirehe,5.9,3.7,8.1,1.13,464,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Muhanga,16.4,12.1,20.8,2.21,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Musanze,16.9,11.8,22.1,2.64,399,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Ngoma,4.7,2.6,6.7,1.04,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Ngororero,9.0,5.6,12.3,1.7,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Nyabihu,14.3,9.6,19.1,2.44,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Nyagatare,10.2,7.4,13.0,1.43,639,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Nyamagabe,14.1,9.3,18.9,2.47,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Nyamasheke,11.8,8.5,15.2,1.72,432,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Nyanza,14.7,10.3,19.1,2.25,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Nyarugenge,18.0,13.4,22.6,2.35,448,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Nyaruguru,9.0,4.2,13.9,2.48,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Rubavu,9.8,6.8,12.7,1.52,512,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Ruhango,14.3,10.2,18.5,2.12,416,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Rulindo,14.0,9.7,18.3,2.2,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Rusizi,14.6,10.7,18.6,2.0,480,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Rutsiro,8.3,5.2,11.5,1.6,400,ok
+formal_credit,Borrowed from a formal provider (past 12 months),district,District,Rwamagana,16.5,12.4,20.5,2.09,464,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Bugesera,50.3,45.0,55.6,2.73,560,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Burera,49.9,43.5,56.4,3.29,416,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Gakenke,34.8,29.0,40.6,2.97,447,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Gasabo,35.1,31.1,39.1,2.05,848,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Gatsibo,56.5,50.1,63.0,3.29,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Gicumbi,51.1,45.5,56.7,2.86,512,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Gisagara,39.1,32.8,45.4,3.22,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Huye,47.3,41.4,53.2,3.03,480,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Kamonyi,36.9,31.9,41.9,2.54,623,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Karongi,47.7,41.4,54.1,3.25,399,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Kayonza,44.8,38.6,50.9,3.15,448,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Kicukiro,28.3,23.7,32.8,2.34,607,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Kirehe,52.2,45.8,58.6,3.25,464,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Muhanga,40.8,34.7,47.0,3.14,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Musanze,56.5,50.1,63.0,3.3,399,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Ngoma,31.0,24.6,37.4,3.27,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Ngororero,16.4,12.3,20.6,2.14,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Nyabihu,39.8,33.1,46.4,3.4,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Nyagatare,40.0,34.9,45.1,2.58,639,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Nyamagabe,75.8,69.8,81.9,3.07,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Nyamasheke,50.7,44.5,57.0,3.2,432,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Nyanza,67.0,60.7,73.4,3.24,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Nyarugenge,24.8,19.5,30.1,2.71,448,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Nyaruguru,17.7,12.0,23.3,2.88,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Rubavu,37.9,32.4,43.4,2.8,512,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Ruhango,66.3,60.0,72.7,3.24,416,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Rulindo,26.3,20.7,31.9,2.88,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Rusizi,38.6,32.9,44.4,2.92,480,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Rutsiro,49.1,42.6,55.6,3.33,400,ok
+informal_credit,Borrowed from an informal source (past 12 months),district,District,Rwamagana,54.1,48.2,60.0,3.0,464,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Bugesera,9.3,6.2,12.4,1.59,560,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Burera,6.0,3.5,8.5,1.28,416,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Gakenke,22.2,16.8,27.7,2.8,447,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Gasabo,21.5,17.9,25.1,1.82,848,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Gatsibo,43.2,36.9,49.5,3.21,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Gicumbi,6.5,4.3,8.7,1.11,512,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Gisagara,10.8,7.2,14.4,1.84,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Huye,11.0,7.8,14.2,1.64,480,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Kamonyi,36.6,31.4,41.7,2.64,623,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Karongi,20.5,15.4,25.6,2.59,399,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Kayonza,9.3,5.5,13.1,1.93,448,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Kicukiro,22.9,18.5,27.3,2.25,607,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Kirehe,29.8,24.2,35.4,2.87,464,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Muhanga,18.4,13.5,23.3,2.49,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Musanze,27.2,21.9,32.5,2.69,399,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Ngoma,7.3,3.3,11.4,2.09,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Ngororero,10.9,7.5,14.4,1.77,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Nyabihu,6.6,3.4,9.7,1.62,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Nyagatare,27.0,22.6,31.4,2.25,639,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Nyamagabe,9.3,5.0,13.5,2.16,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Nyamasheke,7.3,4.6,10.0,1.38,432,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Nyanza,8.3,5.0,11.5,1.66,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Nyarugenge,16.8,12.5,21.2,2.21,448,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Nyaruguru,7.0,2.6,11.4,2.26,400,caution
+insured,Holds any insurance (excl. RSSB/pension),district,District,Rubavu,29.2,24.1,34.4,2.61,512,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Ruhango,10.0,6.6,13.4,1.74,416,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Rulindo,15.4,10.7,20.1,2.4,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Rusizi,8.0,5.0,11.0,1.52,480,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Rutsiro,12.0,7.9,16.0,2.06,400,ok
+insured,Holds any insurance (excl. RSSB/pension),district,District,Rwamagana,14.7,10.6,18.8,2.09,464,ok
+emergency_fund,Has an emergency fund,district,District,Bugesera,42.6,37.4,47.8,2.67,560,ok
+emergency_fund,Has an emergency fund,district,District,Burera,19.0,14.1,23.8,2.47,416,ok
+emergency_fund,Has an emergency fund,district,District,Gakenke,19.8,15.1,24.4,2.37,447,ok
+emergency_fund,Has an emergency fund,district,District,Gasabo,26.3,22.5,30.1,1.93,848,ok
+emergency_fund,Has an emergency fund,district,District,Gatsibo,26.8,20.9,32.7,3.01,400,ok
+emergency_fund,Has an emergency fund,district,District,Gicumbi,18.5,14.2,22.8,2.21,512,ok
+emergency_fund,Has an emergency fund,district,District,Gisagara,10.8,6.8,14.8,2.06,400,ok
+emergency_fund,Has an emergency fund,district,District,Huye,26.9,21.7,32.1,2.65,480,ok
+emergency_fund,Has an emergency fund,district,District,Kamonyi,22.0,17.3,26.7,2.41,623,ok
+emergency_fund,Has an emergency fund,district,District,Karongi,23.4,18.4,28.4,2.54,399,ok
+emergency_fund,Has an emergency fund,district,District,Kayonza,16.2,12.2,20.3,2.05,448,ok
+emergency_fund,Has an emergency fund,district,District,Kicukiro,26.6,21.9,31.4,2.43,607,ok
+emergency_fund,Has an emergency fund,district,District,Kirehe,14.5,10.8,18.2,1.89,464,ok
+emergency_fund,Has an emergency fund,district,District,Muhanga,19.9,14.7,25.1,2.65,400,ok
+emergency_fund,Has an emergency fund,district,District,Musanze,23.8,18.5,29.1,2.69,399,ok
+emergency_fund,Has an emergency fund,district,District,Ngoma,8.9,5.0,12.8,1.98,400,ok
+emergency_fund,Has an emergency fund,district,District,Ngororero,11.7,7.4,16.0,2.2,400,ok
+emergency_fund,Has an emergency fund,district,District,Nyabihu,15.9,11.6,20.2,2.21,400,ok
+emergency_fund,Has an emergency fund,district,District,Nyagatare,18.2,14.1,22.2,2.07,639,ok
+emergency_fund,Has an emergency fund,district,District,Nyamagabe,31.9,25.4,38.4,3.31,400,ok
+emergency_fund,Has an emergency fund,district,District,Nyamasheke,24.2,19.2,29.2,2.55,432,ok
+emergency_fund,Has an emergency fund,district,District,Nyanza,10.2,6.6,13.7,1.79,400,ok
+emergency_fund,Has an emergency fund,district,District,Nyarugenge,23.0,17.7,28.3,2.71,448,ok
+emergency_fund,Has an emergency fund,district,District,Nyaruguru,4.8,2.6,6.9,1.1,400,ok
+emergency_fund,Has an emergency fund,district,District,Rubavu,16.5,12.6,20.5,2.03,512,ok
+emergency_fund,Has an emergency fund,district,District,Ruhango,11.2,7.5,14.8,1.86,416,ok
+emergency_fund,Has an emergency fund,district,District,Rulindo,21.5,16.1,26.8,2.73,400,ok
+emergency_fund,Has an emergency fund,district,District,Rusizi,10.3,6.8,13.8,1.8,480,ok
+emergency_fund,Has an emergency fund,district,District,Rutsiro,23.9,18.5,29.3,2.76,400,ok
+emergency_fund,Has an emergency fund,district,District,Rwamagana,28.8,23.5,34.1,2.71,464,ok
+own_phone,Owns a mobile phone,district,District,Bugesera,74.1,69.3,78.8,2.43,560,ok
+own_phone,Owns a mobile phone,district,District,Burera,66.7,60.9,72.5,2.96,416,ok
+own_phone,Owns a mobile phone,district,District,Gakenke,57.9,51.5,64.3,3.28,447,ok
+own_phone,Owns a mobile phone,district,District,Gasabo,87.8,84.5,91.1,1.68,848,ok
+own_phone,Owns a mobile phone,district,District,Gatsibo,65.6,59.5,71.8,3.12,400,ok
+own_phone,Owns a mobile phone,district,District,Gicumbi,55.8,50.2,61.4,2.85,512,ok
+own_phone,Owns a mobile phone,district,District,Gisagara,52.4,46.0,58.9,3.28,400,ok
+own_phone,Owns a mobile phone,district,District,Huye,58.5,52.5,64.6,3.08,480,ok
+own_phone,Owns a mobile phone,district,District,Kamonyi,70.3,65.5,75.1,2.45,623,ok
+own_phone,Owns a mobile phone,district,District,Karongi,59.7,53.3,66.0,3.24,399,ok
+own_phone,Owns a mobile phone,district,District,Kayonza,58.4,52.2,64.6,3.15,448,ok
+own_phone,Owns a mobile phone,district,District,Kicukiro,88.6,85.0,92.3,1.85,607,ok
+own_phone,Owns a mobile phone,district,District,Kirehe,64.6,58.7,70.5,3.02,464,ok
+own_phone,Owns a mobile phone,district,District,Muhanga,68.4,62.5,74.3,3.01,400,ok
+own_phone,Owns a mobile phone,district,District,Musanze,73.4,68.1,78.7,2.7,399,ok
+own_phone,Owns a mobile phone,district,District,Ngoma,57.8,50.8,64.9,3.59,400,ok
+own_phone,Owns a mobile phone,district,District,Ngororero,56.7,50.0,63.4,3.42,400,ok
+own_phone,Owns a mobile phone,district,District,Nyabihu,61.8,55.1,68.5,3.41,400,ok
+own_phone,Owns a mobile phone,district,District,Nyagatare,67.0,61.7,72.3,2.69,639,ok
+own_phone,Owns a mobile phone,district,District,Nyamagabe,58.7,52.0,65.4,3.44,400,ok
+own_phone,Owns a mobile phone,district,District,Nyamasheke,62.8,56.7,69.0,3.13,432,ok
+own_phone,Owns a mobile phone,district,District,Nyanza,65.2,59.0,71.3,3.12,400,ok
+own_phone,Owns a mobile phone,district,District,Nyarugenge,88.1,83.3,92.9,2.45,448,ok
+own_phone,Owns a mobile phone,district,District,Nyaruguru,45.3,38.3,52.3,3.56,400,ok
+own_phone,Owns a mobile phone,district,District,Rubavu,66.6,61.4,71.9,2.68,512,ok
+own_phone,Owns a mobile phone,district,District,Ruhango,62.7,56.1,69.2,3.36,416,ok
+own_phone,Owns a mobile phone,district,District,Rulindo,66.9,60.2,73.5,3.4,400,ok
+own_phone,Owns a mobile phone,district,District,Rusizi,69.4,63.6,75.2,2.97,480,ok
+own_phone,Owns a mobile phone,district,District,Rutsiro,54.6,48.0,61.1,3.36,400,ok
+own_phone,Owns a mobile phone,district,District,Rwamagana,73.4,68.2,78.5,2.63,464,ok
+smartphone,Owns a smartphone,district,District,Bugesera,21.5,17.0,25.9,2.25,560,ok
+smartphone,Owns a smartphone,district,District,Burera,5.9,3.0,8.7,1.44,416,ok
+smartphone,Owns a smartphone,district,District,Gakenke,9.0,5.7,12.2,1.67,447,ok
+smartphone,Owns a smartphone,district,District,Gasabo,55.5,51.2,59.8,2.18,848,ok
+smartphone,Owns a smartphone,district,District,Gatsibo,20.0,15.0,25.0,2.55,400,ok
+smartphone,Owns a smartphone,district,District,Gicumbi,9.2,6.1,12.2,1.55,512,ok
+smartphone,Owns a smartphone,district,District,Gisagara,11.4,6.8,16.0,2.35,400,ok
+smartphone,Owns a smartphone,district,District,Huye,14.9,11.1,18.8,1.98,480,ok
+smartphone,Owns a smartphone,district,District,Kamonyi,13.7,10.1,17.3,1.84,623,ok
+smartphone,Owns a smartphone,district,District,Karongi,6.9,3.8,10.1,1.6,399,ok
+smartphone,Owns a smartphone,district,District,Kayonza,11.6,7.8,15.4,1.95,448,ok
+smartphone,Owns a smartphone,district,District,Kicukiro,61.7,56.4,67.1,2.73,607,ok
+smartphone,Owns a smartphone,district,District,Kirehe,14.6,9.5,19.7,2.61,464,ok
+smartphone,Owns a smartphone,district,District,Muhanga,14.4,10.3,18.5,2.11,400,ok
+smartphone,Owns a smartphone,district,District,Musanze,22.6,17.2,28.1,2.78,399,ok
+smartphone,Owns a smartphone,district,District,Ngoma,9.7,5.8,13.6,1.99,400,ok
+smartphone,Owns a smartphone,district,District,Ngororero,7.3,4.3,10.2,1.52,400,ok
+smartphone,Owns a smartphone,district,District,Nyabihu,12.2,8.3,16.0,1.96,400,ok
+smartphone,Owns a smartphone,district,District,Nyagatare,14.6,11.2,18.1,1.74,639,ok
+smartphone,Owns a smartphone,district,District,Nyamagabe,14.4,9.2,19.5,2.62,400,ok
+smartphone,Owns a smartphone,district,District,Nyamasheke,9.8,6.5,13.0,1.64,432,ok
+smartphone,Owns a smartphone,district,District,Nyanza,15.9,11.1,20.7,2.44,400,ok
+smartphone,Owns a smartphone,district,District,Nyarugenge,52.5,45.9,59.0,3.35,448,ok
+smartphone,Owns a smartphone,district,District,Nyaruguru,7.5,2.8,12.3,2.42,400,caution
+smartphone,Owns a smartphone,district,District,Rubavu,21.1,16.5,25.7,2.35,512,ok
+smartphone,Owns a smartphone,district,District,Ruhango,16.5,12.2,20.9,2.22,416,ok
+smartphone,Owns a smartphone,district,District,Rulindo,14.9,9.4,20.3,2.8,400,ok
+smartphone,Owns a smartphone,district,District,Rusizi,20.6,15.5,25.7,2.61,480,ok
+smartphone,Owns a smartphone,district,District,Rutsiro,7.0,3.8,10.1,1.58,400,ok
+smartphone,Owns a smartphone,district,District,Rwamagana,20.2,15.2,25.2,2.54,464,ok
+tracks_money,Always keeps track of money received and spent,district,District,Bugesera,40.1,34.3,46.0,2.99,421,ok
+tracks_money,Always keeps track of money received and spent,district,District,Burera,37.8,27.8,47.8,5.09,143,ok
+tracks_money,Always keeps track of money received and spent,district,District,Gakenke,57.8,50.3,65.4,3.85,331,ok
+tracks_money,Always keeps track of money received and spent,district,District,Gasabo,65.7,60.1,71.2,2.83,491,ok
+tracks_money,Always keeps track of money received and spent,district,District,Gatsibo,41.2,30.9,51.5,5.26,159,ok
+tracks_money,Always keeps track of money received and spent,district,District,Gicumbi,56.7,49.4,64.0,3.73,291,ok
+tracks_money,Always keeps track of money received and spent,district,District,Gisagara,59.9,50.8,69.0,4.64,188,ok
+tracks_money,Always keeps track of money received and spent,district,District,Huye,71.7,65.1,78.3,3.35,304,ok
+tracks_money,Always keeps track of money received and spent,district,District,Kamonyi,62.3,54.4,70.3,4.06,267,ok
+tracks_money,Always keeps track of money received and spent,district,District,Karongi,27.8,20.7,34.8,3.6,260,ok
+tracks_money,Always keeps track of money received and spent,district,District,Kayonza,81.5,76.1,86.9,2.75,286,ok
+tracks_money,Always keeps track of money received and spent,district,District,Kicukiro,76.9,71.7,82.1,2.66,383,ok
+tracks_money,Always keeps track of money received and spent,district,District,Kirehe,54.6,45.8,63.4,4.49,227,ok
+tracks_money,Always keeps track of money received and spent,district,District,Muhanga,24.0,17.1,30.9,3.53,242,ok
+tracks_money,Always keeps track of money received and spent,district,District,Musanze,72.9,65.2,80.5,3.91,211,ok
+tracks_money,Always keeps track of money received and spent,district,District,Ngoma,54.6,42.4,66.8,6.22,121,ok
+tracks_money,Always keeps track of money received and spent,district,District,Ngororero,49.2,32.7,65.8,8.44,58,ok
+tracks_money,Always keeps track of money received and spent,district,District,Nyabihu,61.5,52.7,70.3,4.49,219,ok
+tracks_money,Always keeps track of money received and spent,district,District,Nyagatare,44.0,35.8,52.3,4.19,231,ok
+tracks_money,Always keeps track of money received and spent,district,District,Nyamagabe,65.8,55.8,75.7,5.09,172,ok
+tracks_money,Always keeps track of money received and spent,district,District,Nyamasheke,52.3,43.8,60.7,4.32,242,ok
+tracks_money,Always keeps track of money received and spent,district,District,Nyanza,74.5,67.7,81.4,3.49,220,ok
+tracks_money,Always keeps track of money received and spent,district,District,Nyarugenge,61.5,53.7,69.3,3.98,303,ok
+tracks_money,Always keeps track of money received and spent,district,District,Nyaruguru,43.0,34.0,51.9,4.56,206,ok
+tracks_money,Always keeps track of money received and spent,district,District,Rubavu,60.4,52.0,68.8,4.28,206,ok
+tracks_money,Always keeps track of money received and spent,district,District,Ruhango,45.1,36.0,54.2,4.64,209,ok
+tracks_money,Always keeps track of money received and spent,district,District,Rulindo,52.0,42.1,62.0,5.09,179,ok
+tracks_money,Always keeps track of money received and spent,district,District,Rusizi,60.6,51.8,69.4,4.47,200,ok
+tracks_money,Always keeps track of money received and spent,district,District,Rutsiro,65.6,57.7,73.6,4.08,218,ok
+tracks_money,Always keeps track of money received and spent,district,District,Rwamagana,68.7,61.5,75.9,3.67,242,ok
+budgets,Always budgets,district,District,Bugesera,32.2,26.7,37.7,2.82,421,ok
+budgets,Always budgets,district,District,Burera,31.7,22.1,41.3,4.9,143,ok
+budgets,Always budgets,district,District,Gakenke,50.1,42.6,57.6,3.84,331,ok
+budgets,Always budgets,district,District,Gasabo,55.7,50.1,61.3,2.87,491,ok
+budgets,Always budgets,district,District,Gatsibo,27.1,18.4,35.8,4.44,159,ok
+budgets,Always budgets,district,District,Gicumbi,40.4,33.2,47.6,3.66,291,ok
+budgets,Always budgets,district,District,Gisagara,42.8,33.1,52.4,4.92,188,ok
+budgets,Always budgets,district,District,Huye,53.0,45.6,60.3,3.75,304,ok
+budgets,Always budgets,district,District,Kamonyi,56.4,48.3,64.5,4.11,267,ok
+budgets,Always budgets,district,District,Karongi,17.9,11.9,23.8,3.04,260,ok
+budgets,Always budgets,district,District,Kayonza,52.8,44.8,60.7,4.07,286,ok
+budgets,Always budgets,district,District,Kicukiro,60.2,53.7,66.6,3.3,383,ok
+budgets,Always budgets,district,District,Kirehe,42.2,33.7,50.7,4.35,227,ok
+budgets,Always budgets,district,District,Muhanga,22.7,15.7,29.8,3.58,242,ok
+budgets,Always budgets,district,District,Musanze,65.1,56.8,73.5,4.27,211,ok
+budgets,Always budgets,district,District,Ngoma,37.4,25.2,49.6,6.23,121,ok
+budgets,Always budgets,district,District,Ngororero,34.9,19.3,50.6,7.98,58,ok
+budgets,Always budgets,district,District,Nyabihu,28.0,20.6,35.5,3.79,219,ok
+budgets,Always budgets,district,District,Nyagatare,34.6,26.2,43.0,4.27,231,ok
+budgets,Always budgets,district,District,Nyamagabe,54.2,43.4,65.0,5.52,172,ok
+budgets,Always budgets,district,District,Nyamasheke,45.2,36.8,53.7,4.32,242,ok
+budgets,Always budgets,district,District,Nyanza,58.8,50.6,67.0,4.19,220,ok
+budgets,Always budgets,district,District,Nyarugenge,44.3,36.6,52.1,3.95,303,ok
+budgets,Always budgets,district,District,Nyaruguru,40.0,31.2,48.7,4.45,206,ok
+budgets,Always budgets,district,District,Rubavu,34.8,27.1,42.5,3.93,206,ok
+budgets,Always budgets,district,District,Ruhango,40.8,31.9,49.7,4.54,209,ok
+budgets,Always budgets,district,District,Rulindo,37.1,27.2,47.1,5.08,179,ok
+budgets,Always budgets,district,District,Rusizi,38.7,30.3,47.1,4.27,200,ok
+budgets,Always budgets,district,District,Rutsiro,56.3,47.9,64.7,4.29,218,ok
+budgets,Always budgets,district,District,Rwamagana,67.1,59.8,74.5,3.74,242,ok

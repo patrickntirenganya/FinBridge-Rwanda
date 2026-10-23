@@ -1,0 +1,9 @@
+# App (all that Streamlit Cloud needs; it reads data/aggregates only)
+streamlit>=1.40
+plotly>=5.20
+pandas>=2.0
+numpy>=1.24
+# Pipeline only (rebuilding aggregates from raw microdata)
+pyreadstat>=1.2
+statsmodels>=0.14
+scipy>=1.10

@@ -1,0 +1,301 @@
+"""Page functions for FinBridge Insights. Each reads only aggregate tables."""
+import plotly.graph_objects as go
+import streamlit as st
+from src.i18n import t
+from ui import theme as T
+from ui.data import load, ordered
+
+D = load()
+
+AHS_SRC = "Source: NISR Agricultural Household Survey 2024 (RWA-NISR-RAHS-2024-V0.1), agricultural households, weighted."
+FS_SRC = ("Source: NISR/AFR FinScope Rwanda 2024 (RWA-NISR-FINSCOPE-2024-v01), adults 16+, weighted. "
+          "The public file has no cluster variable, so intervals are narrower than the true uncertainty.")
+
+PROVINCE_OF = {  # district -> province (NISR district codes: first digit = province)
+    **dict.fromkeys(["Nyarugenge", "Gasabo", "Kicukiro"], "Kigali"),
+    **dict.fromkeys(["Nyanza", "Gisagara", "Nyaruguru", "Huye", "Nyamagabe", "Ruhango", "Muhanga", "Kamonyi"], "South"),
+    **dict.fromkeys(["Karongi", "Rutsiro", "Rubavu", "Nyabihu", "Ngororero", "Rusizi", "Nyamasheke"], "West"),
+    **dict.fromkeys(["Rulindo", "Gakenke", "Musanze", "Burera", "Gicumbi"], "North"),
+    **dict.fromkeys(["Rwamagana", "Nyagatare", "Gatsibo", "Kayonza", "Kirehe", "Ngoma", "Bugesera"], "East"),
+}
+
+
+
+def pick(container, label, options, default=None):
+    """Selectbox over human labels; returns the underlying key. options: pd.Series key -> label."""
+    keys, labs = list(options.index), list(options.values)
+    i = keys.index(default) if default in keys else 0
+    chosen = container.selectbox(label, labs, index=i)
+    return keys[labs.index(chosen)]
+
+
+def nat(table, key):
+    r = D[table].set_index("indicator").loc[key]
+    return r
+
+
+def compare_sentence(df):
+    """Plain-language check of whether the highest and lowest groups really differ."""
+    d = df[df.est.notna()]
+    if len(d) < 2:
+        return ""
+    hi, lo = d.loc[d.est.idxmax()], d.loc[d.est.idxmin()]
+    clear = hi.lo > lo.hi
+    verdict = ("The intervals do not overlap, so this difference is statistically clear."
+               if clear else "The intervals overlap, so the data cannot confirm a real difference.")
+    return f"Highest: **{hi.group}** ({hi.est:.1f}%). Lowest: **{lo.group}** ({lo.est:.1f}%). {verdict}"
+
+
+# ------------------------------------------------------------------ pages
+def overview():
+    seg = D["ahs_segments"].set_index("segment")
+    gap = D["ahs_national"].set_index("indicator").loc["banked_not_financed"]
+    st.title(t("ov.title"))
+    st.markdown(f'<p class="lede">{t("ov.lede", g=f"{gap.est:.1f}", lo=f"{gap.lo:.1f}", hi=f"{gap.hi:.1f}")}</p>',
+                unsafe_allow_html=True)
+
+    parts = [("Account and formal loan", T.TEA), ("Account, borrowed only informally", T.SOIL),
+             ("Account, did not borrow", "#8FB5A0"), ("No formal account", T.LINE)]
+    fig = go.Figure()
+    for name, col in parts:
+        r = seg.loc[name]
+        name = t(f"ov.seg.{name}")
+        fig.add_bar(y=[t("ov.hh")], x=[r.est], name=name, orientation="h",
+                    marker_color=col, text=f"{r.est:.0f}%", textposition="inside",
+                    insidetextanchor="middle",
+                    textfont=dict(color="white" if col in (T.TEA, T.SOIL) else T.INK, size=16),
+                    hovertemplate=f"{name}: {r.est:.1f}% (95% CI {r.lo:.1f}–{r.hi:.1f})<extra></extra>")
+    T.layout(fig, height=200, barmode="stack", showlegend=True,
+             legend=dict(orientation="h", y=-0.6, x=0, font=dict(size=13), traceorder="normal"))
+    fig.update_xaxes(range=[0, 100], ticksuffix="%", showgrid=False)
+    fig.update_yaxes(showticklabels=False)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+    hh = D["meta"]["ahs_weighted_households"]
+    informal = seg.loc["Account, borrowed only informally"]
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        T.fact(f"{nat('ahs_national', 'acct_formal').est:.1f}%", t("ov.f1"))
+    with c2:
+        T.fact(f"{nat('ahs_national', 'loan_formal').est:.1f}%", t("ov.f2"), "gap")
+    with c3:
+        T.fact(f"≈{informal.est / 100 * hh / 1000:,.0f}k", t("ov.f3"), "informal")
+
+    st.subheader(t("ov.sub"))
+    src = D["ahs_loan_sources"].sort_values("est", ascending=False)
+    fig = T.ci_bars(src.rename(columns={"category": "group"}), color=T.SORGHUM)
+    fig.data[0].marker.color = [{"formal": T.TEA, "informal": T.SORGHUM}.get(k, "#9AA8A0") for k in src.kind]
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    T.note(t("ov.note") + " " + AHS_SRC)
+
+
+def who():
+    st.title("Who gets formal credit")
+    T.summary("sum.who")
+    st.markdown('<p class="lede">Compare agricultural households by welfare, land, gender and '
+                'cooperative membership. Bars show 95% confidence intervals; ochre bars are less '
+                'precise (coefficient of variation above 30%).</p>', unsafe_allow_html=True)
+    bg = D["ahs_by_group"]
+    inds = bg.drop_duplicates("indicator").set_index("indicator").label
+    groups = bg[bg.group_var != "district"].drop_duplicates("group_var").set_index("group_var").group_label
+    c1, c2 = st.columns(2)
+    ind = pick(c1, "Indicator", inds, "loan_formal")
+    grp = pick(c2, "Compare by", groups)
+    d = ordered(bg[(bg.indicator == ind) & (bg.group_var == grp)], grp)
+    st.plotly_chart(T.ci_bars(d), use_container_width=True, config={"displayModeBar": False})
+    st.markdown(compare_sentence(d))
+    T.note("These are associations, not causes: richer households, for example, also tend to farm "
+           "more land and hold titles. " + AHS_SRC)
+    with st.expander("Show the numbers"):
+        st.dataframe(d[["group", "est", "lo", "hi", "n", "reliability"]], hide_index=True)
+
+
+def why():
+    st.title("What loans are for, and why they are refused")
+    pur = D["ahs_loan_purpose"].sort_values("est", ascending=False)
+    _p = D["ahs_loan_purpose"].set_index("category")
+    T.summary("sum.why", food=f"{_p.loc['Food purchase'].est:.1f}", inp=f"{_p.loc['Agricultural inputs'].formal_source_pct:.1f}")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.subheader("Share of loans by purpose")
+        st.plotly_chart(T.ci_bars(pur.rename(columns={"category": "group"}), color=T.SORGHUM),
+                        use_container_width=True, config={"displayModeBar": False})
+    with c2:
+        st.subheader("Share of those loans from a formal lender")
+        fp = pur.dropna(subset=["formal_source_pct"])
+        fig = go.Figure(go.Bar(y=fp.category, x=fp.formal_source_pct, orientation="h",
+                               marker_color=[T.TEA if a else "#8FB5A0" for a in fp.agri_purpose],
+                               text=[f"{v:.0f}%" for v in fp.formal_source_pct], textposition="outside"))
+        fig.update_yaxes(autorange="reversed"); fig.update_xaxes(ticksuffix="%", range=[0, 35])
+        st.plotly_chart(T.layout(fig, height=70 + 42 * len(fp)), use_container_width=True,
+                        config={"displayModeBar": False})
+    T.note("Food purchases are the most common reason to borrow. Loans for farm inputs, equipment "
+           "and livestock (dark green) rarely come from formal lenders. " + AHS_SRC)
+
+    st.subheader("Reasons given for loan refusals")
+    den = D["ahs_denial_reasons"].sort_values("est", ascending=False)
+    st.plotly_chart(T.ci_bars(den.rename(columns={"category": "group"}), color=T.SOIL),
+                    use_container_width=True, config={"displayModeBar": False})
+    T.note(f"Based on {int(den.n.iloc[0])} refusals only, so intervals are wide. Treat as indicative. "
+           + AHS_SRC)
+
+    st.subheader("Why adults do not borrow or bank (FinScope)")
+    b = D["fs_barriers"]
+    qs = b.drop_duplicates("question").set_index("question").question_label
+    c1, c2 = st.columns(2)
+    q = pick(c1, "Question", qs)
+    seg = c2.selectbox("Group", ["All adults", "Farming only", "Farming + other work", "Not farming"])
+    d = b[(b.question == q) & (b.segment == seg)].sort_values("est", ascending=False).head(8)
+    st.plotly_chart(T.ci_bars(d.rename(columns={"category": "group"}), color=T.SOIL),
+                    use_container_width=True, config={"displayModeBar": False})
+    T.note(FS_SRC)
+
+
+def farmers():
+    st.title("Farmers compared with other adults")
+    T.summary("sum.farmers")
+    st.markdown('<p class="lede">FinScope covers all adults, so it shows how people in farming '
+                'households compare with everyone else.</p>', unsafe_allow_html=True)
+    fb = D["fs_by_group"]
+    inds = fb.drop_duplicates("indicator").set_index("indicator").label
+    groups = fb[fb.group_var != "district"].drop_duplicates("group_var").set_index("group_var").group_label
+    c1, c2 = st.columns(2)
+    ind = pick(c1, "Indicator", inds, "formal_credit")
+    grp = pick(c2, "Compare by", groups)
+    d = ordered(fb[(fb.indicator == ind) & (fb.group_var == grp)], grp)
+    st.plotly_chart(T.ci_bars(d), use_container_width=True, config={"displayModeBar": False})
+    st.markdown(compare_sentence(d))
+    T.note("Our formal saving, credit and insurance definitions are narrower than FinScope's official "
+           "strands (see Methods), so use these for comparing groups rather than as national totals. " + FS_SRC)
+
+
+def districts():
+    st.title("District patterns")
+    T.summary("sum.districts")
+    st.markdown('<p class="lede">Districts are listed by province, not ranked. Each district has '
+                'roughly 120 sampled agricultural households, so intervals are wide and small '
+                'differences are not meaningful.</p>', unsafe_allow_html=True)
+    src = st.radio("Survey", ["Agricultural households (AHS)", "All adults (FinScope)"], horizontal=True)
+    tab = D["ahs_by_group"] if src.startswith("Agri") else D["fs_by_group"]
+    inds = tab.drop_duplicates("indicator").set_index("indicator").label
+    default = "loan_formal" if src.startswith("Agri") else "formal_credit"
+    ind = pick(st, "Indicator", inds, default)
+    d = tab[(tab.indicator == ind) & (tab.group_var == "district")].copy()
+    d["province"] = d.group.map(PROVINCE_OF)
+    d = d.sort_values(["province", "group"])
+    d["group"] = d.province + " · " + d.group
+    nat_tab = D["ahs_national"] if src.startswith("Agri") else D["fs_national"]
+    national = nat_tab.set_index("indicator").loc[ind].est
+    fig = T.ci_bars(d, height=80 + 26 * len(d))
+    fig.add_vline(x=national, line_dash="dot", line_color=T.SOIL,
+                  annotation_text=f"National {national:.1f}%", annotation_position="top")
+    fig.update_traces(textfont_size=11)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    T.note((AHS_SRC if src.startswith("Agri") else FS_SRC) + " Suppressed cells (n < 30) are omitted.")
+
+
+def methods():
+    st.title("Data and methods")
+    T.summary("sum.methods")
+    m = D["meta"]
+    st.markdown(f"""
+**Datasets.** NISR Agricultural Household Survey 2024 ({m['ahs_households']:,} households in
+{m['ahs_psu']} clusters, weighted to {m['ahs_weighted_households']:,} agricultural households) and
+FinScope Rwanda 2024 ({m['finscope_adults']:,} adults, weighted to {m['finscope_weighted_adults']:,}).
+Both are public-use files from the [NISR Microdata Portal](https://microdata.statistics.gov.rw/index.php/catalog).
+The surveys cover different samples and are never linked record by record; they are shown side by side.
+
+**Estimation.** All figures are survey-weighted. AHS intervals use Taylor linearisation with clusters as
+primary sampling units and districts as strata. The public FinScope file has no cluster variable, so its
+intervals treat each respondent independently and understate uncertainty. Cells with fewer than
+{m['min_n']} respondents are suppressed.
+
+**What this tool is not.** It does not score individuals, predict loan default or make lending decisions.
+It describes patterns across groups of households.
+""")
+    st.subheader("Checks against published figures")
+    st.dataframe(D["validation"], hide_index=True, use_container_width=True)
+    T.note("AHS figures reproduce NISR's published tables. For FinScope, mobile money and bank accounts match; "
+           "the official saving, credit and insurance strands use definitions whose code is not public, "
+           "so our transparent definitions are lower and are used for group comparisons only.")
+    st.caption(f"Aggregates built {m['built']}.")
+
+
+# ------------------------------------------------------------ recommendations
+def _grp(var, indicator="loan_formal"):
+    bg = D["ahs_by_group"]
+    return bg[(bg.indicator == indicator) & (bg.group_var == var)].set_index("group")
+
+
+def _clear(a, b):
+    """True when the two confidence intervals do not overlap."""
+    return a.lo > b.hi or b.lo > a.hi
+
+
+def recommendations():
+    seg = D["ahs_segments"].set_index("segment")
+    nat_ = D["ahs_national"].set_index("indicator")
+    hh = D["meta"]["ahs_weighted_households"]
+    purpose = D["ahs_loan_purpose"].set_index("category")
+    informal = seg.loc["Account, borrowed only informally"]
+    sex, size, title, coop = _grp("head_sex"), _grp("farm_size"), _grp("titled"), _grp("coop_member")
+    f, m = sex.loc["Female-headed"], sex.loc["Male-headed"]
+    small, large = size.loc["< 0.1 ha"], size.loc["> 1 ha"]
+    tit, notit = title.loc["Has titled land"], title.loc["No titled land"]
+    cm, nm = coop.loc["Cooperative member"], coop.loc["Not a member"]
+    inputs = purpose.loc["Agricultural inputs"]
+    food = purpose.loc["Food purchase"]
+    acct_sex = _grp("head_sex", "acct_formal")
+
+    st.title("What lenders and policymakers can do")
+    T.summary("sum.actions")
+    st.markdown(
+        '<p class="lede">Each idea below is tied to one finding in this tool. '
+        '<b>Evidence-backed</b> means the data show the gap clearly. <b>Hypothesis</b> means the '
+        'data point that way but cannot prove it, so test it with a small pilot first.</p>',
+        unsafe_allow_html=True)
+
+    recs = [
+        ("1. Offer credit to people who already save", "Evidence-backed",
+         "SACCOs, banks and microfinance institutions",
+         f"{informal.est:.1f}% of agricultural households (about {informal.est / 100 * hh / 1000:,.0f}k) "
+         f"hold an account yet borrowed only informally. {nat_.loc['acct_sacco'].est:.1f}% have a SACCO "
+         f"account, but only {nat_.loc['loan_formal'].est:.1f}% have a formal loan.",
+         "Use savings history to offer starter loans, so a saver does not need to look elsewhere. "
+         "The gap is in credit products, not in access to an account."),
+        ("2. Reach women-headed households", "Evidence-backed" if _clear(f, m) else "Hypothesis",
+         "Lenders, MINAGRI, gender programmes",
+         f"{f.est:.1f}% of female-headed households have a formal loan, against {m.est:.1f}% of "
+         f"male-headed. Account ownership is closer ({acct_sex.loc['Female-headed'].est:.1f}% vs "
+         f"{acct_sex.loc['Male-headed'].est:.1f}%), so the gap widens at the loan stage.",
+         "Design loan products and outreach for women farmers who already hold accounts."),
+        ("3. Create farm-input finance", "Evidence-backed",
+         "Lenders, input suppliers, MINAGRI",
+         f"Farm inputs are {inputs.est:.1f}% of all loans, yet only {inputs.formal_source_pct:.1f}% of "
+         f"those loans come from formal lenders. Food purchases are {food.est:.1f}% of loans.",
+         "Test seasonal input loans repaid at harvest. That the product would work is a hypothesis; "
+         "the missing supply is what the data show."),
+        ("4. Ease the collateral barrier for small farms", "Evidence-backed" if _clear(small, large) else "Hypothesis",
+         "Lenders, land administration",
+         f"Formal loans: {small.est:.1f}% on farms under 0.1 ha, {large.est:.1f}% over 1 ha. "
+         f"Households with titled land: {tit.est:.1f}%, without: {notit.est:.1f}%.",
+         "Explore group guarantees or titled-land alternatives. Farm size and land title move together "
+         "with wealth, so this is an association, not proof that collateral is the cause."),
+        ("5. Use cooperatives as a channel", "Evidence-backed" if _clear(cm, nm) else "Hypothesis",
+         "Cooperatives, lenders",
+         f"{cm.est:.1f}% of cooperative members have a formal loan, against {nm.est:.1f}% of others. "
+         f"Only {nat_.loc['coop'].est:.1f}% of households belong to a cooperative.",
+         "Pilot bulk or group lending through cooperatives. The intervals overlap, so the data cannot "
+         "yet confirm that membership makes a difference." if not _clear(cm, nm) else
+         "Pilot bulk or group lending through cooperatives."),
+    ]
+    for title_, tag, who_, evidence, action in recs:
+        with st.container(border=True):
+            st.subheader(title_)
+            kind = "" if tag == "Evidence-backed" else "informal"
+            st.markdown(f'<div class="fact {kind}"><span><b style="font-size:1.05rem">{tag}</b> · '
+                        f'For: {who_}</span></div>', unsafe_allow_html=True)
+            st.markdown(f"**What the data show.** {evidence}")
+            st.markdown(f"**What to do.** {action}")
+    T.note("These are ideas drawn from group-level patterns. They are not causal findings, and this tool "
+           "does not score individuals or make lending decisions. " + AHS_SRC)

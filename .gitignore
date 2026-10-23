@@ -1,0 +1,14 @@
+# NISR microdata must never be committed (public-use licence: no redistribution)
+data/raw/
+*.dta
+*.zip
+*.pkl
+outputs/*.pkl
+__pycache__/
+.env
+.venv/
+
+# Third-party reports and personal notes (link to the originals instead)
+*.pdf
+*.odt
+.streamlit/secrets.toml

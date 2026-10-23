@@ -1,0 +1,521 @@
+indicator,label,group_var,group_label,group,est,lo,hi,se,n,reliability
+acct_formal,"Has a bank, SACCO or MFI account",quintile,Consumption quintile (EICV7),Q1 (poorest),49.6,45.0,54.1,2.32,597,ok
+acct_formal,"Has a bank, SACCO or MFI account",quintile,Consumption quintile (EICV7),Q2,56.8,53.2,60.4,1.84,836,ok
+acct_formal,"Has a bank, SACCO or MFI account",quintile,Consumption quintile (EICV7),Q3,64.2,58.9,69.5,2.71,889,ok
+acct_formal,"Has a bank, SACCO or MFI account",quintile,Consumption quintile (EICV7),Q4,66.8,62.6,71.1,2.17,923,ok
+acct_formal,"Has a bank, SACCO or MFI account",quintile,Consumption quintile (EICV7),Q5 (richest),76.2,72.3,80.2,2.03,479,ok
+acct_sacco,Has a SACCO account,quintile,Consumption quintile (EICV7),Q1 (poorest),45.6,41.2,50.0,2.25,597,ok
+acct_sacco,Has a SACCO account,quintile,Consumption quintile (EICV7),Q2,52.2,48.6,55.8,1.84,836,ok
+acct_sacco,Has a SACCO account,quintile,Consumption quintile (EICV7),Q3,59.2,53.9,64.5,2.69,889,ok
+acct_sacco,Has a SACCO account,quintile,Consumption quintile (EICV7),Q4,58.3,54.6,62.0,1.87,923,ok
+acct_sacco,Has a SACCO account,quintile,Consumption quintile (EICV7),Q5 (richest),61.8,57.1,66.4,2.37,479,ok
+loan_any,Requested any loan,quintile,Consumption quintile (EICV7),Q1 (poorest),67.4,63.1,71.7,2.19,597,ok
+loan_any,Requested any loan,quintile,Consumption quintile (EICV7),Q2,71.8,68.3,75.3,1.78,836,ok
+loan_any,Requested any loan,quintile,Consumption quintile (EICV7),Q3,69.5,62.1,76.8,3.76,889,ok
+loan_any,Requested any loan,quintile,Consumption quintile (EICV7),Q4,73.8,68.5,79.2,2.74,923,ok
+loan_any,Requested any loan,quintile,Consumption quintile (EICV7),Q5 (richest),71.6,66.6,76.5,2.51,479,ok
+loan_tontine,Has a tontine loan,quintile,Consumption quintile (EICV7),Q1 (poorest),45.1,40.6,49.7,2.32,597,ok
+loan_tontine,Has a tontine loan,quintile,Consumption quintile (EICV7),Q2,52.8,48.9,56.6,1.97,836,ok
+loan_tontine,Has a tontine loan,quintile,Consumption quintile (EICV7),Q3,52.9,46.2,59.6,3.41,889,ok
+loan_tontine,Has a tontine loan,quintile,Consumption quintile (EICV7),Q4,52.0,43.3,60.8,4.48,923,ok
+loan_tontine,Has a tontine loan,quintile,Consumption quintile (EICV7),Q5 (richest),44.2,39.0,49.3,2.64,479,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",quintile,Consumption quintile (EICV7),Q1 (poorest),10.8,8.0,13.6,1.43,597,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",quintile,Consumption quintile (EICV7),Q2,12.2,9.6,14.8,1.32,836,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",quintile,Consumption quintile (EICV7),Q3,13.1,10.3,15.8,1.4,889,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",quintile,Consumption quintile (EICV7),Q4,13.5,10.2,16.9,1.7,923,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",quintile,Consumption quintile (EICV7),Q5 (richest),23.9,19.2,28.6,2.38,479,ok
+banked_not_financed,Formal account but no formal loan,quintile,Consumption quintile (EICV7),Q1 (poorest),40.8,36.5,45.1,2.19,597,ok
+banked_not_financed,Formal account but no formal loan,quintile,Consumption quintile (EICV7),Q2,46.4,42.4,50.4,2.06,836,ok
+banked_not_financed,Formal account but no formal loan,quintile,Consumption quintile (EICV7),Q3,52.7,46.8,58.5,2.98,889,ok
+banked_not_financed,Formal account but no formal loan,quintile,Consumption quintile (EICV7),Q4,54.8,51.3,58.3,1.77,923,ok
+banked_not_financed,Formal account but no formal loan,quintile,Consumption quintile (EICV7),Q5 (richest),53.4,48.5,58.4,2.54,479,ok
+denied,Reported a loan denial,quintile,Consumption quintile (EICV7),Q1 (poorest),5.7,3.8,7.7,1.0,597,ok
+denied,Reported a loan denial,quintile,Consumption quintile (EICV7),Q2,6.0,3.9,8.1,1.09,836,ok
+denied,Reported a loan denial,quintile,Consumption quintile (EICV7),Q3,3.3,1.9,4.6,0.68,889,ok
+denied,Reported a loan denial,quintile,Consumption quintile (EICV7),Q4,5.5,3.7,7.2,0.9,923,ok
+denied,Reported a loan denial,quintile,Consumption quintile (EICV7),Q5 (richest),4.9,3.0,6.9,1.02,479,ok
+coop,Member of an agricultural cooperative,quintile,Consumption quintile (EICV7),Q1 (poorest),6.3,4.4,8.3,1.01,597,ok
+coop,Member of an agricultural cooperative,quintile,Consumption quintile (EICV7),Q2,11.4,9.1,13.7,1.19,836,ok
+coop,Member of an agricultural cooperative,quintile,Consumption quintile (EICV7),Q3,15.9,7.6,24.1,4.22,889,ok
+coop,Member of an agricultural cooperative,quintile,Consumption quintile (EICV7),Q4,11.3,8.5,14.1,1.42,923,ok
+coop,Member of an agricultural cooperative,quintile,Consumption quintile (EICV7),Q5 (richest),12.1,9.0,15.3,1.58,479,ok
+crop_ins,Took crop insurance this season,quintile,Consumption quintile (EICV7),Q1 (poorest),0.4,0.0,1.0,0.27,597,caution
+crop_ins,Took crop insurance this season,quintile,Consumption quintile (EICV7),Q2,1.9,0.8,2.9,0.53,836,ok
+crop_ins,Took crop insurance this season,quintile,Consumption quintile (EICV7),Q3,1.2,0.5,2.0,0.37,889,ok
+crop_ins,Took crop insurance this season,quintile,Consumption quintile (EICV7),Q4,2.4,1.3,3.5,0.56,923,ok
+crop_ins,Took crop insurance this season,quintile,Consumption quintile (EICV7),Q5 (richest),2.1,0.9,3.2,0.59,479,ok
+land_title,Owns titled land,quintile,Consumption quintile (EICV7),Q1 (poorest),78.2,74.2,82.3,2.05,597,ok
+land_title,Owns titled land,quintile,Consumption quintile (EICV7),Q2,80.7,77.7,83.8,1.56,836,ok
+land_title,Owns titled land,quintile,Consumption quintile (EICV7),Q3,84.5,81.5,87.6,1.55,889,ok
+land_title,Owns titled land,quintile,Consumption quintile (EICV7),Q4,78.7,73.2,84.3,2.83,923,ok
+land_title,Owns titled land,quintile,Consumption quintile (EICV7),Q5 (richest),83.6,79.9,87.2,1.85,479,ok
+acct_formal,"Has a bank, SACCO or MFI account",poverty,Poverty status (EICV7),Not poor,66.4,64.5,68.3,0.97,2835,ok
+acct_formal,"Has a bank, SACCO or MFI account",poverty,Poverty status (EICV7),Poor,50.1,46.4,53.8,1.88,889,ok
+acct_sacco,Has a SACCO account,poverty,Poverty status (EICV7),Not poor,58.6,56.5,60.7,1.07,2835,ok
+acct_sacco,Has a SACCO account,poverty,Poverty status (EICV7),Poor,46.2,42.6,49.9,1.84,889,ok
+loan_any,Requested any loan,poverty,Poverty status (EICV7),Not poor,71.6,69.7,73.5,0.98,2835,ok
+loan_any,Requested any loan,poverty,Poverty status (EICV7),Poor,69.3,65.7,72.8,1.81,889,ok
+loan_tontine,Has a tontine loan,poverty,Poverty status (EICV7),Not poor,51.1,48.5,53.7,1.34,2835,ok
+loan_tontine,Has a tontine loan,poverty,Poverty status (EICV7),Poor,47.6,43.6,51.6,2.03,889,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",poverty,Poverty status (EICV7),Not poor,14.8,12.8,16.8,1.01,2835,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",poverty,Poverty status (EICV7),Poor,11.7,9.1,14.4,1.35,889,ok
+banked_not_financed,Formal account but no formal loan,poverty,Poverty status (EICV7),Not poor,53.1,50.8,55.4,1.16,2835,ok
+banked_not_financed,Formal account but no formal loan,poverty,Poverty status (EICV7),Poor,40.4,36.7,44.1,1.87,889,ok
+denied,Reported a loan denial,poverty,Poverty status (EICV7),Not poor,4.9,3.8,6.0,0.55,2835,ok
+denied,Reported a loan denial,poverty,Poverty status (EICV7),Poor,5.4,3.8,6.9,0.77,889,ok
+coop,Member of an agricultural cooperative,poverty,Poverty status (EICV7),Not poor,13.0,10.7,15.3,1.16,2835,ok
+coop,Member of an agricultural cooperative,poverty,Poverty status (EICV7),Poor,7.6,5.6,9.6,1.0,889,ok
+crop_ins,Took crop insurance this season,poverty,Poverty status (EICV7),Not poor,1.8,1.3,2.4,0.28,2835,ok
+crop_ins,Took crop insurance this season,poverty,Poverty status (EICV7),Poor,1.1,0.3,1.9,0.41,889,caution
+land_title,Owns titled land,poverty,Poverty status (EICV7),Not poor,81.9,79.9,84.0,1.05,2835,ok
+land_title,Owns titled land,poverty,Poverty status (EICV7),Poor,78.3,75.0,81.7,1.69,889,ok
+acct_formal,"Has a bank, SACCO or MFI account",head_sex,Sex of household head,Female-headed,56.7,53.4,60.0,1.69,990,ok
+acct_formal,"Has a bank, SACCO or MFI account",head_sex,Sex of household head,Male-headed,64.8,62.7,66.9,1.08,2734,ok
+acct_sacco,Has a SACCO account,head_sex,Sex of household head,Female-headed,51.6,48.2,55.0,1.73,990,ok
+acct_sacco,Has a SACCO account,head_sex,Sex of household head,Male-headed,57.2,54.9,59.5,1.18,2734,ok
+loan_any,Requested any loan,head_sex,Sex of household head,Female-headed,65.5,62.3,68.8,1.66,990,ok
+loan_any,Requested any loan,head_sex,Sex of household head,Male-headed,73.0,71.0,75.0,1.01,2734,ok
+loan_tontine,Has a tontine loan,head_sex,Sex of household head,Female-headed,46.2,42.6,49.8,1.85,990,ok
+loan_tontine,Has a tontine loan,head_sex,Sex of household head,Male-headed,51.7,49.0,54.5,1.4,2734,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",head_sex,Sex of household head,Female-headed,7.8,6.0,9.6,0.93,990,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",head_sex,Sex of household head,Male-headed,16.3,14.0,18.5,1.13,2734,ok
+banked_not_financed,Formal account but no formal loan,head_sex,Sex of household head,Female-headed,50.2,46.9,53.4,1.68,990,ok
+banked_not_financed,Formal account but no formal loan,head_sex,Sex of household head,Male-headed,50.3,47.7,52.8,1.31,2734,ok
+denied,Reported a loan denial,head_sex,Sex of household head,Female-headed,4.7,3.3,6.2,0.74,990,ok
+denied,Reported a loan denial,head_sex,Sex of household head,Male-headed,5.1,4.0,6.2,0.54,2734,ok
+coop,Member of an agricultural cooperative,head_sex,Sex of household head,Female-headed,8.8,7.0,10.7,0.95,990,ok
+coop,Member of an agricultural cooperative,head_sex,Sex of household head,Male-headed,12.8,10.4,15.2,1.21,2734,ok
+crop_ins,Took crop insurance this season,head_sex,Sex of household head,Female-headed,1.3,0.6,2.0,0.36,990,ok
+crop_ins,Took crop insurance this season,head_sex,Sex of household head,Male-headed,1.8,1.2,2.4,0.3,2734,ok
+land_title,Owns titled land,head_sex,Sex of household head,Female-headed,82.5,79.8,85.3,1.42,990,ok
+land_title,Owns titled land,head_sex,Sex of household head,Male-headed,80.6,78.6,82.6,1.03,2734,ok
+acct_formal,"Has a bank, SACCO or MFI account",coop_member,Cooperative membership,Cooperative member,84.2,79.5,88.9,2.38,437,ok
+acct_formal,"Has a bank, SACCO or MFI account",coop_member,Cooperative membership,Not a member,59.8,57.8,61.9,1.04,3287,ok
+acct_sacco,Has a SACCO account,coop_member,Cooperative membership,Cooperative member,76.9,70.9,82.9,3.06,437,ok
+acct_sacco,Has a SACCO account,coop_member,Cooperative membership,Not a member,53.0,51.0,54.9,1.01,3287,ok
+loan_any,Requested any loan,coop_member,Cooperative membership,Cooperative member,68.3,54.7,81.9,6.93,437,ok
+loan_any,Requested any loan,coop_member,Cooperative membership,Not a member,71.5,69.1,73.8,1.22,3287,ok
+loan_tontine,Has a tontine loan,coop_member,Cooperative membership,Cooperative member,48.7,38.3,59.1,5.31,437,ok
+loan_tontine,Has a tontine loan,coop_member,Cooperative membership,Not a member,50.5,47.1,53.9,1.74,3287,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",coop_member,Cooperative membership,Cooperative member,19.0,13.8,24.2,2.65,437,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",coop_member,Cooperative membership,Not a member,13.4,11.8,15.0,0.82,3287,ok
+banked_not_financed,Formal account but no formal loan,coop_member,Cooperative membership,Cooperative member,67.5,59.9,75.1,3.88,437,ok
+banked_not_financed,Formal account but no formal loan,coop_member,Cooperative membership,Not a member,47.9,46.0,49.8,0.98,3287,ok
+denied,Reported a loan denial,coop_member,Cooperative membership,Cooperative member,6.8,4.2,9.4,1.34,437,ok
+denied,Reported a loan denial,coop_member,Cooperative membership,Not a member,4.8,3.8,5.7,0.47,3287,ok
+coop,Member of an agricultural cooperative,coop_member,Cooperative membership,Cooperative member,100.0,100.0,100.0,0.0,437,ok
+coop,Member of an agricultural cooperative,coop_member,Cooperative membership,Not a member,0.0,0.0,0.0,0.0,3287,ok
+crop_ins,Took crop insurance this season,coop_member,Cooperative membership,Cooperative member,13.0,8.9,17.1,2.09,437,ok
+crop_ins,Took crop insurance this season,coop_member,Cooperative membership,Not a member,0.2,0.0,0.3,0.06,3287,caution
+land_title,Owns titled land,coop_member,Cooperative membership,Cooperative member,93.6,91.3,96.0,1.19,437,ok
+land_title,Owns titled land,coop_member,Cooperative membership,Not a member,79.4,77.3,81.6,1.08,3287,ok
+acct_formal,"Has a bank, SACCO or MFI account",titled,Land title,Has titled land,66.7,64.0,69.5,1.39,3053,ok
+acct_formal,"Has a bank, SACCO or MFI account",titled,Land title,No titled land,45.4,38.9,51.9,3.32,671,ok
+acct_sacco,Has a SACCO account,titled,Land title,Has titled land,59.4,56.3,62.4,1.55,3053,ok
+acct_sacco,Has a SACCO account,titled,Land title,No titled land,40.3,34.4,46.3,3.03,671,ok
+loan_any,Requested any loan,titled,Land title,Has titled land,71.0,68.8,73.2,1.13,3053,ok
+loan_any,Requested any loan,titled,Land title,No titled land,71.5,66.7,76.3,2.44,671,ok
+loan_tontine,Has a tontine loan,titled,Land title,Has titled land,49.7,47.4,52.0,1.17,3053,ok
+loan_tontine,Has a tontine loan,titled,Land title,No titled land,52.9,46.1,59.6,3.46,671,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",titled,Land title,Has titled land,15.3,13.5,17.0,0.91,3053,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",titled,Land title,No titled land,9.0,6.5,11.6,1.28,671,ok
+banked_not_financed,Formal account but no formal loan,titled,Land title,Has titled land,53.0,49.7,56.3,1.68,3053,ok
+banked_not_financed,Formal account but no formal loan,titled,Land title,No titled land,38.3,32.5,44.0,2.94,671,ok
+denied,Reported a loan denial,titled,Land title,Has titled land,4.7,3.7,5.6,0.48,3053,ok
+denied,Reported a loan denial,titled,Land title,No titled land,6.4,4.1,8.8,1.18,671,ok
+coop,Member of an agricultural cooperative,titled,Land title,Has titled land,13.6,11.1,16.1,1.27,3053,ok
+coop,Member of an agricultural cooperative,titled,Land title,No titled land,4.0,2.6,5.4,0.71,671,ok
+crop_ins,Took crop insurance this season,titled,Land title,Has titled land,1.9,1.3,2.4,0.28,3053,ok
+crop_ins,Took crop insurance this season,titled,Land title,No titled land,0.8,0.2,1.4,0.32,671,caution
+land_title,Owns titled land,titled,Land title,Has titled land,100.0,100.0,100.0,0.0,3053,ok
+land_title,Owns titled land,titled,Land title,No titled land,0.0,0.0,0.0,0.0,671,ok
+acct_formal,"Has a bank, SACCO or MFI account",farm_size,Farm size,0.1–0.3 ha,55.8,51.3,60.3,2.31,1372,ok
+acct_formal,"Has a bank, SACCO or MFI account",farm_size,Farm size,0.3–1 ha,69.3,64.9,73.7,2.24,1450,ok
+acct_formal,"Has a bank, SACCO or MFI account",farm_size,Farm size,< 0.1 ha,52.1,47.7,56.5,2.25,614,ok
+acct_formal,"Has a bank, SACCO or MFI account",farm_size,Farm size,> 1 ha,82.1,77.2,86.9,2.46,281,ok
+acct_sacco,Has a SACCO account,farm_size,Farm size,0.1–0.3 ha,49.9,45.7,54.1,2.15,1372,ok
+acct_sacco,Has a SACCO account,farm_size,Farm size,0.3–1 ha,62.4,57.2,67.5,2.61,1450,ok
+acct_sacco,Has a SACCO account,farm_size,Farm size,< 0.1 ha,46.1,41.7,50.5,2.26,614,ok
+acct_sacco,Has a SACCO account,farm_size,Farm size,> 1 ha,68.9,62.3,75.6,3.38,281,ok
+loan_any,Requested any loan,farm_size,Farm size,0.1–0.3 ha,71.4,68.2,74.6,1.62,1372,ok
+loan_any,Requested any loan,farm_size,Farm size,0.3–1 ha,72.8,69.1,76.5,1.87,1450,ok
+loan_any,Requested any loan,farm_size,Farm size,< 0.1 ha,66.5,62.4,70.6,2.1,614,ok
+loan_any,Requested any loan,farm_size,Farm size,> 1 ha,69.6,63.7,75.5,3.01,281,ok
+loan_tontine,Has a tontine loan,farm_size,Farm size,0.1–0.3 ha,51.3,47.0,55.5,2.18,1372,ok
+loan_tontine,Has a tontine loan,farm_size,Farm size,0.3–1 ha,53.0,49.8,56.3,1.66,1450,ok
+loan_tontine,Has a tontine loan,farm_size,Farm size,< 0.1 ha,43.4,39.3,47.5,2.08,614,ok
+loan_tontine,Has a tontine loan,farm_size,Farm size,> 1 ha,45.7,38.8,52.6,3.51,281,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",farm_size,Farm size,0.1–0.3 ha,12.9,10.7,15.1,1.12,1372,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",farm_size,Farm size,0.3–1 ha,14.6,12.2,17.1,1.26,1450,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",farm_size,Farm size,< 0.1 ha,9.8,6.7,13.0,1.62,614,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",farm_size,Farm size,> 1 ha,25.3,19.1,31.6,3.19,281,ok
+banked_not_financed,Formal account but no formal loan,farm_size,Farm size,0.1–0.3 ha,44.5,40.5,48.5,2.03,1372,ok
+banked_not_financed,Formal account but no formal loan,farm_size,Farm size,0.3–1 ha,56.2,50.4,61.9,2.91,1450,ok
+banked_not_financed,Formal account but no formal loan,farm_size,Farm size,< 0.1 ha,44.3,39.9,48.7,2.25,614,ok
+banked_not_financed,Formal account but no formal loan,farm_size,Farm size,> 1 ha,58.1,51.2,65.0,3.53,281,ok
+denied,Reported a loan denial,farm_size,Farm size,0.1–0.3 ha,5.2,3.7,6.7,0.75,1372,ok
+denied,Reported a loan denial,farm_size,Farm size,0.3–1 ha,4.5,3.3,5.7,0.61,1450,ok
+denied,Reported a loan denial,farm_size,Farm size,< 0.1 ha,6.7,4.5,8.9,1.11,614,ok
+denied,Reported a loan denial,farm_size,Farm size,> 1 ha,3.3,1.2,5.5,1.11,281,caution
+coop,Member of an agricultural cooperative,farm_size,Farm size,0.1–0.3 ha,7.0,5.4,8.6,0.81,1372,ok
+coop,Member of an agricultural cooperative,farm_size,Farm size,0.3–1 ha,16.9,12.6,21.2,2.19,1450,ok
+coop,Member of an agricultural cooperative,farm_size,Farm size,< 0.1 ha,3.5,2.0,5.1,0.8,614,ok
+coop,Member of an agricultural cooperative,farm_size,Farm size,> 1 ha,25.4,19.6,31.2,2.97,281,ok
+crop_ins,Took crop insurance this season,farm_size,Farm size,0.1–0.3 ha,1.1,0.5,1.7,0.31,1372,ok
+crop_ins,Took crop insurance this season,farm_size,Farm size,0.3–1 ha,2.2,1.4,3.1,0.45,1450,ok
+crop_ins,Took crop insurance this season,farm_size,Farm size,< 0.1 ha,0.0,0.0,0.0,0.0,614,ok
+crop_ins,Took crop insurance this season,farm_size,Farm size,> 1 ha,5.0,2.3,7.8,1.4,281,ok
+land_title,Owns titled land,farm_size,Farm size,0.1–0.3 ha,76.4,71.1,81.7,2.72,1372,ok
+land_title,Owns titled land,farm_size,Farm size,0.3–1 ha,88.7,86.4,90.9,1.14,1450,ok
+land_title,Owns titled land,farm_size,Farm size,< 0.1 ha,67.0,63.0,71.0,2.04,614,ok
+land_title,Owns titled land,farm_size,Farm size,> 1 ha,93.2,90.1,96.4,1.61,281,ok
+acct_formal,"Has a bank, SACCO or MFI account",province,Province,East,58.1,54.1,62.2,2.05,1013,ok
+acct_formal,"Has a bank, SACCO or MFI account",province,Province,Kigali,56.9,42.8,70.9,7.18,44,ok
+acct_formal,"Has a bank, SACCO or MFI account",province,Province,North,67.5,63.7,71.2,1.91,767,ok
+acct_formal,"Has a bank, SACCO or MFI account",province,Province,South,63.3,59.8,66.8,1.79,1066,ok
+acct_formal,"Has a bank, SACCO or MFI account",province,Province,West,65.1,61.2,69.0,2.0,834,ok
+acct_sacco,Has a SACCO account,province,Province,East,49.5,44.3,54.7,2.65,1013,ok
+acct_sacco,Has a SACCO account,province,Province,Kigali,47.7,34.5,60.9,6.75,44,ok
+acct_sacco,Has a SACCO account,province,Province,North,62.6,59.1,66.2,1.81,767,ok
+acct_sacco,Has a SACCO account,province,Province,South,56.8,53.1,60.4,1.85,1066,ok
+acct_sacco,Has a SACCO account,province,Province,West,58.5,54.4,62.7,2.11,834,ok
+loan_any,Requested any loan,province,Province,East,69.1,65.2,73.0,1.98,1013,ok
+loan_any,Requested any loan,province,Province,Kigali,68.0,54.6,81.4,6.86,44,ok
+loan_any,Requested any loan,province,Province,North,66.0,62.6,69.4,1.73,767,ok
+loan_any,Requested any loan,province,Province,South,70.0,66.9,73.1,1.57,1066,ok
+loan_any,Requested any loan,province,Province,West,80.3,77.3,83.3,1.55,834,ok
+loan_tontine,Has a tontine loan,province,Province,East,55.6,50.4,60.8,2.65,1013,ok
+loan_tontine,Has a tontine loan,province,Province,Kigali,37.9,18.4,57.3,9.93,44,ok
+loan_tontine,Has a tontine loan,province,Province,North,46.5,42.8,50.2,1.88,767,ok
+loan_tontine,Has a tontine loan,province,Province,South,45.6,42.1,49.2,1.8,1066,ok
+loan_tontine,Has a tontine loan,province,Province,West,52.8,49.0,56.5,1.92,834,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",province,Province,East,11.2,7.7,14.8,1.79,1013,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",province,Province,Kigali,5.6,0.0,11.6,3.02,44,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",province,Province,North,11.7,9.0,14.5,1.39,767,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",province,Province,South,14.6,12.2,17.0,1.22,1066,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",province,Province,West,20.5,16.8,24.1,1.87,834,ok
+banked_not_financed,Formal account but no formal loan,province,Province,East,48.1,42.8,53.4,2.69,1013,ok
+banked_not_financed,Formal account but no formal loan,province,Province,Kigali,53.1,38.8,67.5,7.32,44,ok
+banked_not_financed,Formal account but no formal loan,province,Province,North,57.3,53.5,61.0,1.91,767,ok
+banked_not_financed,Formal account but no formal loan,province,Province,South,49.7,46.3,53.0,1.7,1066,ok
+banked_not_financed,Formal account but no formal loan,province,Province,West,47.7,43.7,51.7,2.06,834,ok
+denied,Reported a loan denial,province,Province,East,5.2,3.1,7.4,1.11,1013,ok
+denied,Reported a loan denial,province,Province,Kigali,0.0,0.0,0.0,0.0,44,ok
+denied,Reported a loan denial,province,Province,North,5.4,3.5,7.3,0.95,767,ok
+denied,Reported a loan denial,province,Province,South,5.4,3.9,6.8,0.74,1066,ok
+denied,Reported a loan denial,province,Province,West,4.3,3.0,5.6,0.66,834,ok
+coop,Member of an agricultural cooperative,province,Province,East,13.6,8.8,18.5,2.49,1013,ok
+coop,Member of an agricultural cooperative,province,Province,Kigali,4.7,0.0,11.7,3.57,44,caution
+coop,Member of an agricultural cooperative,province,Province,North,9.6,7.2,11.9,1.2,767,ok
+coop,Member of an agricultural cooperative,province,Province,South,14.7,11.8,17.7,1.49,1066,ok
+coop,Member of an agricultural cooperative,province,Province,West,7.8,5.6,9.9,1.11,834,ok
+crop_ins,Took crop insurance this season,province,Province,East,2.6,1.4,3.8,0.62,1013,ok
+crop_ins,Took crop insurance this season,province,Province,Kigali,0.0,0.0,0.0,0.0,44,ok
+crop_ins,Took crop insurance this season,province,Province,North,0.8,0.1,1.6,0.39,767,caution
+crop_ins,Took crop insurance this season,province,Province,South,2.0,1.0,3.0,0.51,1066,ok
+crop_ins,Took crop insurance this season,province,Province,West,0.7,0.1,1.3,0.3,834,caution
+land_title,Owns titled land,province,Province,East,73.6,70.5,76.8,1.63,1013,ok
+land_title,Owns titled land,province,Province,Kigali,89.9,82.9,96.9,3.56,44,ok
+land_title,Owns titled land,province,Province,North,84.1,80.7,87.5,1.73,767,ok
+land_title,Owns titled land,province,Province,South,82.5,79.9,85.1,1.33,1066,ok
+land_title,Owns titled land,province,Province,West,87.2,84.5,89.9,1.38,834,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Bugesera,59.9,47.6,72.2,6.28,129,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Burera,65.4,57.3,73.5,4.13,143,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Gakenke,63.7,55.8,71.6,4.02,180,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Gasabo,,,,,25,suppressed
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Gatsibo,57.8,49.8,65.8,4.07,171,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Gicumbi,70.8,63.1,78.6,3.95,188,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Gisagara,66.8,58.1,75.6,4.46,165,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Huye,60.5,50.6,70.4,5.05,126,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Kamonyi,52.1,42.0,62.1,5.12,136,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Karongi,68.0,60.2,75.7,3.97,129,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Kayonza,62.7,52.8,72.7,5.07,151,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Kicukiro,,,,,6,suppressed
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Kirehe,64.8,56.7,72.9,4.13,156,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Muhanga,64.5,54.4,74.6,5.16,136,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Musanze,68.2,59.8,76.6,4.29,117,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Ngoma,57.9,48.5,67.3,4.79,144,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Ngororero,65.4,56.6,74.1,4.47,138,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Nyabihu,65.6,56.9,74.3,4.46,84,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Nyagatare,51.2,36.6,65.9,7.46,152,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Nyamagabe,73.6,65.8,81.5,4.0,156,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Nyamasheke,68.7,57.8,79.6,5.55,151,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Nyanza,53.9,40.6,67.3,6.82,123,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Nyarugenge,,,,,13,suppressed
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Nyaruguru,77.8,67.4,88.2,5.3,120,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Rubavu,73.9,60.2,87.7,7.01,57,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Ruhango,57.1,48.4,65.9,4.46,104,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Rulindo,68.7,59.0,78.4,4.95,139,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Rusizi,64.8,54.2,75.4,5.41,143,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Rutsiro,54.4,44.1,64.6,5.22,132,ok
+acct_formal,"Has a bank, SACCO or MFI account",district,District,Rwamagana,59.4,47.8,71.0,5.91,110,ok
+acct_sacco,Has a SACCO account,district,District,Bugesera,50.2,38.4,62.0,6.02,129,ok
+acct_sacco,Has a SACCO account,district,District,Burera,60.0,52.2,67.7,3.95,143,ok
+acct_sacco,Has a SACCO account,district,District,Gakenke,60.8,53.0,68.6,3.98,180,ok
+acct_sacco,Has a SACCO account,district,District,Gasabo,,,,,25,suppressed
+acct_sacco,Has a SACCO account,district,District,Gatsibo,44.0,34.4,53.6,4.89,171,ok
+acct_sacco,Has a SACCO account,district,District,Gicumbi,69.3,61.7,76.9,3.87,188,ok
+acct_sacco,Has a SACCO account,district,District,Gisagara,63.3,55.0,71.6,4.23,165,ok
+acct_sacco,Has a SACCO account,district,District,Huye,48.9,36.0,61.7,6.54,126,ok
+acct_sacco,Has a SACCO account,district,District,Kamonyi,42.1,33.3,50.9,4.49,136,ok
+acct_sacco,Has a SACCO account,district,District,Karongi,60.9,53.0,68.9,4.05,129,ok
+acct_sacco,Has a SACCO account,district,District,Kayonza,55.6,45.7,65.6,5.08,151,ok
+acct_sacco,Has a SACCO account,district,District,Kicukiro,,,,,6,suppressed
+acct_sacco,Has a SACCO account,district,District,Kirehe,62.6,54.0,71.1,4.37,156,ok
+acct_sacco,Has a SACCO account,district,District,Muhanga,54.2,41.9,66.5,6.29,136,ok
+acct_sacco,Has a SACCO account,district,District,Musanze,57.7,50.0,65.4,3.91,117,ok
+acct_sacco,Has a SACCO account,district,District,Ngoma,52.9,42.9,63.0,5.14,144,ok
+acct_sacco,Has a SACCO account,district,District,Ngororero,62.1,53.0,71.1,4.62,138,ok
+acct_sacco,Has a SACCO account,district,District,Nyabihu,59.1,50.0,68.1,4.63,84,ok
+acct_sacco,Has a SACCO account,district,District,Nyagatare,44.9,25.4,64.5,9.98,152,ok
+acct_sacco,Has a SACCO account,district,District,Nyamagabe,68.9,62.4,75.4,3.32,156,ok
+acct_sacco,Has a SACCO account,district,District,Nyamasheke,60.8,49.3,72.3,5.87,151,ok
+acct_sacco,Has a SACCO account,district,District,Nyanza,50.8,37.6,64.0,6.73,123,ok
+acct_sacco,Has a SACCO account,district,District,Nyarugenge,,,,,13,suppressed
+acct_sacco,Has a SACCO account,district,District,Nyaruguru,76.9,66.7,87.2,5.24,120,ok
+acct_sacco,Has a SACCO account,district,District,Rubavu,55.4,38.8,71.9,8.45,57,ok
+acct_sacco,Has a SACCO account,district,District,Ruhango,50.1,40.5,59.6,4.87,104,ok
+acct_sacco,Has a SACCO account,district,District,Rulindo,62.4,53.4,71.5,4.62,139,ok
+acct_sacco,Has a SACCO account,district,District,Rusizi,58.1,46.7,69.5,5.82,143,ok
+acct_sacco,Has a SACCO account,district,District,Rutsiro,52.2,41.6,62.8,5.4,132,ok
+acct_sacco,Has a SACCO account,district,District,Rwamagana,40.6,26.9,54.3,7.0,110,ok
+loan_any,Requested any loan,district,District,Bugesera,76.7,70.2,83.2,3.31,129,ok
+loan_any,Requested any loan,district,District,Burera,70.6,62.4,78.8,4.19,143,ok
+loan_any,Requested any loan,district,District,Gakenke,76.8,70.2,83.4,3.38,180,ok
+loan_any,Requested any loan,district,District,Gasabo,,,,,25,suppressed
+loan_any,Requested any loan,district,District,Gatsibo,73.2,64.3,82.1,4.55,171,ok
+loan_any,Requested any loan,district,District,Gicumbi,56.7,51.3,62.2,2.8,188,ok
+loan_any,Requested any loan,district,District,Gisagara,76.8,70.1,83.4,3.38,165,ok
+loan_any,Requested any loan,district,District,Huye,79.2,69.7,88.7,4.84,126,ok
+loan_any,Requested any loan,district,District,Kamonyi,46.5,36.5,56.5,5.12,136,ok
+loan_any,Requested any loan,district,District,Karongi,73.5,65.7,81.3,3.98,129,ok
+loan_any,Requested any loan,district,District,Kayonza,72.7,66.7,78.6,3.04,151,ok
+loan_any,Requested any loan,district,District,Kicukiro,,,,,6,suppressed
+loan_any,Requested any loan,district,District,Kirehe,57.2,47.1,67.3,5.13,156,ok
+loan_any,Requested any loan,district,District,Muhanga,60.0,51.0,69.0,4.59,136,ok
+loan_any,Requested any loan,district,District,Musanze,68.3,58.1,78.5,5.2,117,ok
+loan_any,Requested any loan,district,District,Ngoma,58.5,48.6,68.4,5.06,144,ok
+loan_any,Requested any loan,district,District,Ngororero,81.8,72.1,91.5,4.94,138,ok
+loan_any,Requested any loan,district,District,Nyabihu,78.3,69.8,86.7,4.31,84,ok
+loan_any,Requested any loan,district,District,Nyagatare,67.5,61.8,73.2,2.91,152,ok
+loan_any,Requested any loan,district,District,Nyamagabe,75.5,68.5,82.6,3.59,156,ok
+loan_any,Requested any loan,district,District,Nyamasheke,89.4,84.7,94.2,2.43,151,ok
+loan_any,Requested any loan,district,District,Nyanza,51.0,43.5,58.5,3.82,123,ok
+loan_any,Requested any loan,district,District,Nyarugenge,,,,,13,suppressed
+loan_any,Requested any loan,district,District,Nyaruguru,88.0,79.7,96.3,4.24,120,ok
+loan_any,Requested any loan,district,District,Rubavu,66.4,53.4,79.4,6.63,57,ok
+loan_any,Requested any loan,district,District,Ruhango,84.5,76.7,92.4,4.01,104,ok
+loan_any,Requested any loan,district,District,Rulindo,59.7,51.9,67.5,3.97,139,ok
+loan_any,Requested any loan,district,District,Rusizi,79.1,71.2,87.0,4.03,143,ok
+loan_any,Requested any loan,district,District,Rutsiro,83.1,75.3,90.8,3.98,132,ok
+loan_any,Requested any loan,district,District,Rwamagana,79.8,63.7,95.8,8.17,110,ok
+loan_tontine,Has a tontine loan,district,District,Bugesera,59.8,50.8,68.8,4.58,129,ok
+loan_tontine,Has a tontine loan,district,District,Burera,57.1,48.0,66.2,4.63,143,ok
+loan_tontine,Has a tontine loan,district,District,Gakenke,49.4,42.5,56.3,3.52,180,ok
+loan_tontine,Has a tontine loan,district,District,Gasabo,,,,,25,suppressed
+loan_tontine,Has a tontine loan,district,District,Gatsibo,57.3,50.9,63.8,3.28,171,ok
+loan_tontine,Has a tontine loan,district,District,Gicumbi,35.5,29.5,41.5,3.06,188,ok
+loan_tontine,Has a tontine loan,district,District,Gisagara,49.2,41.2,57.2,4.09,165,ok
+loan_tontine,Has a tontine loan,district,District,Huye,60.1,47.8,72.4,6.27,126,ok
+loan_tontine,Has a tontine loan,district,District,Kamonyi,25.6,18.7,32.4,3.5,136,ok
+loan_tontine,Has a tontine loan,district,District,Karongi,36.7,27.4,46.1,4.78,129,ok
+loan_tontine,Has a tontine loan,district,District,Kayonza,58.7,49.6,67.8,4.64,151,ok
+loan_tontine,Has a tontine loan,district,District,Kicukiro,,,,,6,suppressed
+loan_tontine,Has a tontine loan,district,District,Kirehe,38.9,30.1,47.7,4.48,156,ok
+loan_tontine,Has a tontine loan,district,District,Muhanga,37.2,26.3,48.1,5.56,136,ok
+loan_tontine,Has a tontine loan,district,District,Musanze,45.5,33.1,57.9,6.31,117,ok
+loan_tontine,Has a tontine loan,district,District,Ngoma,40.3,29.3,51.2,5.59,144,ok
+loan_tontine,Has a tontine loan,district,District,Ngororero,59.2,47.7,70.7,5.86,138,ok
+loan_tontine,Has a tontine loan,district,District,Nyabihu,60.8,49.7,71.8,5.62,84,ok
+loan_tontine,Has a tontine loan,district,District,Nyagatare,59.8,51.7,67.9,4.12,152,ok
+loan_tontine,Has a tontine loan,district,District,Nyamagabe,48.9,41.8,55.9,3.58,156,ok
+loan_tontine,Has a tontine loan,district,District,Nyamasheke,40.4,33.3,47.5,3.63,151,ok
+loan_tontine,Has a tontine loan,district,District,Nyanza,25.8,15.0,36.6,5.49,123,ok
+loan_tontine,Has a tontine loan,district,District,Nyarugenge,,,,,13,suppressed
+loan_tontine,Has a tontine loan,district,District,Nyaruguru,59.2,49.5,69.0,4.97,120,ok
+loan_tontine,Has a tontine loan,district,District,Rubavu,50.6,36.4,64.8,7.24,57,ok
+loan_tontine,Has a tontine loan,district,District,Ruhango,60.8,48.7,72.8,6.15,104,ok
+loan_tontine,Has a tontine loan,district,District,Rulindo,48.6,41.2,56.0,3.77,139,ok
+loan_tontine,Has a tontine loan,district,District,Rusizi,58.1,49.3,67.0,4.52,143,ok
+loan_tontine,Has a tontine loan,district,District,Rutsiro,65.6,56.4,74.7,4.67,132,ok
+loan_tontine,Has a tontine loan,district,District,Rwamagana,70.4,48.2,92.6,11.32,110,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Bugesera,14.2,5.8,22.6,4.29,129,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Burera,11.7,5.4,18.0,3.2,143,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Gakenke,15.8,9.2,22.4,3.37,180,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Gasabo,,,,,25,suppressed
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Gatsibo,12.5,6.8,18.1,2.88,171,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Gicumbi,8.5,3.8,13.2,2.37,188,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Gisagara,4.3,1.0,7.6,1.68,165,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Huye,17.8,11.9,23.7,3.0,126,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Kamonyi,13.7,7.0,20.4,3.43,136,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Karongi,15.6,7.3,23.8,4.21,129,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Kayonza,16.2,10.1,22.3,3.11,151,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Kicukiro,,,,,6,suppressed
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Kirehe,8.2,3.5,12.8,2.37,156,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Muhanga,19.8,11.7,27.8,4.1,136,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Musanze,13.8,5.2,22.3,4.36,117,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Ngoma,12.5,1.2,23.9,5.77,144,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Ngororero,10.1,5.1,15.1,2.57,138,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Nyabihu,3.8,0.0,9.4,2.84,84,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Nyagatare,4.6,0.0,9.6,2.56,152,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Nyamagabe,13.7,7.9,19.5,2.96,156,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Nyamasheke,38.8,28.0,49.5,5.48,151,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Nyanza,10.2,3.5,16.8,3.4,123,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Nyarugenge,,,,,13,suppressed
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Nyaruguru,32.5,22.1,43.0,5.31,120,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Rubavu,30.6,14.0,47.2,8.47,57,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Ruhango,6.7,2.6,10.7,2.05,104,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Rulindo,9.8,5.4,14.2,2.25,139,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Rusizi,29.0,19.4,38.6,4.88,143,ok
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Rutsiro,11.1,3.5,18.8,3.91,132,caution
+loan_formal,"Has a formal loan (bank, SACCO, MFI)",district,District,Rwamagana,18.3,10.3,26.4,4.12,110,ok
+banked_not_financed,Formal account but no formal loan,district,District,Bugesera,48.2,38.1,58.3,5.16,129,ok
+banked_not_financed,Formal account but no formal loan,district,District,Burera,55.2,47.9,62.5,3.71,143,ok
+banked_not_financed,Formal account but no formal loan,district,District,Gakenke,53.8,44.8,62.8,4.6,180,ok
+banked_not_financed,Formal account but no formal loan,district,District,Gasabo,,,,,25,suppressed
+banked_not_financed,Formal account but no formal loan,district,District,Gatsibo,45.3,35.5,55.1,5.02,171,ok
+banked_not_financed,Formal account but no formal loan,district,District,Gicumbi,62.3,55.6,69.1,3.45,188,ok
+banked_not_financed,Formal account but no formal loan,district,District,Gisagara,62.5,52.9,72.1,4.9,165,ok
+banked_not_financed,Formal account but no formal loan,district,District,Huye,45.4,34.5,56.4,5.58,126,ok
+banked_not_financed,Formal account but no formal loan,district,District,Kamonyi,39.1,30.8,47.3,4.21,136,ok
+banked_not_financed,Formal account but no formal loan,district,District,Karongi,52.4,44.9,59.8,3.8,129,ok
+banked_not_financed,Formal account but no formal loan,district,District,Kayonza,48.9,38.8,59.0,5.16,151,ok
+banked_not_financed,Formal account but no formal loan,district,District,Kicukiro,,,,,6,suppressed
+banked_not_financed,Formal account but no formal loan,district,District,Kirehe,57.7,49.1,66.4,4.42,156,ok
+banked_not_financed,Formal account but no formal loan,district,District,Muhanga,45.3,38.7,51.9,3.37,136,ok
+banked_not_financed,Formal account but no formal loan,district,District,Musanze,54.5,44.6,64.4,5.04,117,ok
+banked_not_financed,Formal account but no formal loan,district,District,Ngoma,46.5,35.3,57.7,5.7,144,ok
+banked_not_financed,Formal account but no formal loan,district,District,Ngororero,57.0,46.6,67.3,5.28,138,ok
+banked_not_financed,Formal account but no formal loan,district,District,Nyabihu,61.8,51.5,72.1,5.25,84,ok
+banked_not_financed,Formal account but no formal loan,district,District,Nyagatare,47.3,29.7,64.9,8.96,152,ok
+banked_not_financed,Formal account but no formal loan,district,District,Nyamagabe,61.3,53.5,69.0,3.94,156,ok
+banked_not_financed,Formal account but no formal loan,district,District,Nyamasheke,35.4,25.5,45.3,5.05,151,ok
+banked_not_financed,Formal account but no formal loan,district,District,Nyanza,43.8,32.0,55.6,6.03,123,ok
+banked_not_financed,Formal account but no formal loan,district,District,Nyarugenge,,,,,13,suppressed
+banked_not_financed,Formal account but no formal loan,district,District,Nyaruguru,48.3,36.9,59.8,5.85,120,ok
+banked_not_financed,Formal account but no formal loan,district,District,Rubavu,49.6,35.9,63.3,6.98,57,ok
+banked_not_financed,Formal account but no formal loan,district,District,Ruhango,50.5,42.7,58.2,3.94,104,ok
+banked_not_financed,Formal account but no formal loan,district,District,Rulindo,58.9,49.5,68.3,4.81,139,ok
+banked_not_financed,Formal account but no formal loan,district,District,Rusizi,42.0,31.4,52.7,5.44,143,ok
+banked_not_financed,Formal account but no formal loan,district,District,Rutsiro,44.9,34.0,55.7,5.53,132,ok
+banked_not_financed,Formal account but no formal loan,district,District,Rwamagana,42.5,35.0,49.9,3.8,110,ok
+denied,Reported a loan denial,district,District,Bugesera,4.3,1.0,7.7,1.72,129,caution
+denied,Reported a loan denial,district,District,Burera,5.9,1.6,10.1,2.18,143,caution
+denied,Reported a loan denial,district,District,Gakenke,4.9,2.1,7.6,1.41,180,ok
+denied,Reported a loan denial,district,District,Gasabo,,,,,25,suppressed
+denied,Reported a loan denial,district,District,Gatsibo,8.0,0.5,15.6,3.85,171,caution
+denied,Reported a loan denial,district,District,Gicumbi,9.2,3.6,14.8,2.86,188,caution
+denied,Reported a loan denial,district,District,Gisagara,4.7,0.0,9.4,2.4,165,caution
+denied,Reported a loan denial,district,District,Huye,4.4,0.4,8.4,2.04,126,caution
+denied,Reported a loan denial,district,District,Kamonyi,3.9,0.6,7.2,1.69,136,caution
+denied,Reported a loan denial,district,District,Karongi,4.9,1.2,8.5,1.86,129,caution
+denied,Reported a loan denial,district,District,Kayonza,4.3,1.1,7.4,1.59,151,caution
+denied,Reported a loan denial,district,District,Kicukiro,,,,,6,suppressed
+denied,Reported a loan denial,district,District,Kirehe,8.7,1.9,15.4,3.46,156,caution
+denied,Reported a loan denial,district,District,Muhanga,4.5,1.4,7.6,1.58,136,caution
+denied,Reported a loan denial,district,District,Musanze,2.1,0.0,4.5,1.2,117,caution
+denied,Reported a loan denial,district,District,Ngoma,2.5,0.2,4.8,1.19,144,caution
+denied,Reported a loan denial,district,District,Ngororero,2.5,0.0,5.2,1.4,138,caution
+denied,Reported a loan denial,district,District,Nyabihu,4.1,0.5,7.7,1.84,84,caution
+denied,Reported a loan denial,district,District,Nyagatare,2.2,0.0,4.9,1.36,152,caution
+denied,Reported a loan denial,district,District,Nyamagabe,6.8,1.9,11.7,2.5,156,caution
+denied,Reported a loan denial,district,District,Nyamasheke,3.7,1.2,6.3,1.29,151,caution
+denied,Reported a loan denial,district,District,Nyanza,3.0,0.0,6.1,1.55,123,caution
+denied,Reported a loan denial,district,District,Nyarugenge,,,,,13,suppressed
+denied,Reported a loan denial,district,District,Nyaruguru,11.2,6.4,15.9,2.41,120,ok
+denied,Reported a loan denial,district,District,Rubavu,10.7,2.3,19.1,4.27,57,caution
+denied,Reported a loan denial,district,District,Ruhango,4.8,0.6,8.9,2.13,104,caution
+denied,Reported a loan denial,district,District,Rulindo,3.2,0.2,6.2,1.55,139,caution
+denied,Reported a loan denial,district,District,Rusizi,3.7,0.9,6.5,1.44,143,caution
+denied,Reported a loan denial,district,District,Rutsiro,4.1,1.0,7.3,1.61,132,caution
+denied,Reported a loan denial,district,District,Rwamagana,8.8,0.0,17.6,4.54,110,caution
+coop,Member of an agricultural cooperative,district,District,Bugesera,16.6,9.7,23.5,3.51,129,ok
+coop,Member of an agricultural cooperative,district,District,Burera,15.4,8.9,21.9,3.32,143,ok
+coop,Member of an agricultural cooperative,district,District,Gakenke,5.9,1.9,9.9,2.05,180,caution
+coop,Member of an agricultural cooperative,district,District,Gasabo,,,,,25,suppressed
+coop,Member of an agricultural cooperative,district,District,Gatsibo,14.7,8.8,20.5,2.99,171,ok
+coop,Member of an agricultural cooperative,district,District,Gicumbi,11.1,7.0,15.2,2.1,188,ok
+coop,Member of an agricultural cooperative,district,District,Gisagara,18.0,10.5,25.6,3.85,165,ok
+coop,Member of an agricultural cooperative,district,District,Huye,19.0,11.6,26.5,3.81,126,ok
+coop,Member of an agricultural cooperative,district,District,Kamonyi,8.2,2.7,13.8,2.85,136,caution
+coop,Member of an agricultural cooperative,district,District,Karongi,4.9,0.9,8.8,2.03,129,caution
+coop,Member of an agricultural cooperative,district,District,Kayonza,9.9,2.4,17.5,3.86,151,caution
+coop,Member of an agricultural cooperative,district,District,Kicukiro,,,,,6,suppressed
+coop,Member of an agricultural cooperative,district,District,Kirehe,12.1,5.3,19.0,3.5,156,ok
+coop,Member of an agricultural cooperative,district,District,Muhanga,11.3,2.7,19.9,4.38,136,caution
+coop,Member of an agricultural cooperative,district,District,Musanze,5.9,1.1,10.6,2.43,117,caution
+coop,Member of an agricultural cooperative,district,District,Ngoma,16.1,9.7,22.4,3.24,144,ok
+coop,Member of an agricultural cooperative,district,District,Ngororero,2.3,0.0,4.8,1.25,138,caution
+coop,Member of an agricultural cooperative,district,District,Nyabihu,13.3,1.0,25.6,6.3,84,caution
+coop,Member of an agricultural cooperative,district,District,Nyagatare,17.3,3.3,31.3,7.15,152,caution
+coop,Member of an agricultural cooperative,district,District,Nyamagabe,10.1,5.0,15.2,2.61,156,ok
+coop,Member of an agricultural cooperative,district,District,Nyamasheke,10.1,5.9,14.3,2.15,151,ok
+coop,Member of an agricultural cooperative,district,District,Nyanza,13.4,6.4,20.4,3.59,123,ok
+coop,Member of an agricultural cooperative,district,District,Nyarugenge,,,,,13,suppressed
+coop,Member of an agricultural cooperative,district,District,Nyaruguru,25.1,13.5,36.7,5.94,120,ok
+coop,Member of an agricultural cooperative,district,District,Rubavu,12.1,0.9,23.3,5.71,57,caution
+coop,Member of an agricultural cooperative,district,District,Ruhango,14.2,2.8,25.6,5.81,104,caution
+coop,Member of an agricultural cooperative,district,District,Rulindo,9.0,2.3,15.7,3.42,139,caution
+coop,Member of an agricultural cooperative,district,District,Rusizi,10.1,5.3,14.9,2.45,143,ok
+coop,Member of an agricultural cooperative,district,District,Rutsiro,4.3,1.2,7.4,1.59,132,caution
+coop,Member of an agricultural cooperative,district,District,Rwamagana,5.4,0.0,11.5,3.11,110,caution
+crop_ins,Took crop insurance this season,district,District,Bugesera,8.1,2.5,13.8,2.88,129,caution
+crop_ins,Took crop insurance this season,district,District,Burera,0.8,0.0,2.3,0.77,143,caution
+crop_ins,Took crop insurance this season,district,District,Gakenke,0.6,0.0,1.8,0.6,180,caution
+crop_ins,Took crop insurance this season,district,District,Gasabo,,,,,25,suppressed
+crop_ins,Took crop insurance this season,district,District,Gatsibo,2.7,0.3,5.2,1.26,171,caution
+crop_ins,Took crop insurance this season,district,District,Gicumbi,0.0,0.0,0.0,0.0,188,ok
+crop_ins,Took crop insurance this season,district,District,Gisagara,1.2,0.0,2.9,0.84,165,caution
+crop_ins,Took crop insurance this season,district,District,Huye,1.5,0.0,3.3,0.9,126,caution
+crop_ins,Took crop insurance this season,district,District,Kamonyi,1.7,0.0,4.0,1.19,136,caution
+crop_ins,Took crop insurance this season,district,District,Karongi,0.0,0.0,0.0,0.0,129,ok
+crop_ins,Took crop insurance this season,district,District,Kayonza,3.2,0.0,7.7,2.28,151,caution
+crop_ins,Took crop insurance this season,district,District,Kicukiro,,,,,6,suppressed
+crop_ins,Took crop insurance this season,district,District,Kirehe,2.5,0.0,5.4,1.49,156,caution
+crop_ins,Took crop insurance this season,district,District,Muhanga,3.0,0.0,6.4,1.74,136,caution
+crop_ins,Took crop insurance this season,district,District,Musanze,2.3,0.0,6.0,1.87,117,caution
+crop_ins,Took crop insurance this season,district,District,Ngoma,3.5,0.9,6.1,1.32,144,caution
+crop_ins,Took crop insurance this season,district,District,Ngororero,0.9,0.0,2.6,0.89,138,caution
+crop_ins,Took crop insurance this season,district,District,Nyabihu,0.0,0.0,0.0,0.0,84,ok
+crop_ins,Took crop insurance this season,district,District,Nyagatare,0.4,0.0,1.3,0.46,152,caution
+crop_ins,Took crop insurance this season,district,District,Nyamagabe,0.0,0.0,0.0,0.0,156,ok
+crop_ins,Took crop insurance this season,district,District,Nyamasheke,0.7,0.0,1.9,0.66,151,caution
+crop_ins,Took crop insurance this season,district,District,Nyanza,2.9,0.0,6.0,1.6,123,caution
+crop_ins,Took crop insurance this season,district,District,Nyarugenge,,,,,13,suppressed
+crop_ins,Took crop insurance this season,district,District,Nyaruguru,2.3,0.0,4.9,1.3,120,caution
+crop_ins,Took crop insurance this season,district,District,Rubavu,0.0,0.0,0.0,0.0,57,ok
+crop_ins,Took crop insurance this season,district,District,Ruhango,3.8,0.0,9.0,2.63,104,caution
+crop_ins,Took crop insurance this season,district,District,Rulindo,1.0,0.0,2.5,0.74,139,caution
+crop_ins,Took crop insurance this season,district,District,Rusizi,2.5,0.0,5.3,1.44,143,caution
+crop_ins,Took crop insurance this season,district,District,Rutsiro,0.0,0.0,0.0,0.0,132,ok
+crop_ins,Took crop insurance this season,district,District,Rwamagana,0.6,0.0,1.9,0.64,110,caution
+land_title,Owns titled land,district,District,Bugesera,72.1,61.8,82.3,5.25,129,ok
+land_title,Owns titled land,district,District,Burera,74.5,63.2,85.9,5.77,143,ok
+land_title,Owns titled land,district,District,Gakenke,85.3,78.7,91.9,3.38,180,ok
+land_title,Owns titled land,district,District,Gasabo,,,,,25,suppressed
+land_title,Owns titled land,district,District,Gatsibo,64.5,57.4,71.6,3.62,171,ok
+land_title,Owns titled land,district,District,Gicumbi,78.4,72.2,84.5,3.15,188,ok
+land_title,Owns titled land,district,District,Gisagara,84.5,77.2,91.8,3.71,165,ok
+land_title,Owns titled land,district,District,Huye,81.9,74.6,89.2,3.74,126,ok
+land_title,Owns titled land,district,District,Kamonyi,77.9,70.1,85.8,4.01,136,ok
+land_title,Owns titled land,district,District,Karongi,81.8,75.8,87.9,3.1,129,ok
+land_title,Owns titled land,district,District,Kayonza,81.7,73.8,89.6,4.03,151,ok
+land_title,Owns titled land,district,District,Kicukiro,,,,,6,suppressed
+land_title,Owns titled land,district,District,Kirehe,75.2,68.0,82.5,3.71,156,ok
+land_title,Owns titled land,district,District,Muhanga,87.9,83.7,92.1,2.13,136,ok
+land_title,Owns titled land,district,District,Musanze,97.6,95.0,100.0,1.31,117,ok
+land_title,Owns titled land,district,District,Ngoma,84.8,79.1,90.5,2.91,144,ok
+land_title,Owns titled land,district,District,Ngororero,93.1,89.2,97.0,1.99,138,ok
+land_title,Owns titled land,district,District,Nyabihu,96.6,92.6,100.0,2.03,84,ok
+land_title,Owns titled land,district,District,Nyagatare,71.6,65.6,77.6,3.05,152,ok
+land_title,Owns titled land,district,District,Nyamagabe,77.4,68.8,86.0,4.38,156,ok
+land_title,Owns titled land,district,District,Nyamasheke,84.2,77.6,90.8,3.36,151,ok
+land_title,Owns titled land,district,District,Nyanza,85.2,79.4,91.0,2.95,123,ok
+land_title,Owns titled land,district,District,Nyarugenge,,,,,13,suppressed
+land_title,Owns titled land,district,District,Nyaruguru,88.1,81.9,94.4,3.21,120,ok
+land_title,Owns titled land,district,District,Rubavu,95.6,87.1,100.0,4.36,57,ok
+land_title,Owns titled land,district,District,Ruhango,78.0,67.9,88.2,5.16,104,ok
+land_title,Owns titled land,district,District,Rulindo,88.2,81.5,94.9,3.42,139,ok
+land_title,Owns titled land,district,District,Rusizi,82.2,71.9,92.4,5.23,143,ok
+land_title,Owns titled land,district,District,Rutsiro,85.1,78.9,91.4,3.2,132,ok
+land_title,Owns titled land,district,District,Rwamagana,69.8,56.4,83.2,6.83,110,ok

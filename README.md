@@ -26,6 +26,7 @@ streamlit run app.py                                 # uses committed aggregates
 To rebuild the aggregates from the raw microdata and test every page:
 
 ```bash
+pip install -r requirements-pipeline.txt
 python pipeline/build_aggregates.py
 python tests/test_app.py
 ```

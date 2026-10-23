@@ -1,0 +1,6 @@
+# Only needed to rebuild data/aggregates from the raw NISR microdata and run the tests:
+#   pip install -r requirements-pipeline.txt && python pipeline/build_aggregates.py
+-r requirements.txt
+pyreadstat>=1.2
+statsmodels>=0.14
+scipy>=1.10

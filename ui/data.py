@@ -38,3 +38,12 @@ def ordered(df, group_var):
         return df
     rank = {g: i for i, g in enumerate(order)}
     return df.assign(_r=df.group.map(rank).fillna(99)).sort_values("_r").drop(columns="_r")
+
+
+GEO = Path(__file__).resolve().parents[1] / "data" / "geo" / "rwanda_districts.geojson"
+
+
+@st.cache_data
+def districts_geojson():
+    """District polygons (CC BY 4.0, geoBoundaries). Feature name: properties.shapeName."""
+    return json.loads(GEO.read_text())

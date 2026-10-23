@@ -126,7 +126,24 @@ def i18n_complete():
     assert all(m in STR for m in msgs)
 
 
-for fn in (farmer_flow, ussd_flow, i18n_complete):
+def geo_check():
+    import json
+    import pandas as pd
+    g = json.load(open(Path(ROOT) / "data" / "geo" / "rwanda_districts.geojson"))
+    names = {f["properties"]["shapeName"] for f in g["features"]}
+    assert len(g["features"]) == 30 and len(names) == 30, "expected 30 distinct districts"
+    for f in g["features"]:
+        assert f["geometry"]["type"] in ("Polygon", "MultiPolygon") and f["geometry"]["coordinates"], f
+    agg = Path(ROOT) / "data" / "aggregates"
+    for t_ in ("ahs_by_group", "fs_by_group"):
+        d = pd.read_csv(agg / f"{t_}.csv")
+        assert set(d[d.group_var == "district"].group) == names, f"{t_}: district names do not match the map"
+    sys.path.insert(0, ROOT)
+    from ui.pages import PROVINCE_OF
+    assert set(PROVINCE_OF) == names, "province lookup does not cover every mapped district"
+
+
+for fn in (farmer_flow, ussd_flow, i18n_complete, geo_check):
     for LANG in ("rw", "en"):
         try:
             fn()

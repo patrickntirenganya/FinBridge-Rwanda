@@ -186,12 +186,51 @@ def districts():
     d["group"] = d.province + " · " + d.group
     nat_tab = D["ahs_national"] if src.startswith("Agri") else D["fs_national"]
     national = nat_tab.set_index("indicator").loc[ind].est
-    fig = T.ci_bars(d, height=80 + 26 * len(d))
-    fig.add_vline(x=national, line_dash="dot", line_color=T.SOIL,
-                  annotation_text=f"National {national:.1f}%", annotation_position="top")
-    fig.update_traces(textfont_size=11)
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-    T.note((AHS_SRC if src.startswith("Agri") else FS_SRC) + " Suppressed cells (n < 30) are omitted.")
+    cmap, cbars = st.columns([1, 1])
+    with cmap:
+        st.plotly_chart(_district_map(d, national), use_container_width=True, config={"displayModeBar": False})
+    with cbars:
+        fig = T.ci_bars(d, height=80 + 26 * len(d))
+        fig.add_vline(x=national, line_dash="dot", line_color=T.SOIL,
+                      annotation_text=f"National {national:.1f}%", annotation_position="top")
+        fig.update_traces(textfont_size=11)
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    shaky = d[d.reliability != "ok"]
+    if len(shaky):
+        names = ", ".join(sorted(g.split(" · ")[-1] for g in shaky.group))
+        st.caption(f"Grey on the map: estimate unreliable or suppressed ({names}).")
+    T.note((AHS_SRC if src.startswith("Agri") else FS_SRC) + " Suppressed cells (n < 30) are omitted. "
+           "District boundaries: geoBoundaries (CC BY 4.0), simplified; for display only.")
+
+
+def _district_map(d, national):
+    """Choropleth of one indicator. Unreliable (CV > 0.30) or suppressed districts are grey."""
+    from ui.data import districts_geojson
+    geo = districts_geojson()
+    d = d.assign(name=d.group.str.split(" · ").str[-1])
+    ok = d[(d.reliability == "ok") & d.est.notna()]
+    names = [f["properties"]["shapeName"] for f in geo["features"]]
+    grey = [n for n in names if n not in set(ok.name)]
+    hi = max(ok.est.max(), 1) if len(ok) else 1
+    fig = go.Figure()
+    fig.add_trace(go.Choroplethmap(
+        geojson=geo, featureidkey="properties.shapeName", locations=ok.name, z=ok.est, zmin=0, zmax=hi,
+        colorscale=[[0, "#E6EEE8"], [1, T.TEA]], marker_line_color="white", marker_line_width=0.8,
+        marker_opacity=0.95, colorbar=dict(title="%", thickness=12, len=0.6, ticksuffix="%"),
+        customdata=ok[["lo", "hi", "n"]].values,
+        hovertemplate="%{location}: %{z:.1f}%<br>95% CI %{customdata[0]:.1f}–%{customdata[1]:.1f}"
+                      "<br>n = %{customdata[2]}<extra></extra>"))
+    if grey:
+        gd = d.set_index("name").reindex(grey)
+        fig.add_trace(go.Choroplethmap(
+            geojson=geo, featureidkey="properties.shapeName", locations=grey, z=[0] * len(grey),
+            colorscale=[[0, "#B9C3BC"], [1, "#B9C3BC"]], showscale=False, marker_line_color="white",
+            marker_line_width=0.8, marker_opacity=0.95, customdata=gd[["n"]].fillna(0).values,
+            hovertemplate="%{location}<br>Estimate unreliable or suppressed<br>n = %{customdata[0]:.0f}<extra></extra>"))
+    fig.update_layout(map=dict(style="white-bg", center=dict(lat=-1.95, lon=29.88), zoom=6.45),
+                      height=520, margin=dict(l=0, r=0, t=10, b=0), paper_bgcolor="rgba(0,0,0,0)",
+                      font=dict(family=T.FONT, color=T.INK, size=13))
+    return fig
 
 
 def methods():
@@ -212,6 +251,10 @@ intervals treat each respondent independently and understate uncertainty. Cells 
 
 **What this tool is not.** It does not score individuals, predict loan default or make lending decisions.
 It describes patterns across groups of households.
+""")
+    st.markdown("""
+**District map.** Boundaries from [geoBoundaries](https://www.geoboundaries.org) (source: Open Data Rwanda / NISR,
+2012 boundaries), licence CC BY 4.0, simplified for display. Runfola et al. (2020), *PLoS ONE* 15(4): e0231866.
 """)
     st.subheader("Checks against published figures")
     st.dataframe(D["validation"], hide_index=True, use_container_width=True)

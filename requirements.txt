@@ -1,5 +1,5 @@
 # App only (this is all Streamlit Community Cloud installs; the product reads no survey data)
-streamlit>=1.55
+streamlit>=1.65
 plotly>=5.20
 pandas>=2.0
 numpy>=1.24

@@ -186,7 +186,7 @@ def _sign_in_form(stored):
         else:
             phone_raw = st.text_input(t("au.phone"), max_chars=20, autocomplete="tel")
         pin = st.text_input(t("au.pin"), type="password", max_chars=6, autocomplete="current-password")
-        go = st.form_submit_button(t("au.sign_in"), type="primary", use_container_width=True)
+        go = st.form_submit_button(t("au.sign_in"), type="primary", width="stretch")
     if use_saved and st.button(t("au.not_you")):
         ss["other_number"] = True
         st.rerun()
@@ -217,7 +217,7 @@ def _sign_up_form(stored):
             st.warning(t("au.exists"))
             replace = st.checkbox(t("au.replace"))
         ack = st.checkbox(t("au.ack"))
-        go = st.form_submit_button(t("au.create"), type="primary", use_container_width=True)
+        go = st.form_submit_button(t("au.create"), type="primary", width="stretch")
     st.caption(t("au.why"))
     if not go:
         return
@@ -243,7 +243,7 @@ def _restore_form(stored):
         up = st.file_uploader(t("au.restore_file"), type=["fbvault", "json"])
         phone_raw = st.text_input(t("au.phone"), max_chars=20, autocomplete="tel", key="rs_phone")
         pin = st.text_input(t("au.pin"), type="password", max_chars=6, key="rs_pin")
-        go = st.form_submit_button(t("au.restore"), type="primary", use_container_width=True)
+        go = st.form_submit_button(t("au.restore"), type="primary", width="stretch")
     if not go:
         return
     lock = _lock_state(stored)
@@ -315,7 +315,7 @@ def gate() -> bool:
     _forgot(stored)
     st.divider()
     st.caption(t("au.demo_note"))
-    if st.button(t("au.demo"), use_container_width=True):
+    if st.button(t("au.demo"), width="stretch"):
         _start_demo()
     return False
 
@@ -325,11 +325,11 @@ def account_bar():
     c1, c2 = st.columns([4, 1])
     if in_demo():
         c1.info(t("au.demo_bar"))
-        if c2.button(t("au.leave_demo"), use_container_width=True):
+        if c2.button(t("au.leave_demo"), width="stretch"):
             lock_session()
             st.rerun()
     else:
         c1.markdown(f"🔒 {t('au.bar', p=V.mask_phone(ss.auth['phone']))}")
-        if c2.button(t("au.lock"), use_container_width=True):
+        if c2.button(t("au.lock"), width="stretch"):
             lock_session()
             st.rerun()

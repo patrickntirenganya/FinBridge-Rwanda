@@ -7,7 +7,6 @@ import json
 from pathlib import Path
 
 import streamlit as st
-import streamlit.components.v1 as components
 
 from src.i18n import t, lang
 
@@ -37,4 +36,5 @@ def home():
     st.markdown("<style>.block-container{max-width:1240px}</style>", unsafe_allow_html=True)
     # '</' inside JSON would end the script tag early
     data = json.dumps(props(), ensure_ascii=False).replace("</", "<\\/")
-    components.html(BUNDLE.read_text().replace("__FB_DATA__", data), height=2600, scrolling=False)
+    # st.iframe replaces the retired components.v1.html; height="content" fits the page to what it renders
+    st.iframe(BUNDLE.read_text().replace("__FB_DATA__", data), width="stretch", height="content")

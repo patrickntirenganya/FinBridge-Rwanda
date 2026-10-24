@@ -77,7 +77,7 @@ def _add_tab(ss):
     st.markdown(f"#### {t('fx.step1')}")
     ss.setdefault("add_kind", None)
     for col, (k, key) in zip(st.columns(4), TILES):
-        if col.button(f"{KIND_ICON[k]}  {t(key)}", key=f"tile_{k}", use_container_width=True,
+        if col.button(f"{KIND_ICON[k]}  {t(key)}", key=f"tile_{k}", width="stretch",
                       type="primary" if ss.add_kind == k else "secondary"):
             ss.add_kind = k
             st.rerun()
@@ -110,7 +110,7 @@ def _add_tab(ss):
                 unit = umap[c2.selectbox(t("fr.unit"), ul)]
                 who = st.text_input(t("fr.who"), max_chars=60) if kind in ("sale", "expense") else ""
                 has_doc = st.checkbox(t("fx.receipt"), help=t("ev.help"))
-            if st.form_submit_button(f"{KIND_ICON[kind]}  {t('fx.save')}", type="primary", use_container_width=True):
+            if st.form_submit_button(f"{KIND_ICON[kind]}  {t('fx.save')}", type="primary", width="stretch"):
                 rec = R.new_record(kind, when, it, float(amt) if amt else None, qty or None, unit, who,
                                    "document" if has_doc else "self")
                 err = R.validate(rec)
@@ -135,7 +135,7 @@ def _add_tab(ss):
                      .rename(columns={"date": t("fr.col.date"), "kind": t("fr.col.kind"), "item": t("fr.col.item"),
                                       "quantity": t("fr.col.qty"), "unit": t("fr.col.unit"),
                                       "amount_rwf": t("fr.col.rwf"), "counterparty": t("fr.col.with"),
-                                      "evidence": t("fr.col.ev")}), hide_index=True, use_container_width=True)
+                                      "evidence": t("fr.col.ev")}), hide_index=True, width="stretch")
         ids = {r["id"]: f'{r["date"]} · {t("kind." + r["kind"])} · {item(r["item"])}' for r in ss.records}
         c1, c2 = st.columns([3, 1])
         gone = c1.selectbox(t("fr.remove_label"), list(ids), format_func=ids.get, index=None,
@@ -179,7 +179,7 @@ def summary_view(records, key):
         fig.add_bar(x=m.index, y=m["out"], name=t("fr.chart_out"), marker_color=T.SOIL)
         T.layout(fig, height=280, showlegend=True, barmode="group", legend=dict(orientation="h", y=-0.2))
         fig.update_yaxes(tickformat=",", gridcolor=T.LINE)
-        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
     with st.expander(t("fx.details")):
         st.caption(t("fr.formula"))
         st.markdown(f"**{t('fr.months')}** {s['months_with_records']}")
@@ -210,7 +210,7 @@ def _share_tab(ss):
     vkeys = list(share.VALIDITY_HOURS)
     vlabels = {k: t(f"sh.v{k}") for k in vkeys}
     valid = st.radio(t("sh.valid"), vkeys, index=1, horizontal=True, format_func=vlabels.get)
-    if st.button(t("sh.make"), type="primary", use_container_width=True):
+    if st.button(t("sh.make"), type="primary", width="stretch"):
         try:
             pkg, code = share.make_package(ss.profile, ss.records, season=season, include_names=names,
                                            include_farmer_name=mine, validity=valid)
@@ -225,16 +225,16 @@ def _share_tab(ss):
             st.code(ls["code"], language=None)
             st.caption(t("sh.code_note"))
             st.download_button(t("sh.dl"), ls["pkg"], "finbridge_share.fbshare", "application/json",
-                               type="primary", use_container_width=True)
+                               type="primary", width="stretch")
             st.caption(t("sh.limit"))
 
     st.markdown(f"#### {t('sh.plain')}")
     st.markdown(t("fr.share_intro"))
     page = R.report_html(ss.profile, ss.records, season, ss.example, lang())
     c1, c2 = st.columns(2)
-    c1.download_button(t("fr.dl_report"), page, "farm_record_summary.html", "text/html", use_container_width=True)
+    c1.download_button(t("fr.dl_report"), page, "farm_record_summary.html", "text/html", width="stretch")
     c2.download_button(t("fr.dl_csv"), pd.DataFrame(ss.records).to_csv(index=False),
-                       "farm_records.csv", "text/csv", use_container_width=True)
+                       "farm_records.csv", "text/csv", width="stretch")
     st.caption(t("fr.dl_note"))
     with st.expander(t("fr.preview")):
         st.html(page)
@@ -242,7 +242,7 @@ def _share_tab(ss):
     if auth.signed_in() and ss.get("blob"):
         st.markdown("#### " + t("au.backup_dl"))
         st.download_button(t("au.backup_dl"), ss["blob"], "finbridge_backup.fbvault", "application/json",
-                           use_container_width=True)
+                           width="stretch")
         st.caption(t("au.backup_note"))
 
 

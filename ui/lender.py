@@ -36,7 +36,7 @@ def _months(first: str, last: str) -> list[str]:
 
 
 def _show(fig, hint=None):
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
     if hint:
         st.caption(hint)
 
@@ -177,7 +177,7 @@ def _entries(recs):
                  .rename(columns={"date": t("fr.col.date"), "kind": t("fr.col.kind"), "item": t("fr.col.item"),
                                   "quantity": t("fr.col.qty"), "unit": t("fr.col.unit"),
                                   "amount_rwf": t("fr.col.rwf"), "counterparty": t("fr.col.with"),
-                                  "evidence": t("fr.col.ev")}), hide_index=True, use_container_width=True)
+                                  "evidence": t("fr.col.ev")}), hide_index=True, width="stretch")
 
 
 def lender_view():
@@ -189,7 +189,7 @@ def lender_view():
             up = st.file_uploader(t("ld.upload"), type=["fbshare", "json"])
             code = st.text_input(t("ld.code"), max_chars=20, placeholder="XXXX-XXXX-XXXX", autocomplete="off")
             org = st.text_input(t("ld.org"), max_chars=60)
-            go_ = st.form_submit_button(t("ld.open"), type="primary", use_container_width=True)
+            go_ = st.form_submit_button(t("ld.open"), type="primary", width="stretch")
         if go_:
             lock = ss.get("lender_lock") or {"fails": 0, "until": 0.0}
             left = V.wait_left(lock)

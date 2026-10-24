@@ -151,11 +151,3 @@ const io = new IntersectionObserver(entries => {
   }
 }, { threshold: 0.15 });
 document.querySelectorAll<HTMLElement>(".reveal").forEach(el => io.observe(el));
-
-// Resize the Streamlit iframe to the page height (same-origin srcdoc frame).
-const fit = () => {
-  const f = window.frameElement as HTMLElement | null;
-  if (f) f.style.height = `${document.documentElement.scrollHeight + 8}px`;
-};
-new ResizeObserver(fit).observe(document.body);
-addEventListener("load", fit);

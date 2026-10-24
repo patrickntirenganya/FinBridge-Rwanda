@@ -65,6 +65,7 @@ def home():
     if not BUNDLE.exists():
         st.error("Landing bundle missing. Run `cd frontend && npm install && npm run build`.")
         return
+    st.markdown("<style>.block-container{max-width:1240px}</style>", unsafe_allow_html=True)
     # '</' inside JSON would end the script tag early
     data = json.dumps(props(), ensure_ascii=False).replace("</", "<\\/")
     components.html(BUNDLE.read_text().replace("__FB_DATA__", data), height=2600, scrolling=False)

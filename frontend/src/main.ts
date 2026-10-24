@@ -23,10 +23,10 @@ const hero = `
 <section class="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-tea-deep via-tea-dark to-tea text-white shadow-2xl shadow-tea-deep/30">
   <div class="grain absolute inset-0"></div>
   <div class="pointer-events-none absolute -right-24 -top-32 h-[420px] w-[420px] rounded-full bg-sorghum/50 blur-3xl"></div>
-  <div class="relative grid items-center gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[1.1fr_.9fr] lg:py-16">
+  <div class="relative grid items-center gap-10 px-6 py-10 sm:px-10 md:grid-cols-[1.1fr_.9fr] md:py-16">
     <div class="animate-rise">
       <span class="inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-sm">${s.eyebrow}</span>
-      <h1 class="mt-5 text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">${s.h1}</h1>
+      <h1 class="mt-5 text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl xl:text-6xl">${s.h1}</h1>
       <p class="mt-5 max-w-xl text-lg leading-relaxed text-[#DCEBE2]">${s.lede}</p>
       <div class="mt-8 flex flex-wrap gap-3">${btn(links.records, s.cta_primary, true)}${btn(links.overview, s.cta_secondary, false)}</div>
       <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#CFE3D6]">
@@ -86,8 +86,8 @@ const pairCard = (p: Pair, max: number) => `
 
 const maxPair = Math.max(...props.pairs.flatMap(p => [p.a.est, p.b.est]), 1);
 const whoSection = `
-<section class="mx-auto mt-24 grid max-w-6xl items-center gap-10 lg:grid-cols-[.8fr_1.2fr] reveal">
-  <div class="relative">
+<section class="mx-auto mt-24 grid max-w-6xl items-center gap-10 md:grid-cols-[.8fr_1.2fr] reveal">
+  <div class="relative self-start">
     <img src="${field}" alt="${s.alt_field}" class="aspect-square w-full rounded-[28px] object-cover shadow-xl" />
     <img src="${weeding}" alt="${s.alt_weeding}" class="absolute -bottom-8 right-2 w-40 sm:-right-4 rounded-2xl border-4 border-white object-cover shadow-xl sm:w-48" />
   </div>
@@ -95,7 +95,7 @@ const whoSection = `
     <p class="text-sm font-bold tracking-wide text-sorghum">${s.who_kicker}</p>
     <h2 class="mt-2 text-3xl font-bold leading-tight sm:text-4xl">${s.who_title}</h2>
     <p class="mt-3 text-lg text-slate">${s.who_body}</p>
-    <div class="mt-6 grid gap-4 sm:grid-cols-3">${props.pairs.map(p => pairCard(p, maxPair)).join("")}</div>
+    <div class="mt-6 grid gap-4 xl:grid-cols-3">${props.pairs.map(p => pairCard(p, maxPair)).join("")}</div>
   </div>
 </section>`;
 
@@ -103,7 +103,7 @@ const phoneSection = `
 <section class="relative mt-28 overflow-hidden rounded-[28px] text-white shadow-2xl shadow-tea-deep/30 reveal">
   <img src="${hands}" alt="${s.alt_hands}" class="absolute inset-0 h-full w-full object-cover" />
   <div class="absolute inset-0 bg-gradient-to-r from-tea-deep/95 via-tea-deep/80 to-tea-deep/30"></div>
-  <div class="relative grid gap-10 px-6 py-12 sm:px-10 lg:grid-cols-[1.1fr_.9fr] lg:py-16">
+  <div class="relative grid gap-10 px-6 py-12 sm:px-10 md:grid-cols-[1.1fr_.9fr] md:py-16">
     <div>
       <p class="text-sm font-bold tracking-wide text-sorghum">${s.phone_kicker}</p>
       <h2 class="mt-2 max-w-xl text-3xl font-bold leading-tight sm:text-4xl">${s.phone_title}</h2>
@@ -146,7 +146,7 @@ const howSection = `
 </section>`;
 
 const trustSection = `
-<section class="mx-auto mt-28 grid max-w-6xl items-center gap-8 rounded-[28px] bg-white p-6 shadow-xl shadow-tea-dark/10 sm:p-10 lg:grid-cols-[.7fr_1.3fr] reveal">
+<section class="mx-auto mt-28 grid max-w-6xl items-center gap-8 rounded-[28px] bg-white p-6 shadow-xl shadow-tea-dark/10 sm:p-10 md:grid-cols-[.7fr_1.3fr] reveal">
   <img src="${call}" alt="${s.alt_call}" class="aspect-[4/3] w-full rounded-2xl object-cover" />
   <div>
     <h2 class="text-3xl font-bold leading-tight">${s.trust_title}</h2>

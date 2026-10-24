@@ -35,7 +35,7 @@ from ui import farmer as F  # noqa: E402
 from ui import landing as L  # noqa: E402
 
 pg = st.navigation({
-    t("nav.home"): [st.Page(L.home, title=t("nav.home"), url_path="home", default=True)],
+    "": [st.Page(L.home, title=t("nav.home"), url_path="home", default=True)],
     t("nav.farmers"): [
         st.Page(F.my_records, title=t("nav.records"), url_path="records"),
         st.Page(F.phone_preview, title=t("nav.ussd"), url_path="ussd"),

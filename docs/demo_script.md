@@ -1,16 +1,17 @@
 # Demo script (target 2:45, screen-recorded, .webm/.gif)
 
-Read numbers from the app on screen; do not improvise statistics.
+The product shows no survey data. Mention the research in one sentence at the start and end; the numbers are in the README.
 
 | Time | Screen | Say |
 |---|---|---|
-| 0:00 | Overview | "Among 2.16 million farm households, 62.7% have an account but only 14.1% have a formal loan. Half are banked but not financed." |
-| 0:20 | Who gets formal credit | "The gap is widest for the poorest, female-headed and smallest farms. Every bar shows its confidence interval and sample size." |
-| 0:45 | Districts | "Districts differ. Ochre bars and hatched areas mean low reliability, so we don't over-read them." |
-| 1:05 | Adjusted associations | "After adjusting for the other factors, female-headed households, the poorest quintile and the smallest farms still have lower odds of a formal loan. These are associations, not causes." |
-| 1:25 | My farm records | "For farmers: record a harvest, a sale, an expense and savings. The summary shows its formulas." Download the report. |
-| 2:00 | USSD simulator | "Only 13.5% of farming adults own a smartphone, so the same tool runs on any phone by USSD." Step through one entry. |
-| 2:25 | What to do | "Each recommendation is tied to one finding and marked evidence or hypothesis. No scores, no lending decisions." |
-| 2:40 | Close | "FinBridge: banked, but not yet financed." Show repo and app link. |
+| 0:00 | Home | "Most farmers have a bank or SACCO account but no record a lender can read, so formal loans stay out of reach. Our NISR research found this gap; FinBridge is the solution." |
+| 0:20 | Home, scroll | "Farmers record their farm. Lenders read what the farmer chooses to share. No scores, no decisions." |
+| 0:35 | My farm records | "A farmer records a harvest, a sale, an expense and savings, on a phone." Use *Try with example records*. |
+| 1:05 | My summary | "A seasonal summary, with the formulas shown, so nothing is a black box." |
+| 1:20 | Share | "The farmer downloads a report, or a file to give a lender. Nothing is stored on our server." |
+| 1:40 | USSD | "Not every farmer has a smartphone, so the same tool runs on any phone by USSD." Step through one entry. |
+| 2:05 | Open a farmer's report | "A lender opens the shared file: income, costs, savings, and which entries have a receipt. The lender decides." |
+| 2:30 | About | "Limits are stated openly: self-reported, unverified, prototype." |
+| 2:40 | Close | "FinBridge: farm records farmers own and lenders can read." Show repo and app link. |
 
 Checklist: record at 1080p, English UI, browser zoom 110%, mute notifications, trim to ≤ 3:00.

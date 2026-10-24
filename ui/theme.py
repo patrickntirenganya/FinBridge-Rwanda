@@ -190,31 +190,3 @@ def layout(fig: go.Figure, height=360, showlegend=False, **kw) -> go.Figure:
     fig.update_xaxes(gridcolor=LINE, zeroline=False)
     fig.update_yaxes(gridcolor="rgba(0,0,0,0)")
     return fig
-
-
-def ci_bars(df, label_col="group", color=TEA, height=None, xmax=None, ticksuffix="%"):
-    """Horizontal bars with 95% CI whiskers. Suppressed rows are labelled, not drawn."""
-    d = df.copy()
-    shown = d[d.est.notna()]
-    colors = [SORGHUM if r == "caution" else color for r in shown.reliability]
-    fig = go.Figure(go.Bar(
-        y=shown[label_col], x=shown.est, orientation="h", marker_color=colors,
-        error_x=dict(type="data", symmetric=False, array=shown.hi - shown.est,
-                     arrayminus=shown.est - shown.lo, color=INK, thickness=1.2, width=4),
-        customdata=shown[["lo", "hi", "n"]].values,
-        hovertemplate="%{y}: %{x:.1f}%<br>95% CI %{customdata[0]:.1f}–%{customdata[1]:.1f}"
-                      "<br>n = %{customdata[2]}<extra></extra>"))
-    # value labels sit just past the upper confidence limit so they never collide with whiskers
-    fig.add_trace(go.Scatter(
-        y=shown[label_col], x=shown.hi, mode="text", text=[f"  {v:.1f}%" for v in shown.est],
-        textposition="middle right", textfont=dict(color=INK, size=13), hoverinfo="skip"))
-    fig.update_yaxes(autorange="reversed")
-    fig.update_xaxes(ticksuffix=ticksuffix, range=[0, xmax or max(5, (shown.hi.max() or 0) * 1.25)])
-    return layout(fig, height=height or 70 + 42 * len(shown))
-
-
-def summary(key: str, **kw):
-    """Kinyarwanda summary above a page whose body is still in English."""
-    from src.i18n import t, lang
-    if lang() == "rw":
-        st.info(t(key, **kw) + "  \n" + t("lang.en_note"))

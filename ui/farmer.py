@@ -1,4 +1,4 @@
-"""Farmer-facing pages and the evidence pages that justify them.
+"""Farmer-facing pages: record tool and basic-phone (USSD) preview.
 
 Farmer records live only in the browser session. They are never written to the server;
 the farmer exports a JSON backup and can load it back later.
@@ -12,12 +12,6 @@ import streamlit as st
 from src import records as R, ussd as U
 from src.i18n import t, item, lang, season_label
 from ui import theme as T
-from ui.data import load
-
-D = load()
-FS_SRC = ("Source: NISR/AFR FinScope Rwanda 2024 (RWA-NISR-FINSCOPE-2024-v01), adults 16+, weighted. "
-          "The public file has no cluster variable, so intervals are narrower than the true uncertainty.")
-AHS_SRC = "Source: NISR Agricultural Household Survey 2024 (RWA-NISR-RAHS-2024-V0.1), agricultural households, weighted."
 
 
 def _state():
@@ -26,11 +20,6 @@ def _state():
     ss.setdefault("profile", dict(name="", district="", crops="", farm_ha=0.0))
     ss.setdefault("example", False)
     return ss
-
-
-def _digital(ind):
-    d = D["fs_farmer_digital"]
-    return d[(d.indicator == ind) & (d.group_var == "all")].iloc[0]
 
 
 # --------------------------------------------------------------- farmer tool
@@ -46,19 +35,9 @@ def _periods(records):
     return labels, dict(zip(labels, [None] + seasons))
 
 
-def _hero_chips():
-    nat = D["ahs_national"].set_index("indicator").est
-    seg = D["ahs_segments"].set_index("segment").est
-    hh = D["meta"]["ahs_weighted_households"]
-    informal = seg["Account, borrowed only informally"]
-    return [(f"{nat['acct_formal']:.1f}%", t("ov.f1"), ""),
-            (f"{nat['loan_formal']:.1f}%", t("ov.f2"), "gap"),
-            (f"≈{informal / 100 * hh / 1000:,.0f}k", t("ov.f3"), "")]
-
-
 def my_records():
     ss = _state()
-    T.hero(t("hero.title"), t("hero.lede"), t("hero.pill"), _hero_chips(), photo="farmer-weeding")
+    T.hero(t("hero.title"), t("hero.lede"), photo="farmer-weeding")
     st.subheader(t("fr.title"))
     st.markdown(f'<p class="lede">{t("fr.lede")}</p>', unsafe_allow_html=True)
 
@@ -176,16 +155,21 @@ def _summary_tab(ss):
     if not ss.records:
         st.write(t("fr.sum_empty"))
         return
-    pl, pmap = _periods(ss.records)
-    season = pmap[st.selectbox(t("fr.period"), pl)]
-    s = R.summarise(ss.records, season)
+    summary_view(ss.records, "farmer")
+
+
+def summary_view(records, key, lender=False):
+    """Seasonal totals, visible formula, monthly chart and evidence mix. Shared by the farmer and lender pages."""
+    pl, pmap = _periods(records)
+    season = pmap[st.selectbox(t("fr.period"), pl, key=f"period_{key}")]
+    s = R.summarise(records, season)
     m_ = lambda v: f"{v:,.0f} {t('rwf')}"
     c1, c2, c3, c4 = st.columns(4)
     with c1: T.fact(m_(s["sales"]), t("fr.k_sales"))
     with c2: T.fact(m_(s["expenses"]), t("fr.k_exp"), "informal")
     with c3: T.fact(m_(s["net"]), t("fr.k_net"), "" if s["net"] >= 0 else "gap")
     with c4: T.fact(m_(s["saved"]), t("fr.k_saved"))
-    st.caption(t("fr.formula"))
+    st.caption(t("ld.formula" if lender else "fr.formula"))
     if s["monthly"]:
         m = pd.DataFrame(s["monthly"]).T.fillna(0).reindex(columns=["in", "out"], fill_value=0)
         fig = go.Figure()
@@ -198,7 +182,7 @@ def _summary_tab(ss):
     with c1:
         st.markdown(f"**{t('fr.months')}** {s['months_with_records']}")
         if s["price_per_kg"]:
-            st.markdown(f"**{t('fr.price')}**")
+            st.markdown(f"**{t('ld.price' if lender else 'fr.price')}**")
             for c, v in s["price_per_kg"].items():
                 st.markdown("- " + t("fr.price_row", c=item(c), v=f"{v:,.0f}"))
     with c2:
@@ -226,6 +210,7 @@ def _share_tab(ss):
     c3.download_button(t("fr.dl_json"), R.export_json(ss.profile, ss.records),
                        "finbridge_backup.json", "application/json", use_container_width=True)
     st.caption(t("fr.dl_note"))
+    st.info(t("fr.share_lender"))
     with st.expander(t("fr.preview")):
         st.html(page)
     up = st.file_uploader(t("fr.load_bak"), type="json", key="up_share")
@@ -238,9 +223,7 @@ def phone_preview():
     ss = _state()
     lg = lang()
     T.hero(t("us.title"), photo="hands-phone")
-    own, smart = _digital("own_phone"), _digital("smartphone")
-    st.markdown(f'<p class="lede">{t("us.lede", own=f"{own.est:.1f}", smart=f"{smart.est:.1f}")}</p>',
-                unsafe_allow_html=True)
+    st.markdown(f'<p class="lede">{t("us.lede")}</p>', unsafe_allow_html=True)
     u = st.session_state.setdefault("ussd", {"state": {}, "screen": None, "ended": False})
     if u["screen"] is None or u.get("lg") != lg:       # restart the menu when the language changes
         u.update(state={}, screen=U.menu(lg), ended=False, lg=lg)
@@ -266,114 +249,4 @@ def phone_preview():
         m_ = lambda v: f"{v:,.0f} {t('rwf')}"
         st.markdown(t("us.saved", n=s["n"], s=m_(s["sales"]), e=m_(s["expenses"])))
         st.caption(t("us.appear"))
-    T.note(t("us.note") + " " + FS_SRC)
-
-
-# ----------------------------------------------------------------- evidence
-def why_records():
-    T.hero("Why a farm record tool, and who it must reach", photo="farmer-phone-call")
-    _lk = D["fs_records_link"].set_index("track_level")
-    T.summary("sum.why_records", smart=f"{_digital('smartphone').est:.1f}", a=f"{_lk.loc['Always'].est:.1f}",
-              b=f"{_lk.loc['Sometimes'].est:.1f}")
-    st.markdown('<p class="lede">The surveys show a gap between having an account and getting a loan. '
-                'They do not prove that missing records cause it. This page shows what the data do '
-                'support, and where they do not.</p>', unsafe_allow_html=True)
-
-    st.subheader("1. Many farmers have no smartphone, so the tool needs a basic-phone route")
-    inds = ["own_phone", "smartphone", "momo_registered"]
-    names = {"own_phone": "Owns a mobile phone", "smartphone": "Owns a smartphone",
-             "momo_registered": "Registered for mobile money"}
-    d = D["fs_farmer_digital"]
-    rows = d[(d.group_var == "all") & d.indicator.isin(inds)].copy()
-    rows["group"] = rows.indicator.map(names)
-    st.plotly_chart(T.ci_bars(rows.sort_values("est", ascending=False)), use_container_width=True,
-                    config={"displayModeBar": False})
-    sex = d[(d.group_var == "sex") & (d.indicator == "smartphone")].set_index("group")
-    if {"Female", "Male"} <= set(sex.index):
-        st.markdown(f"Smartphone ownership among farming adults: **{sex.loc['Female'].est:.1f}%** of women "
-                    f"and **{sex.loc['Male'].est:.1f}%** of men.")
-    T.note("Farming adults = FinScope respondents in farming-only or farming-plus-other-work households. " + FS_SRC)
-
-    st.subheader("2. Lenders cite things a record can show")
-    den = D["ahs_denial_reasons"].set_index("category")
-    unclear = den.loc["Unclear purpose of the loan"]
-    income = den.loc["Insuffivient income"]
-    coll = den.loc["Insufficient collateral"]
-    st.markdown(f"Among agricultural households that reported a denial, **{unclear.est:.1f}%** were told the "
-                f"purpose was unclear and **{income.est:.1f}%** that income was insufficient. A record of "
-                f"sales, costs and what the loan is for could speak to both. **{coll.est:.1f}%** cited "
-                f"collateral, which records alone cannot fix.")
-    T.note(f"Based on {int(unclear.n)} refusals, so these intervals are wide: treat as indicative. "
-           "Whether lenders would accept farmer-entered records is untested. " + AHS_SRC)
-
-    st.subheader("3. Farmers who track their money have more formal credit, and the link weakens but remains after adjusting")
-    lk = D["fs_records_link"].set_index("track_level")
-    order = [x for x in ["Always", "Sometimes", "Never"] if x in lk.index]
-    df = lk.loc[order].reset_index().rename(columns={"track_level": "group"})
-    df["group"] = "Tracks money: " + df.group.str.lower()
-    st.plotly_chart(T.ci_bars(df), use_container_width=True, config={"displayModeBar": False})
-    m = D["models"]
-    tr = m[(m.model == "fs_formal_credit") & (m.variable == "Always tracks money")].iloc[0]
-    sm = m[(m.model == "fs_formal_credit") & (m.variable == "Smartphone")].iloc[0]
-    mo = m[(m.model == "fs_formal_credit") & (m.variable == "Mobile money")].iloc[0]
-    st.markdown(
-        f"After adjusting for sex, age, education, area, Ubudehe category, province, smartphone and "
-        f"mobile money, farming adults who always track their money have **{tr.odds_ratio:.2f} times** the "
-        f"odds of formal credit (95% CI {tr.lo:.2f}–{tr.hi:.2f}). Mobile-money registration "
-        f"({mo.odds_ratio:.1f}×) and smartphone ownership ({sm.odds_ratio:.1f}×) show larger associations, "
-        f"which suggests that a digital trail matters too and that farmers without phones risk being left further behind.")
-    st.warning("Association, not cause. People who track money may differ in ways the survey does not "
-               "measure. Whether giving farmers a record tool raises loan approval can only be tested "
-               "with farmers and lenders in a pilot.")
-    T.note("Asked of about half of FinScope respondents; estimates use those who answered. " + FS_SRC)
-
-    st.subheader("What this means for the design")
-    st.markdown(
-        "- **Reach basic phones first-class:** a USSD route is part of the design, not a later extra.\n"
-        "- **Focus on purpose and income:** the summary shows sales, costs, savings and what each season "
-        "was for, in plain numbers.\n"
-        "- **Never claim more than the evidence:** entries are labelled self-reported unless a receipt "
-        "is held, and no score is produced.\n"
-        "- **Test with lenders before claiming impact:** the next step is a small pilot with a SACCO "
-        "and a cooperative.")
-
-
-def adjusted():
-    T.hero("Adjusted associations", photo="farmer-field")
-    _f = D["models"][(D["models"].model == "ahs_formal_loan") & (D["models"].variable == "Head's sex")].iloc[0]
-    T.summary("sum.adjusted", orr=f"{_f.odds_ratio:.2f}")
-    st.markdown('<p class="lede">The charts elsewhere compare one group at a time. These models compare '
-                'groups while holding the other factors constant. An odds ratio above 1 means higher odds '
-                'of the outcome than the reference group; below 1 means lower.</p>', unsafe_allow_html=True)
-    m = D["models"]
-    choice = st.radio("Model", ["Farm households: formal loan (AHS)",
-                                "Farming adults: formal credit and record-keeping (FinScope)"], horizontal=True)
-    key = "ahs_formal_loan" if choice.startswith("Farm") else "fs_formal_credit"
-    d = m[m.model == key].copy().iloc[::-1]
-    d["label"] = d.variable + ": " + d.level + " (vs " + d.reference + ")"
-    clear_hi, clear_lo = d.lo > 1, d.hi < 1
-    col = [T.TEA if a else T.SOIL if b else "#9AA8A0" for a, b in zip(clear_hi, clear_lo)]
-    fig = go.Figure(go.Scatter(
-        x=d.odds_ratio, y=d.label, mode="markers", marker=dict(color=col, size=10),
-        error_x=dict(type="data", symmetric=False, array=d.hi - d.odds_ratio, arrayminus=d.odds_ratio - d.lo,
-                     color=T.INK, thickness=1.2, width=4),
-        customdata=d[["lo", "hi", "n"]].values,
-        hovertemplate="%{y}<br>OR %{x:.2f} (95% CI %{customdata[0]:.2f}–%{customdata[1]:.2f})<extra></extra>"))
-    fig.add_vline(x=1, line_dash="dot", line_color=T.SLATE)
-    T.layout(fig, height=110 + 30 * len(d))
-    fig.update_xaxes(type="log", title="Odds ratio (log scale)", tickvals=[0.25, 0.5, 1, 2, 4, 8],
-                     ticktext=["0.25", "0.5", "1", "2", "4", "8"])
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-    st.caption("Green: higher odds and the interval excludes 1. Red: lower odds and the interval excludes 1. "
-               "Grey: the data cannot confirm a difference.")
-    if key == "ahs_formal_loan":
-        f = d[(d.variable == "Head's sex")].iloc[0]
-        st.markdown(f"Even after adjusting for welfare, farm size, land title, cooperative membership and "
-                    f"province, female-headed households have **{f.odds_ratio:.2f} times** the odds of a formal "
-                    f"loan (95% CI {f.lo:.2f}–{f.hi:.2f}). The gender gap is not explained by these factors.")
-    st.warning("These are associations, not causes, and the models do not predict or score any household.")
-    T.note((AHS_SRC + " Cluster-robust intervals (clusters = survey enumeration areas)."
-            if key.startswith("ahs") else FS_SRC) + f" n = {int(d.n.iloc[0]):,}. Weighted logistic regression.")
-    with st.expander("Show the numbers"):
-        st.dataframe(d.iloc[::-1][["variable", "level", "reference", "odds_ratio", "lo", "hi", "p"]],
-                     hide_index=True, use_container_width=True)
+    T.note(t("us.note"))

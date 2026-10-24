@@ -13,20 +13,20 @@ Judging: problem relevance (NST2 / Vision 2050), data use and methodology, tangi
 - Only 10.8% of loans for farm inputs come from formal lenders; 29.4% of all loans are for food.
 - FinScope (adults): formal credit 8.5% in farming-only households vs 19.8% in non-farming.
 
-Regenerate with `python analysis/key_findings.py`. Never type a statistic into the UI; read it from `data/aggregates/`.
+Regenerate with `python analysis/key_findings.py`. These figures belong in the README and demo narration only; the product UI shows none of them.
 
-## Product (updated 23 Oct 2026)
+## Product (updated 24 Oct 2026)
 
-Two layers, one app. **For farmers:** `My farm records` (record harvests, sales, expenses, savings; seasonal
-summary with visible formulas; downloadable report; JSON backup, nothing stored server-side) and a
-USSD simulator for basic phones. **Evidence for lenders and policy:** the dashboard, `Why a record tool`,
-`Adjusted associations`, `What to do`.
-Data-driven design facts (read from `data/aggregates/`, never typed): only 13.5% of farming adults own a
-smartphone vs 64.2% any phone and 73.8% mobile money, so USSD is first-class; 55% of farming adults asked
-say they always track money (question put to ~half of respondents; estimates use answerers only).
+**The product shows no dataset statistic.** The survey analysis is the research that justifies and shapes the
+product; it lives in the README, `analysis/`, `pipeline/` and `data/aggregates/`, never in the app UI.
+The app reads no aggregate table. Pages: `Home` (landing, TypeScript + Tailwind), **for farmers** `My farm records`
+(record harvests, sales, expenses, savings; seasonal summary with visible formulas; downloadable report; JSON backup,
+nothing stored server-side) and the USSD simulator; **for lenders** `Open a farmer's report` (reads the JSON a
+farmer chose to share: summary, details, all entries, evidence mix, what to check, questions to ask); `About`.
 Rules for the record tool: entries are self-reported unless the farmer says a receipt is held; `confirmed`
 evidence is reserved for a future verifier and import files can never grant it; **no score, no lending
-decision, ever**; claim no impact on loan approval without a pilot.
+decision, ever**; claim no impact on loan approval without a pilot. Tests fail if the landing copy contains a
+percentage or any `ui/` module reads survey data.
 
 ## Architecture
 
@@ -39,10 +39,10 @@ src/models.py         weighted logistic models, design-based sandwich SEs (assoc
 src/records.py        farmer record engine (channel-agnostic, tested)
 src/ussd.py           USSD menu state machine (screens <= 160 chars)
 pipeline/build_aggregates.py   microdata -> data/aggregates/*.csv (safe to commit)
-ui/theme.py           palette, CSS, chart helpers (ci_bars)
-ui/data.py            cached readers for aggregates
-ui/pages.py           one function per evidence page
-ui/farmer.py          farmer tool, USSD preview, why-records and adjusted-association pages
+ui/theme.py           palette, CSS, hero banner, chart layout helper
+ui/farmer.py          farmer tool and USSD preview
+ui/lender.py          lender view of a shared farmer file
+ui/about.py           how it works, limits, link to the research
 ui/landing.py         landing page: embeds the TypeScript + Tailwind bundle, injects numbers from aggregates
 frontend/             Vite + TypeScript + Tailwind source for the landing page (npm run build -> ui/landing/landing.html)
 app.py                thin entry point (st.navigation)
@@ -61,7 +61,7 @@ streamlit run app.py
 
 ## Non-negotiable rules
 
-1. **Never commit microdata** (`.dta`, `.zip`, `data/raw/`, `*.pkl`). The app reads only `data/aggregates/`.
+1. **Never commit microdata** (`.dta`, `.zip`, `data/raw/`, `*.pkl`). The app reads no survey data at all.
 2. **Every estimate is weighted.** AHS: weight=`weight`, PSU=`clust`, stratum=`district`. FinScope: weight=`pop_wt`, no PSU in public file, so CIs are understated; always say so.
 3. Cells with n < 30 are suppressed; CV > 0.30 is flagged "caution" (ochre bars).
 4. **No record linkage** between AHS and FinScope. Compare aggregates side by side only.
@@ -83,15 +83,14 @@ streamlit run app.py
 
 Tea green `#2F6B4F` = formal finance; sorghum ochre `#C2922A` = informal; soil red `#8E3B2E` = the gap; mist `#EEF2EC` background; grey `#9AA8A0` = government/other. Font: Atkinson Hyperlegible. Sentence case, plain verbs, no all-caps labels. Every chart shows CIs and n, and every page ends with a source note.
 
-## Backlog (priority order)
+## Backlog (priority order, from 24 Oct)
 
-1. DONE (models.csv). Original spec: **Adjusted associations page**: survey-weighted logistic regression for `loan_formal` on quintile, head sex, farm size, land title, cooperative, province. Use `statsmodels` GLM Binomial with `freq_weights`/`var_weights` = weight and `cov_type="cluster"`, groups = `clust`. Export odds ratios + CIs to `data/aggregates/ahs_model.csv` in the pipeline; render as a forest plot. Label clearly as association. Optionally compare with an interpretable tree model using cluster-grouped CV (GroupKFold on `clust`) and report AUC by sex and quintile.
-2. **District map**: Rwanda ADM2 boundaries from geoBoundaries (raw.githubusercontent.com, CC-BY; attribute in Methods). Simplify, commit as `data/geo/rwanda_districts.geojson`, choropleth beside the CI chart, hatched/greyed where reliability is "caution".
-3. DONE. Original spec: **Recommendations page**: each recommendation tied to one finding (e.g. SACCO credit products for existing savers; women-headed household targeting; input-finance products; cooperative channel). Mark which are evidence-backed vs hypotheses.
-4. Full **README** (problem, data links, methods, setup, limitations), **references**, **demo script ≤ 3 min**.
-5. **Deploy** on Streamlit Community Cloud from the public repo (`app.py`, Python 3.11+).
-6. Polish: on the Districts page the value label sits at the upper CI limit; consider placing it at the bar end with an offset. Check mobile width.
-7. Optional: attempt closer reconciliation of FinScope saving/insurance strands (pension `g11a`, `qf` product use).
+1. DONE: landing page, farmer tool, USSD preview, lender view, about page; dataset pages removed from the product.
+2. **Deploy** on Streamlit Community Cloud (`app.py`, Python 3.11+), then put the URL in the README and demo script.
+3. **Demo video** (≤ 3 min) following `docs/demo_script.md`.
+4. Native-speaker review of every Kinyarwanda string (`src/i18n.py`).
+5. Lender view polish: print-friendly layout, optional lender notes (stay in the session), clearer evidence legend.
+6. Research stays in README/`analysis/`; keep `data/aggregates/` for reproducibility, never display it in the app.
 
 ## Next (after 23 Oct)
 Record-tool pilot plan with a SACCO and a cooperative; buyer/cooperative verification; consent-based sharing;

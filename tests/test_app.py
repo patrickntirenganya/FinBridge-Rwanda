@@ -7,17 +7,16 @@ from streamlit.testing.v1 import AppTest
 
 logging.disable(logging.WARNING)
 ROOT = str(Path(__file__).resolve().parents[1])
-PAGES = ["overview", "who", "why", "farmers", "districts", "recommendations", "methods",
-         "farmer:why_records", "farmer:adjusted", "farmer:phone_preview", "farmer:my_records", "landing:home"]
+PAGES = ["farmer:phone_preview", "farmer:my_records", "landing:home", "lender:lender_view", "about:about"]
 
 
 def page_script(name, root):
     import sys
     sys.path.insert(0, root)
-    from ui import theme, pages, farmer, landing
+    from ui import theme, farmer, landing, lender, about
     theme.apply()
     mod, _, fn = name.rpartition(":")
-    getattr({"farmer": farmer, "landing": landing}.get(mod, pages), fn)()
+    getattr({"farmer": farmer, "landing": landing, "lender": lender, "about": about}[mod], fn)()
 
 
 LANG = "rw"
@@ -85,6 +84,42 @@ def farmer_flow():
     assert len(recs) == 1 and recs[0]["evidence"] == "document" and skipped == 2, "import validation failed"
 
 
+def lender_flow():
+    """A lender opens a shared file: every period renders; no survey data or score appears anywhere."""
+    global renders
+    from src import records as R
+    shared = R.export_json(R.EXAMPLE_PROFILE, R.example_records())
+    prof, recs, _ = R.parse_import(shared)                    # the exact path the uploader uses
+    at = AppTest.from_function(page_script, args=("lender:lender_view", ROOT), default_timeout=90)
+    at.session_state["lang"] = LANG
+    at.session_state["lender_records"], at.session_state["lender_profile"] = recs, prof
+    at.run(); renders += 1
+    if at.exception:
+        failures.append(("lender", "open", [e.value for e in at.exception])); return
+    for i, w in enumerate(at.selectbox):
+        for opt in w.options:
+            at.selectbox[i].select(opt).run(); renders += 1
+            if at.exception:
+                failures.append(("lender", f"period={opt}", [e.value for e in at.exception]))
+    from src.i18n import t
+    assert "not verified" in t("ld.disclaimer", "en") and "decision is yours" in t("ld.disclaimer", "en")
+
+
+def no_dataset_in_product():
+    """The product shows no survey statistic and reads no aggregate table."""
+    import re
+    from ui import landing
+    for lg in ("rw", "en"):
+        from src import i18n
+        i18n.lang = lambda lg=lg: lg
+        landing.lang = i18n.lang
+        blob = " ".join(landing.props()["s"].values())
+        assert not re.search(r"\d+(\.\d+)?\s?%", blob), f"statistic on landing page ({lg})"
+    for f in Path(ROOT).glob("ui/*.py"):
+        assert "aggregates" not in f.read_text() and "ui.data" not in f.read_text(), f"{f.name} reads survey data"
+    assert not (Path(ROOT) / "ui" / "pages.py").exists()
+
+
 def ussd_flow():
     from src import ussd as U, records as R
     st_, recs = {}, []
@@ -126,29 +161,17 @@ def i18n_complete():
     assert all(m in STR for m in msgs)
 
 
-def geo_check():
-    import json
-    import pandas as pd
-    g = json.load(open(Path(ROOT) / "data" / "geo" / "rwanda_districts.geojson"))
-    names = {f["properties"]["shapeName"] for f in g["features"]}
-    assert len(g["features"]) == 30 and len(names) == 30, "expected 30 distinct districts"
-    for f in g["features"]:
-        assert f["geometry"]["type"] in ("Polygon", "MultiPolygon") and f["geometry"]["coordinates"], f
-    agg = Path(ROOT) / "data" / "aggregates"
-    for t_ in ("ahs_by_group", "fs_by_group"):
-        d = pd.read_csv(agg / f"{t_}.csv")
-        assert set(d[d.group_var == "district"].group) == names, f"{t_}: district names do not match the map"
-    sys.path.insert(0, ROOT)
-    from ui.pages import PROVINCE_OF
-    assert set(PROVINCE_OF) == names, "province lookup does not cover every mapped district"
-
-
-for fn in (farmer_flow, ussd_flow, i18n_complete, geo_check):
+for fn in (farmer_flow, lender_flow, ussd_flow, i18n_complete):
     for LANG in ("rw", "en"):
         try:
             fn()
         except Exception as e:
             failures.append((fn.__name__, LANG, [repr(e)]))
+
+try:
+    no_dataset_in_product()
+except Exception as e:
+    failures.append(("no_dataset_in_product", "-", [repr(e)]))
 
 print(f"{renders} renders, {len(failures)} failures")
 for f in failures[:10]:

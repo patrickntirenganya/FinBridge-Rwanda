@@ -50,7 +50,7 @@ def compare_sentence(df):
 def overview():
     seg = D["ahs_segments"].set_index("segment")
     gap = D["ahs_national"].set_index("indicator").loc["banked_not_financed"]
-    T.hero(t("ov.title"), t("ov.lede", g=f"{gap.est:.1f}", lo=f"{gap.lo:.1f}", hi=f"{gap.hi:.1f}"), t("hero.pill"))
+    T.hero(t("ov.title"), t("ov.lede", g=f"{gap.est:.1f}", lo=f"{gap.lo:.1f}", hi=f"{gap.hi:.1f}"), t("hero.pill"), photo="farmer-beans")
 
     parts = [("Account and formal loan", T.TEA), ("Account, borrowed only informally", T.SOIL),
              ("Account, did not borrow", "#8FB5A0"), ("No formal account", T.LINE)]
@@ -88,7 +88,7 @@ def overview():
 
 
 def who():
-    st.title("Who gets formal credit")
+    T.hero("Who gets formal credit", photo="farmer-beans")
     T.summary("sum.who")
     st.markdown('<p class="lede">Compare agricultural households by welfare, land, gender and '
                 'cooperative membership. Bars show 95% confidence intervals; ochre bars are less '
@@ -109,7 +109,7 @@ def who():
 
 
 def why():
-    st.title("What loans are for, and why they are refused")
+    T.hero("What loans are for, and why they are refused", photo="farmer-weeding")
     pur = D["ahs_loan_purpose"].sort_values("est", ascending=False)
     _p = D["ahs_loan_purpose"].set_index("category")
     T.summary("sum.why", food=f"{_p.loc['Food purchase'].est:.1f}", inp=f"{_p.loc['Agricultural inputs'].formal_source_pct:.1f}")
@@ -150,7 +150,7 @@ def why():
 
 
 def farmers():
-    st.title("Farmers compared with other adults")
+    T.hero("Farmers compared with other adults", photo="farmer-phone-call")
     T.summary("sum.farmers")
     st.markdown('<p class="lede">FinScope covers all adults, so it shows how people in farming '
                 'households compare with everyone else.</p>', unsafe_allow_html=True)
@@ -168,7 +168,7 @@ def farmers():
 
 
 def districts():
-    st.title("District patterns")
+    T.hero("District patterns", photo="farmer-field")
     T.summary("sum.districts")
     st.markdown('<p class="lede">Districts are listed by province, not ranked. Each district has '
                 'roughly 120 sampled agricultural households, so intervals are wide and small '
@@ -232,7 +232,7 @@ def _district_map(d, national):
 
 
 def methods():
-    st.title("Data and methods")
+    T.hero("Data and methods", photo="farmer-weeding")
     T.summary("sum.methods")
     m = D["meta"]
     st.markdown(f"""
@@ -288,7 +288,7 @@ def recommendations():
     food = purpose.loc["Food purchase"]
     acct_sex = _grp("head_sex", "acct_formal")
 
-    st.title("What lenders and policymakers can do")
+    T.hero("What lenders and policymakers can do", photo="farmer-beans")
     T.summary("sum.actions")
     st.markdown(
         '<p class="lede">Each idea below is tied to one finding in this tool. '

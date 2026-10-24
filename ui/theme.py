@@ -70,6 +70,13 @@ h2::after{content:"";display:block;width:44px;height:4px;border-radius:4px;margi
 .chip>span{font-size:.92rem;color:#DCEBE2;line-height:1.35;display:block;margin-top:.25rem}
 .chip.gap b{color:#FFD58A}
 
+.hero .photo{position:absolute;right:0;top:0;bottom:0;width:42%;height:100%;object-fit:cover;opacity:.9;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 55%);mask-image:linear-gradient(90deg,transparent 0%,#000 55%)}
+.hero.has-photo>h1,.hero.has-photo>.lede,.hero.has-photo>.pill{max-width:min(60ch,56%)}
+.hero.has-photo .chips{max-width:min(100%,640px)}
+.hero.compact{padding:1.5rem 2.4rem;min-height:130px;display:flex;align-items:center}.hero.compact h1{font-size:2rem;margin:0}
+@media (max-width:700px){.hero .photo{display:none}.hero.has-photo>h1,.hero.has-photo>.lede,.hero.has-photo>.pill{max-width:none}}
+
 /* ---------- cards and facts ---------- */
 .fact{background:var(--card);border-radius:14px;border-left:5px solid var(--tea);padding:.85rem 1rem;margin-bottom:1rem;
  box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;animation:fadeUp .6s ease both}
@@ -148,12 +155,25 @@ def fact(value: str, text: str, kind: str = ""):
                 unsafe_allow_html=True)
 
 
-def hero(title: str, lede: str, pill: str = "", chips: list[tuple[str, str, str]] | None = None):
-    """Banner with drifting terraces and count-up figures. chips = [(value, label, kind), ...]."""
+@st.cache_data
+def _photo(name: str) -> str:
+    """Photo from ui/assets/photos as a data URI, so the banner needs no static file hosting."""
+    import base64
+    from pathlib import Path
+    raw = (Path(__file__).parent / "assets" / "photos" / f"{name}.webp").read_bytes()
+    return "data:image/webp;base64," + base64.b64encode(raw).decode()
+
+
+def hero(title: str, lede: str = "", pill: str = "", chips: list[tuple[str, str, str]] | None = None,
+         photo: str = ""):
+    """Banner with drifting terraces and count-up figures. chips = [(value, label, kind), ...].
+    photo = a name in ui/assets/photos (decorative, so alt text is empty)."""
     cs = "".join(f'<div class="chip {k}"><b>{count_html(v)}</b><span>{lab}</span></div>' for v, lab, k in (chips or []))
-    html = (f'<div class="hero"><div class="hills"></div>'
+    cls = "hero" + (" has-photo" if photo else "") + ("" if lede or chips else " compact")
+    html = (f'<div class="{cls}">' + (f'<img class="photo" src="{_photo(photo)}" alt="">' if photo else "")
+            + '<div class="hills"></div>'
             + (f'<div class="pill">{pill}</div>' if pill else "")
-            + f'<h1>{title}</h1><p class="lede">{lede}</p>'
+            + f'<h1>{title}</h1>' + (f'<p class="lede">{lede}</p>' if lede else "")
             + (f'<div class="chips">{cs}</div>' if cs else "") + "</div>")
     st.markdown(html, unsafe_allow_html=True)
 

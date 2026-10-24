@@ -43,6 +43,8 @@ ui/theme.py           palette, CSS, chart helpers (ci_bars)
 ui/data.py            cached readers for aggregates
 ui/pages.py           one function per evidence page
 ui/farmer.py          farmer tool, USSD preview, why-records and adjusted-association pages
+ui/landing.py         landing page: embeds the TypeScript + Tailwind bundle, injects numbers from aggregates
+frontend/             Vite + TypeScript + Tailwind source for the landing page (npm run build -> ui/landing/landing.html)
 app.py                thin entry point (st.navigation)
 tests/test_app.py     renders every page and every selector option
 analysis/             inventory + key findings scripts

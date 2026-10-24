@@ -58,7 +58,7 @@ def _hero_chips():
 
 def my_records():
     ss = _state()
-    T.hero(t("hero.title"), t("hero.lede"), t("hero.pill"), _hero_chips())
+    T.hero(t("hero.title"), t("hero.lede"), t("hero.pill"), _hero_chips(), photo="farmer-weeding")
     st.subheader(t("fr.title"))
     st.markdown(f'<p class="lede">{t("fr.lede")}</p>', unsafe_allow_html=True)
 
@@ -237,7 +237,7 @@ def _share_tab(ss):
 def phone_preview():
     ss = _state()
     lg = lang()
-    st.title(t("us.title"))
+    T.hero(t("us.title"), photo="hands-phone")
     own, smart = _digital("own_phone"), _digital("smartphone")
     st.markdown(f'<p class="lede">{t("us.lede", own=f"{own.est:.1f}", smart=f"{smart.est:.1f}")}</p>',
                 unsafe_allow_html=True)
@@ -271,7 +271,7 @@ def phone_preview():
 
 # ----------------------------------------------------------------- evidence
 def why_records():
-    st.title("Why a farm record tool, and who it must reach")
+    T.hero("Why a farm record tool, and who it must reach", photo="farmer-phone-call")
     _lk = D["fs_records_link"].set_index("track_level")
     T.summary("sum.why_records", smart=f"{_digital('smartphone').est:.1f}", a=f"{_lk.loc['Always'].est:.1f}",
               b=f"{_lk.loc['Sometimes'].est:.1f}")
@@ -339,7 +339,7 @@ def why_records():
 
 
 def adjusted():
-    st.title("Adjusted associations")
+    T.hero("Adjusted associations", photo="farmer-field")
     _f = D["models"][(D["models"].model == "ahs_formal_loan") & (D["models"].variable == "Head's sex")].iloc[0]
     T.summary("sum.adjusted", orr=f"{_f.odds_ratio:.2f}")
     st.markdown('<p class="lede">The charts elsewhere compare one group at a time. These models compare '

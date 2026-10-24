@@ -8,16 +8,16 @@ from streamlit.testing.v1 import AppTest
 logging.disable(logging.WARNING)
 ROOT = str(Path(__file__).resolve().parents[1])
 PAGES = ["overview", "who", "why", "farmers", "districts", "recommendations", "methods",
-         "farmer:why_records", "farmer:adjusted", "farmer:phone_preview", "farmer:my_records"]
+         "farmer:why_records", "farmer:adjusted", "farmer:phone_preview", "farmer:my_records", "landing:home"]
 
 
 def page_script(name, root):
     import sys
     sys.path.insert(0, root)
-    from ui import theme, pages, farmer
+    from ui import theme, pages, farmer, landing
     theme.apply()
     mod, _, fn = name.rpartition(":")
-    getattr(farmer if mod else pages, fn)()
+    getattr({"farmer": farmer, "landing": landing}.get(mod, pages), fn)()
 
 
 LANG = "rw"

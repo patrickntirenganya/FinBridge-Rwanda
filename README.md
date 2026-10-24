@@ -138,3 +138,10 @@ sharing; native-speaker review of Kinyarwanda menus; a real USSD gateway.
 - National Institute of Statistics of Rwanda, Access to Finance Rwanda (2024). *FinScope Rwanda 2024*.
 - Republic of Rwanda. *National Strategy for Transformation (NST2)* and *Vision 2050*.
 - Runfola et al. (2020). geoBoundaries. *PLOS ONE* 15(4): e0231866. CC BY 4.0.
+
+## Landing page (TypeScript + Tailwind)
+
+The home page is a Vite + TypeScript + Tailwind CSS bundle in `frontend/`, built into one self-contained file
+(`ui/landing/landing.html`, committed so Streamlit Cloud needs no Node). `ui/landing.py` injects every number from
+`data/aggregates/`. To change it: `cd frontend && npm install && npm run build`, then `python tests/test_app.py`.
+Photos of Rwandan farmers are in `frontend/src/img` and `ui/assets/photos`.

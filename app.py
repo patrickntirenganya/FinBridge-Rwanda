@@ -15,6 +15,9 @@ _A = Path(__file__).parent / "ui" / "assets"
 st.logo(str(_A / "logo.svg"), icon_image=str(_A / "icon.svg"), size="large")
 from src.i18n import LANGS, DEFAULT, t  # noqa: E402
 
+_q = st.query_params.get("lang")
+if _q in LANGS and "lang" not in st.session_state:  # landing-page links carry the chosen language
+    st.session_state["lang"] = _q
 st.session_state.setdefault("lang", DEFAULT)
 _codes = list(LANGS)
 _pick = st.sidebar.radio(t("lang.label"), [LANGS[c] for c in _codes],
@@ -29,10 +32,12 @@ except FileNotFoundError as e:
 from ui import pages as P  # noqa: E402
 
 from ui import farmer as F  # noqa: E402
+from ui import landing as L  # noqa: E402
 
 pg = st.navigation({
+    t("nav.home"): [st.Page(L.home, title=t("nav.home"), url_path="home", default=True)],
     t("nav.farmers"): [
-        st.Page(F.my_records, title=t("nav.records"), url_path="records", default=True),
+        st.Page(F.my_records, title=t("nav.records"), url_path="records"),
         st.Page(F.phone_preview, title=t("nav.ussd"), url_path="ussd"),
     ],
     t("nav.evidence"): [

@@ -12,3 +12,7 @@ __pycache__/
 *.pdf
 *.odt
 .streamlit/secrets.toml
+
+# Landing page build (frontend/ -> ui/landing/landing.html is committed)
+frontend/node_modules/
+frontend/dist/

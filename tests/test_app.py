@@ -84,6 +84,40 @@ def farmer_flow():
     assert len(recs) == 1 and recs[0]["evidence"] == "document" and skipped == 2, "import validation failed"
 
 
+def engine_checks():
+    from src import records as R
+    from src.i18n import t
+    recs = R.example_records()
+    i = R.insights(recs)
+    assert i["span_months"] == 10 and i["sale_months"] == 2 and round(i["net"]) == 310000, i
+    assert round(R.instalment(120000, 0, 6)) == 20000 and R.instalment(0, 10, 6) == 0
+    assert 52000 < R.instalment(300000, 18, 6) < 53000
+    story = R.story(R.EXAMPLE_PROFILE, recs, LANG)
+    assert len(story) >= 7 and all(x.strip() for x in story) and R.story({}, [], LANG) == []
+    assert not any("{" in x for x in story), "unfilled placeholder in story"
+    anon = R.story({}, recs, LANG)
+    assert len(anon) == len(story) - 1, "story must omit the farm sentence when the profile is empty"
+    for k in ("fx.ok_sale", "fx.ok_expense", "fx.ok_harvest", "fx.ok_saving"):
+        assert t(k, LANG, c="x", a="1", q="2")
+
+
+def add_flow():
+    """The tap flow: choose what happened, then save a record through the form."""
+    global renders
+    at = fresh("farmer:my_records")
+    tiles = {b.key: b for b in at.button if b.key and b.key.startswith("tile_")}
+    assert set(tiles) == {"tile_harvest", "tile_sale", "tile_expense", "tile_saving"}, tiles.keys()
+    tiles["tile_sale"].click().run(); renders += 1
+    assert at.session_state["add_kind"] == "sale" and not at.exception, at.exception
+    from src.i18n import t
+    nums = [n for n in at.number_input if n.label == t("fr.amount", LANG)]
+    nums[0].set_value(50000)
+    [b for b in at.button if b.label and t("fx.save", LANG) in b.label][0].click().run(); renders += 1
+    assert not at.exception and len(at.session_state["records"]) == 1, (at.exception, at.session_state["records"])
+    r = at.session_state["records"][0]
+    assert r["kind"] == "sale" and r["amount_rwf"] == 50000 and r["evidence"] == "self", r
+
+
 def lender_flow():
     """A lender opens a shared file: every period renders; no survey data or score appears anywhere."""
     global renders
@@ -161,7 +195,7 @@ def i18n_complete():
     assert all(m in STR for m in msgs)
 
 
-for fn in (farmer_flow, lender_flow, ussd_flow, i18n_complete):
+for fn in (farmer_flow, add_flow, engine_checks, lender_flow, ussd_flow, i18n_complete):
     for LANG in ("rw", "en"):
         try:
             fn()

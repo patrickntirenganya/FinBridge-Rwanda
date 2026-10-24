@@ -144,6 +144,74 @@ def summarise(records: list[dict], season: str | None = None) -> dict:
                 monthly={k: dict(v) for k, v in sorted(monthly.items())})
 
 
+def _month_span(first: str, last: str) -> int:
+    a, b = datetime.strptime(first, "%Y-%m-%d"), datetime.strptime(last, "%Y-%m-%d")
+    return (b.year - a.year) * 12 + (b.month - a.month) + 1
+
+
+def insights(records: list[dict]) -> dict:
+    """Plain facts a lender can read at a glance, all derived from the farmer's own entries. Nothing is scored."""
+    if not records:
+        return {}
+    s = summarise(records)
+    dates = sorted(r["date"] for r in records)
+    span = _month_span(dates[0], dates[-1])
+    sale_months = {r["date"][:7] for r in records if r["kind"] == "sale" and (r.get("amount_rwf") or 0) > 0}
+    net_by_month = {}
+    for m, v in s["monthly"].items():
+        net_by_month[m] = v.get("in", 0) - v.get("out", 0)
+    sales = sorted(((r.get("amount_rwf") or 0, r["item"], r["date"]) for r in records if r["kind"] == "sale"), reverse=True)
+    top_crop = max(s["sales_by"].items(), key=lambda kv: kv[1]) if s["sales_by"] else None
+    top_exp = max(s["expenses_by"].items(), key=lambda kv: kv[1]) if s["expenses_by"] else None
+    n = len(records)
+    ev = s["evidence"]
+    return dict(
+        first=dates[0], last=dates[-1], span_months=span, months_with_records=s["months_with_records"],
+        sale_months=len(sale_months), sales=s["sales"], expenses=s["expenses"], net=s["net"], saved=s["saved"],
+        top_crop=top_crop and (top_crop[0], top_crop[1] / s["sales"] if s["sales"] else 0),
+        top_expense=top_exp and (top_exp[0], top_exp[1] / s["expenses"] if s["expenses"] else 0),
+        biggest_sale=sales[0] if sales and sales[0][0] > 0 else None,
+        receipt_share=(ev.get("document", 0) + ev.get("confirmed", 0)) / n,
+        n=n, net_by_month=net_by_month, monthly=s["monthly"])
+
+
+def instalment(principal: float, annual_rate_pct: float, months: int) -> float:
+    """Level monthly repayment of a loan (annuity formula). Pure arithmetic for a lender's own what-if."""
+    if months <= 0 or principal <= 0:
+        return 0.0
+    r = annual_rate_pct / 100 / 12
+    return principal / months if r == 0 else principal * r / (1 - (1 + r) ** -months)
+
+
+def story(profile: dict, records: list[dict], lg: str = "en") -> list[str]:
+    """The farmer's records told as short plain sentences, one fact each. Facts only: no judgement, no advice."""
+    from src.i18n import t, item
+    T_ = lambda key, **kw: t(key, lg, **kw)
+    i = insights(records)
+    if not i:
+        return []
+    money = lambda v: f"{v:,.0f} {T_('rwf')}"
+    out = []
+    who = (profile.get("name") or "").strip()
+    place = (profile.get("district") or "").strip()
+    crops = (profile.get("crops") or "").strip()
+    ha = profile.get("farm_ha") or 0
+    if who or place or crops or ha:
+        out.append(T_("st.who", who=who or T_("st.farmer"), ha=f"{ha:g}", place=place or "-", crops=crops or "-"))
+    out.append(T_("st.span", a=i["first"], b=i["last"], m=i["span_months"], k=i["months_with_records"]))
+    out.append(T_("st.totals", s=money(i["sales"]), e=money(i["expenses"]), n=money(i["net"])))
+    if i["top_crop"]:
+        out.append(T_("st.top_crop", c=item(i["top_crop"][0], lg), p=f"{i['top_crop'][1] * 100:.0f}"))
+    if i["top_expense"]:
+        out.append(T_("st.top_exp", c=item(i["top_expense"][0], lg), p=f"{i['top_expense'][1] * 100:.0f}"))
+    if i["sale_months"]:
+        out.append(T_("st.sale_months", k=i["sale_months"], m=i["span_months"]))
+    if i["saved"] > 0:
+        out.append(T_("st.saved", v=money(i["saved"])))
+    out.append(T_("st.receipts", p=f"{i['receipt_share'] * 100:.0f}"))
+    return out
+
+
 def seasons_in(records: list[dict]) -> list[str]:
     seen = {season_of(datetime.strptime(r["date"], "%Y-%m-%d").date()) for r in records}
     return sorted(seen, reverse=True)

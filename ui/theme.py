@@ -121,6 +121,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(-
 [data-testid="stSidebar"] hr{border-color:rgba(255,255,255,.18)}
 [data-testid="stSidebar"] [data-baseweb="radio"] div{color:#E8F0EA}
 
+/* ---------- large, easy tap targets ---------- */
+.stButton>button,.stDownloadButton>button,[data-testid="stBaseButton-secondaryFormSubmit"],[data-testid="stBaseButton-primaryFormSubmit"]{
+ min-height:3.2rem;font-size:1.1rem}
+[data-testid="stPills"] button,[data-testid="stPills"] [role="button"]{min-height:2.7rem;padding:.4rem 1.1rem;font-size:1.05rem}
+[data-testid="stNumberInput"] input{font-size:1.25rem;min-height:3rem}
+
 /* ---------- small screens and reduced motion ---------- */
 @media (max-width:700px){
  .block-container{padding-left:1rem;padding-right:1rem}

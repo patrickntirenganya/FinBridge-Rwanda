@@ -37,19 +37,18 @@ def _periods(records):
 
 def my_records():
     ss = _state()
-    T.hero(t("hero.title"), t("hero.lede"), photo="farmer-weeding")
-    st.subheader(t("fr.title"))
-    st.markdown(f'<p class="lede">{t("fr.lede")}</p>', unsafe_allow_html=True)
+    T.hero(t("fr.title"), t("fx.welcome_b"), photo="farmer-weeding")
 
     if not ss.records:
-        c1, c2 = st.columns(2)
-        if c1.button(t("fr.try"), type="primary", use_container_width=True):
-            ss.records, ss.profile, ss.example = R.example_records(), dict(R.EXAMPLE_PROFILE), True
-            st.rerun()
-        up = c2.file_uploader(t("fr.load"), type="json", key="up_empty")
-        if up is not None:
-            _load_upload(up)
-        st.info(t("fr.start"))
+        st.markdown(f"### {t('fx.welcome')}")
+        with st.expander(t("fr.try")):
+            c1, c2 = st.columns(2)
+            if c1.button(t("fr.try"), use_container_width=True):
+                ss.records, ss.profile, ss.example = R.example_records(), dict(R.EXAMPLE_PROFILE), True
+                st.rerun()
+            up = c2.file_uploader(t("fr.load"), type="json", key="up_empty")
+            if up is not None:
+                _load_upload(up)
     elif ss.example:
         st.warning(t("fr.example_warn"))
         if st.button(t("fr.clear")):
@@ -79,8 +78,17 @@ def _load_upload(up):
     st.rerun()
 
 
+KIND_ICON = {"harvest": "🌾", "sale": "💰", "expense": "🧾", "saving": "🏦"}
+TILES = [("harvest", "fx.harvested"), ("sale", "fx.sold"), ("expense", "fx.spent"), ("saving", "fx.saved")]
+ITEM_ICON = {"Maize": "🌽", "Beans": "🫘", "Irish potato": "🥔", "Cassava": "🍠", "Sorghum": "🌾", "Rice": "🍚",
+             "Banana": "🍌", "Coffee": "☕", "Tea": "🍃", "Vegetables": "🥬", "Milk": "🥛", "Other": "➕",
+             "Seed": "🌱", "Fertiliser": "🧪", "Pesticide": "🧴", "Labour": "👷", "Transport": "🚚",
+             "Equipment": "🛠️", "Land rent": "🏞️", "Loan repayment": "💳"}
+
+
 def _add_tab(ss):
-    with st.expander(t("fr.about"), expanded=not ss.profile["name"] and not ss.records):
+    """Tap what happened, tap the item, type the amount. Date, buyer and receipt are optional extras."""
+    with st.expander(t("fr.about"), expanded=False):
         p = ss.profile
         c1, c2 = st.columns(2)
         p["name"] = c1.text_input(t("fr.name"), p["name"], max_chars=60)
@@ -88,48 +96,56 @@ def _add_tab(ss):
         p["crops"] = c1.text_input(t("fr.crops"), p["crops"], max_chars=60)
         p["farm_ha"] = c2.number_input(t("fr.ha"), 0.0, 10000.0, float(p["farm_ha"]), 0.1)
 
-    kl, kmap = _opts(list(R.KINDS), lambda k: t(f"kind.{k}"))
-    kind = kmap[st.radio(t("fr.what"), kl, horizontal=True)]
-    with st.form("add", clear_on_submit=True):
-        c1, c2 = st.columns(2)
-        when = c1.date_input(t("fr.date"), date.today(), max_value=date.today())
-        if kind == "expense":
-            il, imap = _opts(R.EXPENSES, item)
-            label = t("fr.exp_type")
-        elif kind == "saving":
-            il, imap, label = None, None, None
-        else:
-            il, imap = _opts(R.CROPS, item)
-            label = t("fr.crop")
-        if il:
-            it = imap[c2.selectbox(label, il)]
-        else:
+    st.markdown(f"#### {t('fx.step1')}")
+    ss.setdefault("add_kind", None)
+    for col, (k, key) in zip(st.columns(4), TILES):
+        if col.button(f"{KIND_ICON[k]}  {t(key)}", key=f"tile_{k}", use_container_width=True,
+                      type="primary" if ss.add_kind == k else "secondary"):
+            ss.add_kind = k
+            st.rerun()
+    kind = ss.add_kind
+    if not kind:
+        st.info(t("fx.pick"))
+    else:
+        with st.form("add", clear_on_submit=True):
             it = "Savings"
-            c2.markdown("&nbsp;")
-        qty = amt = None
-        unit = "kg"
-        if kind in ("harvest", "sale", "expense"):
-            c1, c2 = st.columns(2)
-            qty = c1.number_input(t("fr.qty"), 0.0, 1e8, 0.0, 10.0)
-            ul, umap = _opts(R.UNITS, lambda u: t(f"unit.{u}"))
-            unit = umap[c2.selectbox(t("fr.unit"), ul)]
-        if kind != "harvest":
-            amt = st.number_input(t("fr.amount"), 0, 10**10, 0, 1000)
-        who = ""
-        if kind in ("sale", "expense"):
-            who = st.text_input(t("fr.who"), max_chars=60)
-        el, emap = _opts(R.SELECTABLE_EVIDENCE, lambda k: t(f"ev.{k}"))
-        ev = emap[st.radio(t("ev.title"), el, help=t("ev.help"))]
-        if st.form_submit_button(t("fr.save"), type="primary"):
-            rec = R.new_record(kind, when, it, float(amt) if amt else None, qty or None, unit, who, ev)
-            err = R.validate(rec)
-            if err:
-                st.error(t(err))
-            elif len(ss.records) >= R.MAX_RECORDS:
-                st.error(t("fr.limit"))
+            if kind != "saving":
+                keys = R.EXPENSES if kind == "expense" else R.CROPS
+                st.markdown(f"#### {t('fx.step_exp' if kind == 'expense' else 'fx.step_crop')}")
+                label_of = {f"{ITEM_ICON.get(k, '')} {item(k)}": k for k in keys}
+                pick = st.pills("item", list(label_of), selection_mode="single", default=list(label_of)[0],
+                                label_visibility="collapsed")
+                it = label_of.get(pick, "")
+            qty = amt = None
+            if kind == "harvest":
+                st.markdown(f"#### {t('fx.step_qty_h')}")
+                qty = st.number_input(t("fr.qty"), 0.0, 1e8, 0.0, 10.0, label_visibility="collapsed")
             else:
-                ss.records.append(rec)
-                st.success(t("fr.saved"))
+                st.markdown(f"#### {t('fx.step_amt')}")
+                amt = st.number_input(t("fr.amount"), 0, 10**10, 0, 1000, label_visibility="collapsed")
+                if kind == "sale":
+                    qty = st.number_input(t("fx.step_qty"), 0.0, 1e8, 0.0, 10.0)
+            with st.expander(t("fx.more")):
+                c1, c2 = st.columns(2)
+                when = c1.date_input(t("fr.date"), date.today(), max_value=date.today())
+                ul, umap = _opts(R.UNITS, lambda u: t(f"unit.{u}"))
+                unit = umap[c2.selectbox(t("fr.unit"), ul)]
+                who = st.text_input(t("fr.who"), max_chars=60) if kind in ("sale", "expense") else ""
+                has_doc = st.checkbox(t("fx.receipt"), help=t("ev.help"))
+            if st.form_submit_button(f"{KIND_ICON[kind]}  {t('fx.save')}", type="primary", use_container_width=True):
+                rec = R.new_record(kind, when, it, float(amt) if amt else None, qty or None, unit, who,
+                                   "document" if has_doc else "self")
+                err = R.validate(rec)
+                if err:
+                    st.error(t(err))
+                elif len(ss.records) >= R.MAX_RECORDS:
+                    st.error(t("fr.limit"))
+                else:
+                    ss.records.append(rec)
+                    m_ = lambda v: f"{v:,.0f} {t('rwf')}"
+                    q_ = f"{qty:g} {t('unit.' + unit)}" if qty else ""
+                    st.success(t(f"fx.ok_{kind}", c=item(it), a=m_(amt or 0), q=q_))
+                    st.caption(t("fx.next_share"))
     if ss.records:
         st.subheader(t("fr.yours"))
         df = pd.DataFrame(ss.records).sort_values("date", ascending=False)
@@ -158,40 +174,47 @@ def _summary_tab(ss):
     summary_view(ss.records, "farmer")
 
 
-def summary_view(records, key, lender=False):
-    """Seasonal totals, visible formula, monthly chart and evidence mix. Shared by the farmer and lender pages."""
+def summary_view(records, key):
+    """Plain sentence, four figures, one chart. The formulas and extra detail sit one tap away."""
     pl, pmap = _periods(records)
     season = pmap[st.selectbox(t("fr.period"), pl, key=f"period_{key}")]
     s = R.summarise(records, season)
     m_ = lambda v: f"{v:,.0f} {t('rwf')}"
+    rs = [r["date"] for r in records
+          if season is None or R.season_of(date.fromisoformat(r["date"])) == season]
+    if rs:
+        k = "fx.plain_pos" if s["net"] >= 0 else "fx.plain_neg"
+        txt = t(k, a=min(rs), b=max(rs), s=m_(s["sales"]), e=m_(s["expenses"]), n=m_(abs(s["net"])))
+        if s["saved"]:
+            txt += " " + t("fx.plain_saved", v=m_(s["saved"]))
+        st.markdown(f'<p class="lede">{txt}</p>', unsafe_allow_html=True)
     c1, c2, c3, c4 = st.columns(4)
     with c1: T.fact(m_(s["sales"]), t("fr.k_sales"))
     with c2: T.fact(m_(s["expenses"]), t("fr.k_exp"), "informal")
     with c3: T.fact(m_(s["net"]), t("fr.k_net"), "" if s["net"] >= 0 else "gap")
     with c4: T.fact(m_(s["saved"]), t("fr.k_saved"))
-    st.caption(t("ld.formula" if lender else "fr.formula"))
     if s["monthly"]:
+        st.markdown(f"**{t('fx.chart')}**")
         m = pd.DataFrame(s["monthly"]).T.fillna(0).reindex(columns=["in", "out"], fill_value=0)
         fig = go.Figure()
         fig.add_bar(x=m.index, y=m["in"], name=t("fr.chart_in"), marker_color=T.TEA)
         fig.add_bar(x=m.index, y=m["out"], name=t("fr.chart_out"), marker_color=T.SOIL)
-        T.layout(fig, height=300, showlegend=True, barmode="group", legend=dict(orientation="h", y=-0.2))
+        T.layout(fig, height=280, showlegend=True, barmode="group", legend=dict(orientation="h", y=-0.2))
         fig.update_yaxes(tickformat=",", gridcolor=T.LINE)
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-    c1, c2 = st.columns(2)
-    with c1:
+    with st.expander(t("fx.details")):
+        st.caption(t("fr.formula"))
         st.markdown(f"**{t('fr.months')}** {s['months_with_records']}")
         if s["price_per_kg"]:
-            st.markdown(f"**{t('ld.price' if lender else 'fr.price')}**")
+            st.markdown(f"**{t('fr.price')}**")
             for c, v in s["price_per_kg"].items():
                 st.markdown("- " + t("fr.price_row", c=item(c), v=f"{v:,.0f}"))
-    with c2:
         if s["share_sold"]:
             st.markdown(f"**{t('fr.share')}**")
             for c, v in s["share_sold"].items():
                 st.markdown(f"- {item(c)}: {v * 100:.0f}%")
-    ev = s["evidence"]
-    st.markdown(t("fr.evmix", a=ev.get("self", 0), b=ev.get("document", 0), c=ev.get("confirmed", 0)))
+        ev = s["evidence"]
+        st.markdown(t("fr.evmix", a=ev.get("self", 0), b=ev.get("document", 0), c=ev.get("confirmed", 0)))
 
 
 def _share_tab(ss):

@@ -49,8 +49,69 @@ The research above is the **why**. The product contains no survey data: it is th
   detail by crop and expense, every entry, and which entries are self-reported or backed by a receipt. A
   "what to check" tab lists simple counts and questions to ask. **No score, no recommendation, no decision.**
 
+**How the research shaped the product** (the app itself shows no survey data)
+
+| What the research found | What we built in response | Status |
+|---|---|---|
+| Most farm households have an account but few have a formal loan, and lenders lack records they can read | Farm records the farmer owns, plus a lender view that turns them into a plain story and charts | Direct response |
+| Only a minority of farming adults own a smartphone, most own any phone and use mobile money | USSD route, big tap buttons, Kinyarwanda first, no sign-up | Direct response |
+| Most borrowing is informal (tontines, relatives), so lenders cannot see a farm's cash flow | Month-by-month money in and out and cumulative cash, with prompts to ask about other loans | Direct response |
+| Loans for farm inputs rarely come from formal lenders | Input costs (seed, fertiliser, labour) recorded by category, so an input-finance lender can see them | Hypothesis, needs a pilot |
+| Women-headed and smallest households have lower formal-loan rates | Free, phone-first tool with no individual score, so it does not add a new hurdle | Hypothesis, needs a pilot |
+| About half of farming adults say they already track money | Make tracking a one-minute tap flow rather than a new habit | Design assumption |
+
+The figures behind each row are in [Methods](#methods) and `data/aggregates/`.
+
 **Throughout**: a landing page (TypeScript + Tailwind), Kinyarwanda and English (Kinyarwanda needs
 native-speaker review), and an *About* page on limits and privacy.
+
+## Methods
+
+- **Weights and design.** AHS: weight `weight`, PSU `clust`, stratum `district`, with Taylor-linearised CIs
+  (`src/survey.py`). FinScope: weight `pop_wt`; the public file has no PSU, so **FinScope CIs are
+  understated**.
+- **Suppression.** Cells with n < 30 are suppressed; CV > 0.30 is flagged "caution" (ochre bars, greyed on
+  the map).
+- **Indicators** are defined once in `src/indicators.py`; `pipeline/build_aggregates.py` turns microdata
+  into the committed aggregates.
+- **Models.** Weighted logistic regression of formal loan on welfare quintile, head's sex, farm size, land
+  title, cooperative membership and province, with design-based sandwich SEs (`src/models.py`). These are
+  associations, not causes.
+- **No record linkage** between AHS and FinScope; they are compared side by side as aggregates only.
+- **Validation.** AHS estimates reproduce NISR's published tables exactly
+  ([`validation.csv`](data/aggregates/validation.csv)). FinScope mobile money (76.2 vs 77) and bank account
+  (20.2 vs 22) reconcile; our formal saving, credit and insurance are lower than the official strands
+  because the official strand code is not public, so FinScope is used for group comparisons, not national
+  totals.
+
+## Limitations
+
+- Survey data are cross-sectional; nothing here shows that records or credit cause better outcomes.
+- AHS `s10aq1` is labelled "tried to obtain a loan" but every yes has a denial reason, so it is treated as
+  "reported a denial" (n = 295, wide CIs).
+- The AHS milk, egg and honey files contain many exact duplicate rows and are not used.
+- 55% of farming adults say they always track money; the question went to about half of respondents and
+  estimates use answerers only.
+- Record-tool entries are self-reported unless the farmer says a receipt is held. `confirmed` evidence is
+  reserved for a future verifier and import files can never grant it.
+- We claim **no impact on loan approval** without a pilot.
+
+## Responsible use
+
+The tool describes groups of households. It does not score individuals, predict default or make lending
+decisions, and it never will in this design. Small cells are suppressed and associations are labelled as such.
+
+## Data
+
+Both datasets are NISR public-use microdata and are **not** redistributed here. Download after registering on
+the NISR Microdata Portal:
+
+| Dataset | Catalogue | Place file at |
+|---|---|---|
+| FinScope Rwanda 2024 (RWA-NISR-FINSCOPE-2024-v01) | https://microdata.statistics.gov.rw/index.php/catalog/120 | `data/raw/FinScope_2024_Rwanda.dta` |
+| Agricultural Household Survey 2024 (RWA-NISR-RAHS-2024-V0.1) | https://microdata.statistics.gov.rw/index.php/catalog/123 | `data/raw/Microdata.zip` |
+
+District boundaries: geoBoundaries ADM2 Rwanda, CC BY 4.0 (see [`data/geo/README.md`](data/geo/README.md)).
 
 ## Run it
 

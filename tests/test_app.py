@@ -25,6 +25,7 @@ LANG = "rw"
 def fresh(name):
     at = AppTest.from_function(page_script, args=(name, ROOT), default_timeout=90)
     at.session_state["lang"] = LANG
+    at.session_state["store_ready"] = True           # the browser-storage bridge cannot run in AppTest
     return at.run()
 
 
@@ -59,7 +60,8 @@ for LANG in ("rw", "en"):
 def farmer_flow():
     global renders
     at = fresh("farmer:my_records")
-    at.button[0].click().run(); renders += 1                  # "Try with example records"
+    from src.i18n import t as _t
+    [b for b in at.button if b.label == _t("au.demo", LANG)][0].click().run(); renders += 1   # demo mode
     if at.exception:
         failures.append(("my_records", "example", [e.value for e in at.exception])); return
     assert len(at.session_state["records"]) == 11, "example records not loaded"
@@ -105,6 +107,10 @@ def add_flow():
     """The tap flow: choose what happened, then save a record through the form."""
     global renders
     at = fresh("farmer:my_records")
+    from src.i18n import t as _t
+    [b for b in at.button if b.label == _t("au.demo", LANG)][0].click().run()
+    at.session_state["records"] = []                           # start the add flow from an empty list
+    at.run()
     tiles = {b.key: b for b in at.button if b.key and b.key.startswith("tile_")}
     assert set(tiles) == {"tile_harvest", "tile_sale", "tile_expense", "tile_saving"}, tiles.keys()
     tiles["tile_sale"].click().run(); renders += 1
@@ -116,6 +122,161 @@ def add_flow():
     assert not at.exception and len(at.session_state["records"]) == 1, (at.exception, at.session_state["records"])
     r = at.session_state["records"][0]
     assert r["kind"] == "sale" and r["amount_rwf"] == 50000 and r["evidence"] == "self", r
+
+
+def vault_checks():
+    import json, time
+    from src import vault as V, crypto, records as R
+    assert V.normalise_phone("+250 788 123 456") == "0788123456" and V.normalise_phone("788123456") == "0788123456"
+    assert V.normalise_phone("0111111111") is None and V.normalise_phone("abc") is None and V.normalise_phone("") is None
+    for bad in ("1111", "1234", "4321", "0000", "12", "1234567", "12ab", ""):
+        assert V.check_pin(bad, "0781234567"), bad
+    assert V.check_pin("4567", "0781234567") and V.check_pin("8260", "0781234567") is None
+    phone, pin = "0788123456", "829104"
+    prof, recs = dict(R.EXAMPLE_PROFILE), R.example_records()
+    blob, key, salt = V.create(phone, pin, prof, recs)
+    p2, r2, k2, _ = V.unlock(blob, phone, pin)
+    assert r2 == recs and p2["name"] == prof["name"] and k2 == key
+    for ph, pn in ((phone, "829105"), ("0788123457", pin)):    # wrong PIN or wrong phone: same generic failure
+        try:
+            V.unlock(blob, ph, pn); raise AssertionError("opened with wrong credentials")
+        except V.VaultError:
+            pass
+    assert "829104" not in blob and "Example" not in blob and "Maize" not in blob, "plaintext leaked into the vault"
+    d = json.loads(blob); d["ct"] = d["ct"][:-4] + ("AAAA" if d["ct"][-4:] != "AAAA" else "BBBB")
+    try:
+        V.unlock(json.dumps(d), phone, pin); raise AssertionError("tampered vault opened")
+    except V.VaultError:
+        pass
+    b1, b2 = V.reseal(key, salt, phone, prof, recs), V.reseal(key, salt, phone, prof, recs)
+    assert json.loads(b1)["nonce"] != json.loads(b2)["nonce"], "nonce reused"
+    for junk in ("", "{}", "not json", '{"type":"vault","v":1}', "[]"):
+        try:
+            V.unlock(junk, phone, pin); raise AssertionError("junk opened")
+        except V.VaultError:
+            pass
+    # a vault cannot be opened as a share and vice versa (purpose is bound into the ciphertext)
+    from src import share as S
+    pkg, code = S.make_package(prof, recs)
+    try:
+        V.unlock(pkg, phone, pin); raise AssertionError("share opened as vault")
+    except V.VaultError:
+        pass
+    # lock-out schedule
+    assert [V.lock_seconds(n) for n in (1, 4, 5, 6, 7, 20)] == [0, 0, 30, 60, 120, 900]
+    lk = None
+    for _ in range(5):
+        lk = V.register_fail(lk, now=1000.0)
+    assert lk["fails"] == 5 and V.wait_left(lk, now=1000.0) == 30 and V.wait_left(lk, now=1031.0) == 0
+    assert V.sanitise_lock("garbage") == {"fails": 0, "until": 0.0} and V.sanitise_lock({"fails": 9999, "until": "x"})["fails"] == 0
+
+
+def share_checks():
+    import json
+    from datetime import datetime, timedelta, timezone
+    from src import share as S, records as R
+    prof, recs = dict(R.EXAMPLE_PROFILE, name="Ada"), R.example_records()
+    pkg, code = S.make_package(prof, recs, include_names=False, include_farmer_name=False, validity="1d")
+    assert len(S.normalise_code(code)) == 12 and set(S.normalise_code(code)) <= set(S.ALPHABET)
+    assert "Cooperative" not in pkg and "Ada" not in pkg and "Maize" not in pkg, "plaintext leaked into the share"
+    p, r, meta = S.open_package(pkg, code.lower().replace("-", " "))
+    assert len(r) == len(recs) and all(x["counterparty"] == "" for x in r), "names must be dropped unless chosen"
+    assert p["name"] == "" and meta["names_included"] is False
+    pkg2, code2 = S.make_package(prof, recs, include_names=True)
+    _, r2, m2 = S.open_package(pkg2, code2)
+    assert any(x["counterparty"] for x in r2) and m2["names_included"] is True
+    try:
+        S.open_package(pkg, "AAAA-AAAA-AAAA"); raise AssertionError("opened with wrong code")
+    except S.ShareError as e:
+        assert not isinstance(e, S.Expired)
+    late = datetime.now(timezone.utc) + timedelta(days=2)
+    try:
+        S.open_package(pkg, code, now=late); raise AssertionError("expired share opened")
+    except S.Expired:
+        pass
+    d = json.loads(pkg); d["ct"] = d["ct"][:-4] + ("AAAA" if d["ct"][-4:] != "AAAA" else "BBBB")
+    try:
+        S.open_package(json.dumps(d), code); raise AssertionError("tampered share opened")
+    except S.ShareError:
+        pass
+    # season filter
+    seasons = R.seasons_in(recs)
+    pk, cd = S.make_package(prof, recs, season=seasons[0])
+    _, rr, mm = S.open_package(pk, cd)
+    assert 0 < len(rr) < len(recs) and mm["season"] == seasons[0]
+    assert S.new_code() != S.new_code()
+    try:
+        S.make_package(prof, [], validity="7d"); raise AssertionError("empty share allowed")
+    except S.ShareError:
+        pass
+
+
+def auth_flow():
+    """Sign up, add a record, check it is saved encrypted, lock, sign back in, and fail with a wrong PIN."""
+    global renders
+    from src import vault as V
+    from src.i18n import t
+    at = fresh("farmer:my_records")
+    ti = lambda lbl: [w for w in at.text_input if w.label == t(lbl, LANG)]
+    # the sign-up tab comes first when nothing is stored; fill the sign-up form
+    ti("au.phone")[0].set_value("0788 123 456")
+    ti("au.pin")[0].set_value("829104")
+    ti("au.pin2")[0].set_value("829104")
+    [c for c in at.checkbox if c.label == t("au.ack", LANG)][0].set_value(True)
+    [b for b in at.button if b.label == t("au.create", LANG)][0].click().run(); renders += 1
+    assert not at.exception, at.exception
+    assert at.session_state["auth"]["phone"] == "0788123456", "sign-up did not sign in"
+    pend = at.session_state["_pending"]
+    assert pend["vault"] and pend["phone"] == "0788123456", "vault was not queued for the browser"
+    # add a sale, then the autosave must queue a new vault that contains it
+    {b.key: b for b in at.button if b.key}["tile_sale"].click().run()
+    [n for n in at.number_input if n.label == t("fr.amount", LANG)][0].set_value(50000)
+    [b for b in at.button if b.label and t("fx.save", LANG) in b.label][0].click().run(); renders += 1
+    assert len(at.session_state["records"]) == 1 and not at.exception
+    at.run()                                                  # the next run persists the change
+    blob = at.session_state["_pending"]["vault"]
+    _, recs, _, _ = V.unlock(blob, "0788123456", "829104")
+    assert len(recs) == 1 and recs[0]["amount_rwf"] == 50000, "autosaved vault is missing the record"
+    # lock, then sign in again from what the browser holds
+    [b for b in at.button if b.label == t("au.lock", LANG)][0].click().run()
+    assert not at.session_state["auth"] if "auth" in at.session_state else True
+    assert at.session_state["records"] == [] and "blob" not in at.session_state, "data not cleared on lock"
+    at.session_state["_base"] = {"vault": blob, "phone": "0788123456", "lock": "", "ok": True}
+    at.session_state["_pending"] = {}
+    at.run()
+    ti("au.pin")[0].set_value("000000")                       # wrong PIN, five times in a row
+    for _ in range(5):
+        [b for b in at.button if b.label == t("au.sign_in", LANG)][0].click().run(); renders += 1
+        assert not at.session_state.get("auth"), "signed in with a wrong PIN"
+    assert V.wait_left(at.session_state["lock"]) > 0, "no lock-out after repeated wrong PINs"
+    ti("au.pin")[0].set_value("829104")                       # the right PIN is refused during the wait
+    [b for b in at.button if b.label == t("au.sign_in", LANG)][0].click().run()
+    assert not at.session_state.get("auth"), "lock-out was bypassed"
+    at.session_state["lock"] = {"fails": 0, "until": 0.0}
+    at.session_state["_pending"] = {}
+    at.run()
+    ti("au.pin")[0].set_value("829104")
+    [b for b in at.button if b.label == t("au.sign_in", LANG)][0].click().run(); renders += 1
+    assert at.session_state["auth"]["phone"] == "0788123456" and len(at.session_state["records"]) == 1
+
+
+def lender_open_flow():
+    """The lender page opens a real share through the form, and escapes hostile text from the file."""
+    global renders
+    from src import share as S, records as R
+    hostile = dict(R.EXAMPLE_PROFILE, name="<img src=x onerror=alert(1)>", crops="<script>x</script>")
+    pkg, code = S.make_package(hostile, R.example_records())
+    prof, recs, meta = S.open_package(pkg, code)
+    at = AppTest.from_function(page_script, args=("lender:lender_view", ROOT), default_timeout=90)
+    at.session_state["lang"] = LANG
+    at.session_state["lender_records"], at.session_state["lender_profile"] = recs, prof
+    at.session_state["lender_meta"] = dict(meta, opened="2026-10-24 10:00", org="<b>Bank</b>")
+    at.run(); renders += 1
+    assert not at.exception, at.exception
+    raw_html = " ".join(m.value for m in at.markdown if m.allow_html)      # only these can inject markup
+    assert "<img src=x" not in raw_html and "<script>" not in raw_html and "<b>Bank" not in raw_html, \
+        "hostile text reached an HTML element unescaped"
+    assert "&lt;img" in raw_html, "farmer name should appear escaped in the farmer card"
 
 
 def lender_flow():
@@ -195,12 +356,13 @@ def i18n_complete():
     assert all(m in STR for m in msgs)
 
 
-for fn in (farmer_flow, add_flow, engine_checks, lender_flow, ussd_flow, i18n_complete):
+for fn in (farmer_flow, add_flow, engine_checks, vault_checks, share_checks, auth_flow, lender_flow, lender_open_flow, ussd_flow, i18n_complete):
     for LANG in ("rw", "en"):
         try:
             fn()
         except Exception as e:
-            failures.append((fn.__name__, LANG, [repr(e)]))
+            import traceback
+            failures.append((fn.__name__, LANG, [repr(e), traceback.format_exc().splitlines()[-6:]]))
 
 try:
     no_dataset_in_product()

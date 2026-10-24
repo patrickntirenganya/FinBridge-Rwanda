@@ -8,9 +8,10 @@ REPO = "https://github.com/patrickntirenganya/FinBridge-Rwanda"
 
 def about():
     T.hero(t("ab.title"), t("ab.lede"), photo="farmer-beans")
-    for k in ("is", "not", "privacy", "evidence", "limits"):
+    for k in ("is", "not", "privacy", "security", "evidence", "limits"):
         st.subheader(t(f"ab.{k}_t"))
         st.markdown(t(f"ab.{k}_b"))
+    st.markdown(f"[docs/security.md]({REPO}/blob/main/docs/security.md)")
     st.subheader(t("ab.research_t"))
     st.markdown(t("ab.research_b") + f" [{REPO}]({REPO})")
     T.note(t("ab.draft"))

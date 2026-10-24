@@ -21,8 +21,11 @@ Regenerate with `python analysis/key_findings.py`. These figures belong in the R
 product; it lives in the README, `analysis/`, `pipeline/` and `data/aggregates/`, never in the app UI.
 The app reads no aggregate table. Pages: `Home` (landing, TypeScript + Tailwind), **for farmers** `My farm records`
 (record harvests, sales, expenses, savings; seasonal summary with visible formulas; downloadable report; JSON backup,
-nothing stored server-side) and the USSD simulator; **for lenders** `Open a farmer's report` (reads the JSON a
-farmer chose to share: summary, details, all entries, evidence mix, what to check, questions to ask); `About`.
+nothing stored server-side) and the USSD simulator; **for lenders** `Open a farmer's report` (opens the locked `.fbshare` file a
+farmer chose to share, with the farmer's one-time code: summary, details, all entries, evidence mix, what to check, questions to ask); `About`.
+Auth (24 Oct): farmers sign in with phone + PIN; data is encrypted (scrypt + AES-256-GCM) in the browser's local
+storage via a tiny JS bridge (`ui/auth.py`), never stored server-side; sharing is a locked file + code (`src/share.py`).
+Verified lender accounts and a server audit log need a database and are NOT built. See `docs/security.md`.
 Rules for the record tool: entries are self-reported unless the farmer says a receipt is held; `confirmed`
 evidence is reserved for a future verifier and import files can never grant it; **no score, no lending
 decision, ever**; claim no impact on loan approval without a pilot. Tests fail if the landing copy contains a
@@ -42,6 +45,10 @@ pipeline/build_aggregates.py   microdata -> data/aggregates/*.csv (safe to commi
 ui/theme.py           palette, CSS, hero banner, chart layout helper
 ui/farmer.py          farmer tool and USSD preview
 ui/lender.py          lender view of a shared farmer file
+ui/auth.py            farmer sign-in, vault persistence bridge, lock-out, idle timeout
+src/crypto.py         scrypt + AES-256-GCM primitives
+src/vault.py          PIN-locked profile (create/unlock/reseal, PIN rules, lock-out)
+src/share.py          encrypted share package + one-time code
 ui/about.py           how it works, limits, link to the research
 ui/landing.py         landing page: embeds the TypeScript + Tailwind bundle, injects numbers from aggregates
 frontend/             Vite + TypeScript + Tailwind source for the landing page (npm run build -> ui/landing/landing.html)

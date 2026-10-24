@@ -4,10 +4,15 @@ Descriptive only: no score, no verdict, no recommendation. The repayment workshe
 lender types in. The file is read in this browser session and never stored. Import is untrusted input, so it goes
 through records.parse_import, which keeps only known fields and can never grant 'confirmed' evidence.
 """
+import html
+import time
+
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 from src import records as R
+from src import share
+from src import vault as V
 from src.i18n import t, item, lang
 from ui import theme as T
 
@@ -180,24 +185,35 @@ def lender_view():
     T.hero(t("ld.title"), t("ld.lede"), photo="farmer-field")
 
     if not ss.lender_records:
-        c1, c2 = st.columns(2)
-        up = c1.file_uploader(t("ld.upload"), type="json", key="ld_up")
-        if up is not None:
-            try:
-                prof, recs, skipped = R.parse_import(up.getvalue().decode("utf-8"))
-            except Exception:
-                st.error(t("fr.bad_file"))
+        with st.form("open_share"):
+            up = st.file_uploader(t("ld.upload"), type=["fbshare", "json"])
+            code = st.text_input(t("ld.code"), max_chars=20, placeholder="XXXX-XXXX-XXXX", autocomplete="off")
+            org = st.text_input(t("ld.org"), max_chars=60)
+            go_ = st.form_submit_button(t("ld.open"), type="primary", use_container_width=True)
+        if go_:
+            lock = ss.get("lender_lock") or {"fails": 0, "until": 0.0}
+            left = V.wait_left(lock)
+            if left:
+                st.warning(t("au.wait", s=left))
             else:
-                if not recs:
-                    st.error(t("ld.empty"))
+                try:
+                    if not (up and code):
+                        raise share.ShareError
+                    prof, recs, meta = share.open_package(up.getvalue().decode("utf-8"), code)
+                except share.Expired:
+                    st.error(t("ld.expired"))
+                except Exception:
+                    ss.lender_lock = V.register_fail(lock)
+                    st.error(t("ld.bad"))
                 else:
+                    ss.lender_lock = {"fails": 0, "until": 0.0}
                     ss.lender_profile, ss.lender_records, ss.lender_example = prof, recs, False
-                    ss.lender_skipped = skipped
+                    ss.lender_meta = dict(meta, opened=time.strftime("%Y-%m-%d %H:%M"), org=org.strip()[:60])
+                    ss.lender_skipped = 0
                     st.rerun()
-        c2.markdown(f"<p class='note'>{t('ld.example_hint')}</p>", unsafe_allow_html=True)
-        if c2.button(t("ld.try"), type="primary", use_container_width=True):
+        if st.button(t("ld.try")):
             ss.lender_records, ss.lender_profile, ss.lender_example = R.example_records(), dict(R.EXAMPLE_PROFILE), True
-            ss.lender_skipped = 0
+            ss.lender_meta, ss.lender_skipped = None, 0
             st.rerun()
         st.markdown(f"### {t('ld.how_title')}")
         for i in (1, 2, 3):
@@ -212,12 +228,20 @@ def lender_view():
     if ss.get("lender_skipped"):
         st.info(t("fr.skipped", k=ss.lender_skipped))
     ng = t("rp.none")
+    e = lambda x: html.escape(str(x or ng))       # the file is untrusted: never put its text into HTML raw
     st.markdown(
-        f'<div class="fact"><b>{p.get("name") or ng}</b><span>{t("rp.district")}: {p.get("district") or ng} · '
-        f'{t("rp.size")}: {p.get("farm_ha", 0):g} ha · {t("rp.crops")}: {p.get("crops") or ng}</span></div>',
+        f'<div class="fact"><b>{e(p.get("name"))}</b><span>{t("rp.district")}: {e(p.get("district"))} · '
+        f'{t("rp.size")}: {float(p.get("farm_ha", 0)):g} ha · {t("rp.crops")}: {e(p.get("crops"))}</span></div>',
         unsafe_allow_html=True)
+    meta = ss.get("lender_meta")
+    if meta:
+        receipt = t("ld.receipt", t=meta["opened"] + (f" ({meta['org']})" if meta.get("org") else ""),
+                    c=meta["created"], e=meta["expires"], p=meta["season"] or t("ld.all_periods"),
+                    n=t("ld.names_yes" if meta["names_included"] else "ld.names_no"))
+        st.caption(receipt)
+        st.download_button(t("ld.receipt_dl"), receipt, "finbridge_access_receipt.txt", "text/plain")
     if st.button(t("ld.close")):
-        ss.lender_records, ss.lender_profile, ss.lender_example = [], {}, False
+        ss.lender_records, ss.lender_profile, ss.lender_example, ss.lender_meta = [], {}, False, None
         st.rerun()
 
     tabs = st.tabs([t("ld.tab_glance"), t("ld.tab_loan"), t("ld.tab_quality"), t("ld.tab_rec")])

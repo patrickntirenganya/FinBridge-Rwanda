@@ -39,3 +39,6 @@ pg = st.navigation({
     t("nav.about_sec"): [st.Page(A.about, title=t("nav.about"), url_path="about")],
 })
 pg.run()
+from ui import auth  # noqa: E402
+
+auth.flush()  # hands any pending encrypted save to the browser

@@ -1,5 +1,6 @@
-# App only (this is all Streamlit Community Cloud installs; the app reads data/aggregates only)
-streamlit>=1.40
+# App only (this is all Streamlit Community Cloud installs; the product reads no survey data)
+streamlit>=1.55
 plotly>=5.20
 pandas>=2.0
 numpy>=1.24
+cryptography>=42

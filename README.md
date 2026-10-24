@@ -39,13 +39,15 @@ households. Regenerate every figure with `python analysis/key_findings.py`; the 
 The research above is the **why**. The product contains no survey data: it is the solution the research points to.
 
 **For farmers**
+- *Sign in*: a phone number and a PIN. The records are encrypted with the PIN and kept in the farmer's own browser;
+  a locked backup file restores them on another phone. No account on our server.
 - *My farm records*: record harvests, sales, expenses and savings; a seasonal summary with the formulas shown;
-  a downloadable report and a JSON file the farmer can give a lender by choice. Nothing is stored server-side.
+  a downloadable report; and *Share with a lender*, which makes a locked file plus a one-time code.
 - *USSD simulator*: the same tool on a basic phone (screens ≤ 160 characters), because most farmers do not
   own a smartphone (see the research).
 
 **For lenders (SACCO, MFI, bank, cooperative)**
-- *Open a farmer's report*: open the file a farmer shared and read income, costs and savings by season, the
+- *Open a farmer's report*: open the locked file a farmer shared, using the farmer's code, and read income, costs and savings by season, the
   detail by crop and expense, every entry, and which entries are self-reported or backed by a receipt. A
   "what to check" tab lists simple counts and questions to ask. **No score, no recommendation, no decision.**
 
@@ -112,6 +114,12 @@ the NISR Microdata Portal:
 | Agricultural Household Survey 2024 (RWA-NISR-RAHS-2024-V0.1) | https://microdata.statistics.gov.rw/index.php/catalog/123 | `data/raw/Microdata.zip` |
 
 District boundaries: geoBoundaries ADM2 Rwanda, CC BY 4.0 (see [`data/geo/README.md`](data/geo/README.md)).
+
+## Security and privacy
+
+PIN-locked local profiles (scrypt + AES-256-GCM), consent-based sharing with one-time codes, lock-out, idle
+timeout, strict input handling. The full threat model, including what is **not** protected, is in
+[`docs/security.md`](docs/security.md). It is a prototype and has not been independently audited.
 
 ## Run it
 

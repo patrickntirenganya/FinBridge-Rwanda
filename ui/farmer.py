@@ -9,9 +9,9 @@ import json
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from src import records as R, ussd as U
+from src import records as R, share, ussd as U
 from src.i18n import t, item, lang, season_label
-from ui import theme as T
+from ui import auth, theme as T
 
 
 def _state():
@@ -38,23 +38,12 @@ def _periods(records):
 def my_records():
     ss = _state()
     T.hero(t("fr.title"), t("fx.welcome_b"), photo="farmer-weeding")
+    if not auth.gate():
+        return
+    auth.account_bar()
 
     if not ss.records:
         st.markdown(f"### {t('fx.welcome')}")
-        with st.expander(t("fr.try")):
-            c1, c2 = st.columns(2)
-            if c1.button(t("fr.try"), use_container_width=True):
-                ss.records, ss.profile, ss.example = R.example_records(), dict(R.EXAMPLE_PROFILE), True
-                st.rerun()
-            up = c2.file_uploader(t("fr.load"), type="json", key="up_empty")
-            if up is not None:
-                _load_upload(up)
-    elif ss.example:
-        st.warning(t("fr.example_warn"))
-        if st.button(t("fr.clear")):
-            ss.records, ss.example = [], False
-            ss.profile = dict(name="", district="", crops="", farm_ha=0.0)
-            st.rerun()
 
     tab_add, tab_sum, tab_share = st.tabs([t("fr.tab_add"), t("fr.tab_sum"), t("fr.tab_share")])
     with tab_add:
@@ -64,18 +53,7 @@ def my_records():
     with tab_share:
         _share_tab(ss)
     T.note(t("fr.disclaimer"))
-
-
-def _load_upload(up):
-    ss = st.session_state
-    try:
-        prof, recs, skipped = R.parse_import(up.getvalue().decode("utf-8"))
-    except Exception:
-        st.error(t("fr.bad_file"))
-        return
-    ss.profile, ss.records, ss.example = prof, recs, False
-    st.success(t("fr.loaded", n=len(recs)) + (t("fr.skipped", k=skipped) if skipped else ""))
-    st.rerun()
+    auth.persist()
 
 
 KIND_ICON = {"harvest": "🌾", "sale": "💰", "expense": "🧾", "saving": "🏦"}
@@ -221,24 +199,51 @@ def _share_tab(ss):
     if not ss.records:
         st.write(t("fr.share_empty"))
         return
-    st.markdown(t("fr.share_intro"))
     pl, pmap = _periods(ss.records)
     season = pmap[st.selectbox(t("fr.rep_period"), pl, key="rep_period")]
+
+    st.markdown(f"#### {t('sh.title')}")
+    st.markdown(t("sh.intro"))
+    c1, c2 = st.columns(2)
+    names = c1.checkbox(t("sh.names"), value=False)
+    mine = c2.checkbox(t("sh.myname"), value=True)
+    vkeys = list(share.VALIDITY_HOURS)
+    vlabels = {k: t(f"sh.v{k}") for k in vkeys}
+    valid = st.radio(t("sh.valid"), vkeys, index=1, horizontal=True, format_func=vlabels.get)
+    if st.button(t("sh.make"), type="primary", use_container_width=True):
+        try:
+            pkg, code = share.make_package(ss.profile, ss.records, season=season, include_names=names,
+                                           include_farmer_name=mine, validity=valid)
+        except share.ShareError:
+            st.error(t("sh.none"))
+        else:
+            ss["last_share"] = dict(pkg=pkg, code=code, valid=valid)
+    ls = ss.get("last_share")
+    if ls:
+        with st.container(border=True):
+            st.markdown(f"**{t('sh.code')}**")
+            st.code(ls["code"], language=None)
+            st.caption(t("sh.code_note"))
+            st.download_button(t("sh.dl"), ls["pkg"], "finbridge_share.fbshare", "application/json",
+                               type="primary", use_container_width=True)
+            st.caption(t("sh.limit"))
+
+    st.markdown(f"#### {t('sh.plain')}")
+    st.markdown(t("fr.share_intro"))
     page = R.report_html(ss.profile, ss.records, season, ss.example, lang())
-    c1, c2, c3 = st.columns(3)
-    c1.download_button(t("fr.dl_report"), page, "farm_record_summary.html", "text/html",
-                       type="primary", use_container_width=True)
+    c1, c2 = st.columns(2)
+    c1.download_button(t("fr.dl_report"), page, "farm_record_summary.html", "text/html", use_container_width=True)
     c2.download_button(t("fr.dl_csv"), pd.DataFrame(ss.records).to_csv(index=False),
                        "farm_records.csv", "text/csv", use_container_width=True)
-    c3.download_button(t("fr.dl_json"), R.export_json(ss.profile, ss.records),
-                       "finbridge_backup.json", "application/json", use_container_width=True)
     st.caption(t("fr.dl_note"))
-    st.info(t("fr.share_lender"))
     with st.expander(t("fr.preview")):
         st.html(page)
-    up = st.file_uploader(t("fr.load_bak"), type="json", key="up_share")
-    if up is not None and st.button(t("fr.replace")):
-        _load_upload(up)
+
+    if auth.signed_in() and ss.get("blob"):
+        st.markdown("#### " + t("au.backup_dl"))
+        st.download_button(t("au.backup_dl"), ss["blob"], "finbridge_backup.fbvault", "application/json",
+                           use_container_width=True)
+        st.caption(t("au.backup_note"))
 
 
 # --------------------------------------------------------- feature-phone view

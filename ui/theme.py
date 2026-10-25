@@ -133,6 +133,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(-
  h1{font-size:1.65rem}.hero{padding:1.4rem 1.2rem 1.7rem;border-radius:18px}
  .hero h1{font-size:1.75rem}.chips{grid-template-columns:1fr}.chip b{font-size:1.9rem}
  .stTabs [data-baseweb="tab"]{padding:.45rem .7rem}}
+@media print{
+ [data-testid="stSidebar"],[data-testid="stHeader"],[data-testid="stToolbar"],.stButton,.stDownloadButton,
+ [data-testid="stFileUploader"],.stTabs [role="tablist"],footer{display:none !important}
+ .block-container{max-width:none;padding:0}
+ .hero{background:none !important;color:#000 !important;box-shadow:none !important;padding:0 0 .6rem}
+ .hero .photo{display:none}
+ [data-testid="stPlotlyChart"],.fact,table{break-inside:avoid}}
 @media (prefers-reduced-motion:reduce){
  *,*::before,*::after{animation:none !important;transition:none !important}}
 </style>

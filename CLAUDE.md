@@ -96,7 +96,7 @@ Tea green `#2F6B4F` = formal finance; sorghum ochre `#C2922A` = informal; soil r
 2. **Deploy** on Streamlit Community Cloud (`app.py`, Python 3.11+), then put the URL in the README and demo script.
 3. **Demo video** (≤ 3 min) following `docs/demo_script.md`.
 4. Native-speaker review of every Kinyarwanda string (`src/i18n.py`).
-5. Lender view polish: print-friendly layout, optional lender notes (stay in the session), clearer evidence legend.
+5. DONE (25 Oct): lender view polish: print stylesheet, session-only lender notes, evidence legend.
 6. Research stays in README/`analysis/`; keep `data/aggregates/` for reproducibility, never display it in the app.
 
 ## Next (after 23 Oct)

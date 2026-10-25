@@ -154,6 +154,7 @@ def _quality(recs, ins):
     T.layout(fig, height=170, barmode="stack", showlegend=True, legend=dict(orientation="h", y=-0.6, traceorder="normal"))
     fig.update_yaxes(showticklabels=False)
     _show(fig)
+    st.caption(t("ld.ev_legend"))
     st.markdown(t("ld.chk_intro"))
     n = ins["n"]
     doc = ev.get("document", 0)
@@ -178,6 +179,15 @@ def _entries(recs):
                                   "quantity": t("fr.col.qty"), "unit": t("fr.col.unit"),
                                   "amount_rwf": t("fr.col.rwf"), "counterparty": t("fr.col.with"),
                                   "evidence": t("fr.col.ev")}), hide_index=True, width="stretch")
+
+
+def _notes():
+    """Lender's own notes: held in the session only, never saved or shared."""
+    st.markdown(f"#### {t('ld.notes_title')}")
+    st.caption(t("ld.notes_help"))
+    txt = st.text_area(t("ld.notes_title"), key="lender_notes", height=140, max_chars=4000, label_visibility="collapsed")
+    if txt.strip():
+        st.download_button(t("ld.notes_dl"), txt, "lender_notes.txt", "text/plain")
 
 
 def lender_view():
@@ -242,8 +252,10 @@ def lender_view():
         st.download_button(t("ld.receipt_dl"), receipt, "finbridge_access_receipt.txt", "text/plain")
     if st.button(t("ld.close")):
         ss.lender_records, ss.lender_profile, ss.lender_example, ss.lender_meta = [], {}, False, None
+        ss.pop("lender_notes", None)
         st.rerun()
 
+    st.caption(t("ld.print_tip"))
     tabs = st.tabs([t("ld.tab_glance"), t("ld.tab_loan"), t("ld.tab_quality"), t("ld.tab_rec")])
     with tabs[0]:
         _glance(p, recs, ins)
@@ -255,4 +267,5 @@ def lender_view():
         _quality(recs, ins)
     with tabs[3]:
         _entries(recs)
+        _notes()
     T.note(t("ld.disclaimer"))

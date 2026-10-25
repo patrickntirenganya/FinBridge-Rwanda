@@ -24,8 +24,44 @@ Survey 2024 and FinScope Rwanda 2024. It supports **NST2** (agricultural transfo
 > prediction and no lending decision**. The research is the *why* and lives in this README; the app is the
 > *solution*.
 
+## At a glance
+
+**The question.** Half of Rwanda's farm households have a bank, SACCO or MFI account but no formal loan. *Why does
+having an account not turn into credit, and what would let a lender see a farm they cannot see today?*
+
+**Why we think it is a real problem.** In the AHS 2024, 62.7% of agricultural households have an account but only
+14.1% have a formal loan, and the gap is widest for the poorest, female-headed and smallest households (full table in
+[section 1](#1-the-problem)). The results are survey-weighted, carry confidence intervals, and reproduce NISR's
+published tables ([validation](#validation)). The models show associations, not causes, so we make no claim that
+records alone would change who gets a loan. That is what a pilot must test ([roadmap](#12-roadmap)).
+
+**What we built.** A tool that turns a farmer's own records into something a lender can read, with the farmer in
+control of who sees it:
+
+1. **The farmer records** harvests, sales, costs, savings (and where they are held: MoMo, Ibimina, SACCO or bank),
+   food kept at home, and income from outside crop sales. This works on a smartphone or, through the USSD simulator,
+   a basic phone.
+2. **The records stay on the farmer's phone**, locked with a PIN. Nothing is stored on a server.
+3. **The farmer chooses to share.** They make a locked file and give the lender a single-use code.
+4. **The lender reads a plain story with charts** and a repayment worksheet that is arithmetic on the lender's own
+   terms. There is no score and no decision. The lender decides.
+
+**Who it is for.**
+
+| User | Why |
+|---|---|
+| **Smallholder farmers**, above all women-led, poorer and small-plot households | The groups the data shows are most left out of formal credit |
+| **Loan officers** at SACCOs, MFIs and banks | They need evidence about farmers they cannot otherwise assess |
+| **Later:** cooperatives, buyers and policymakers | Buyers could confirm sales; policymakers can see where the gap sits |
+
+**The impact we expect, and what we do not claim.** If a farmer builds a season of records, a lender gets something to
+read instead of guessing, and the farmer keeps control of their data. These are hypotheses. **We have no evidence yet
+that the tool changes loan approvals, so we claim none.** Entries are the farmer's own word unless a receipt is held
+(and even that is unchecked), so nothing in the tool is called verified. See [limitations](#7-limitations-and-responsible-use).
+
 ## Contents
 
+0. [At a glance](#at-a-glance)
 1. [The problem](#1-the-problem)
 2. [From research to product](#2-from-research-to-product)
 3. [What the product does](#3-what-the-product-does)
@@ -109,7 +145,9 @@ flowchart LR
 
 ### 3.1 For farmers
 
-**Sign in with a phone number and a PIN.** No email, no password, no account on our server.
+**Sign in with a phone number and a PIN.** No email, no password, no account on our server. Creating a profile starts
+with a **one-time code** sent to the phone, so a farmer proves the number is theirs; in this build no SMS is sent and the
+code is shown in a clearly labelled demo box until a gateway is connected.
 - The PIN is 4 to 6 digits and must not be trivial (no `1111`, no `1234`, no end of the phone number).
 - Records are encrypted with a key derived from the PIN and stored in the farmer's own browser. A locked backup file
   (`.fbvault`) restores them on another phone.
@@ -121,7 +159,7 @@ flowchart LR
 
 | Step | What the farmer does |
 |---|---|
-| 1. What happened? | Tap *I harvested*, *I sold*, *I spent* or *I saved* |
+| 1. What happened? | Tap *I harvested*, *I sold*, *I spent*, *I saved* or *Other income* |
 | 2. Which crop or cost? | Tap a picture button (maize, beans, potato, cassava, sorghum, rice, banana, coffee, tea, vegetables, milk, other; or seed, fertiliser, pesticide, labour, transport, equipment, land rent, loan repayment, other) |
 | 3. How much? | Type the amount in RWF (and the quantity for harvests and sales) |
 
@@ -169,7 +207,12 @@ name, which appears only on their own access receipt.
 | **At a glance** | A *"What the records say"* story of plain facts (period covered, totals, main income source, biggest cost, months with sales, savings, share backed by receipts), four key figures, monthly money in and out, cumulative cash, where income came from, where money went, price per kg and share of harvest sold |
 | **Repayment worksheet** | The lender types a loan amount, term and interest. The sheet shows the monthly repayment, the farmer's recorded net for each month against that line, and how many months covered it. It is arithmetic on figures the lender sets. It gives **no verdict**, and a *"read this with care"* box lists the caveats |
 | **Record quality** | Months with entries, how entries are backed (the farmer's own word or a receipt or message), simple counts, and questions the lender may ask |
-| **All entries** | Every record with its evidence type |
+| **All entries** | Every record with its evidence type, plus a notes box that lives only in the session and can be downloaded |
+
+The *At a glance* tab also shows where savings are held, the food the household keeps (kilograms valued at the farmer's own
+sale price, never a guessed market price, and not counted as income), and crop sales against other income by month.
+Savings appear beside the repayment worksheet as a line of their own and are never merged into a ratio. The page prints
+without menus or buttons.
 
 The monthly repayment uses the standard level-payment formula, `P·r / (1 − (1 + r)^−n)` with `r` the monthly rate, or
 `P / n` when the rate is zero.
@@ -205,7 +248,8 @@ plainly what it cannot protect. The full threat model is in [`docs/security.md`]
 | **Encryption** | AES-256-GCM with a fresh random nonce per save; key derived from PIN and phone number with scrypt (N = 2^16, r = 8, p = 1, 64 MB, about 0.4 s per guess) and a random salt per vault |
 | **Storage** | The encrypted vault lives in browser local storage and in a downloadable backup. **Nothing is stored on a server.** Unlocked data and the key sit in session memory only while signed in and are cleared on lock, on leaving, and after 15 idle minutes |
 | **Guess protection** | PIN rules, lock-out that grows to 15 minutes, identical error for wrong phone, wrong PIN or damaged file |
-| **Sharing** | Locked file plus a random 12-character code (about 59 bits, no confusable letters), a chosen period and validity, buyer names off by default, rate-limited code attempts, an access receipt for the lender |
+| **Phone check** | Sign-up needs a 6-digit one-time code (5 minutes, 3 tries, 30 seconds between sends, only a salted hash kept). Demo build: shown on screen, no SMS sent |
+| **Sharing** | Locked file plus a random 12-character code (about 59 bits, no confusable letters) that **works once**, a chosen period and validity, buyer names off by default, rate-limited code attempts, an access receipt for the lender |
 | **Untrusted input** | Every imported file is strictly parsed (known fields and types only); text from a farmer's file is HTML-escaped on the lender page |
 | **Purpose binding** | A vault cannot be opened as a share and the reverse, because the purpose is bound into the ciphertext |
 
@@ -213,7 +257,8 @@ plainly what it cannot protect. The full threat model is in [`docs/security.md`]
 - Someone who *copies* the vault can guess a short PIN offline. With slow key derivation a 4-digit PIN falls in about
   an hour of computing on one core and a 6-digit PIN in about four days. The app steers farmers to six digits and a
   private backup.
-- The phone number is a label and is not verified (no SMS gateway).
+- The phone check is demo-only: the code is shown on screen, so it proves nothing until an SMS gateway is connected.
+- "Works once" is remembered in server memory, so an app restart forgets it. A database would make it permanent.
 - A lender who has opened a share can keep what they saw, like a printed report. The farmer is told this first.
 - Lender identity and a server-side audit log need a database; they are not built.
 - The prototype has **not been independently audited**.

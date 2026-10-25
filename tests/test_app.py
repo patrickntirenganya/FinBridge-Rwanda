@@ -64,7 +64,7 @@ def farmer_flow():
     [b for b in at.button if b.label == _t("au.demo", LANG)][0].click().run(); renders += 1   # demo mode
     if at.exception:
         failures.append(("my_records", "example", [e.value for e in at.exception])); return
-    assert len(at.session_state["records"]) == 11, "example records not loaded"
+    assert len(at.session_state["records"]) == 13, "example records not loaded"
     for i in range(len(at.selectbox)):                        # every period in summary and report
         w = at.selectbox[i]
         if w.label in ("Period", "Igihe"):
@@ -91,7 +91,7 @@ def engine_checks():
     from src.i18n import t
     recs = R.example_records()
     i = R.insights(recs)
-    assert i["span_months"] == 10 and i["sale_months"] == 2 and round(i["net"]) == 310000, i
+    assert i["span_months"] == 12 and i["sale_months"] == 2 and round(i["net"]) == 310000, i
     assert round(R.instalment(120000, 0, 6)) == 20000 and R.instalment(0, 10, 6) == 0
     assert 52000 < R.instalment(300000, 18, 6) < 53000
     story = R.story(R.EXAMPLE_PROFILE, recs, LANG)
@@ -112,7 +112,7 @@ def add_flow():
     at.session_state["records"] = []                           # start the add flow from an empty list
     at.run()
     tiles = {b.key: b for b in at.button if b.key and b.key.startswith("tile_")}
-    assert set(tiles) == {"tile_harvest", "tile_sale", "tile_expense", "tile_saving"}, tiles.keys()
+    assert set(tiles) == {"tile_harvest", "tile_sale", "tile_expense", "tile_saving", "tile_offfarm"}, tiles.keys()
     tiles["tile_sale"].click().run(); renders += 1
     assert at.session_state["add_kind"] == "sale" and not at.exception, at.exception
     from src.i18n import t
@@ -122,6 +122,24 @@ def add_flow():
     assert not at.exception and len(at.session_state["records"]) == 1, (at.exception, at.session_state["records"])
     r = at.session_state["records"][0]
     assert r["kind"] == "sale" and r["amount_rwf"] == 50000 and r["evidence"] == "self", r
+    # the new tiles: harvest with food kept at home, saving with a place, other income
+    {b.key: b for b in at.button if b.key}["tile_harvest"].click().run()
+    [n for n in at.number_input if n.label == t("fr.qty", LANG)][0].set_value(500)
+    [n for n in at.number_input if n.label == t("fx.kept", LANG)][0].set_value(200)
+    [b for b in at.button if b.label and t("fx.save", LANG) in b.label][0].click().run(); renders += 1
+    assert at.session_state["records"][-1].get("retained_kg") == 200, at.session_state["records"][-1]
+    {b.key: b for b in at.button if b.key}["tile_saving"].click().run()
+    at.get("pills")[0].set_value([o for o in at.get("pills")[0].options if "Ibimina" in o][0])
+    [n for n in at.number_input if n.label == t("fr.amount", LANG)][0].set_value(45000)
+    [c for c in at.checkbox if c.label == t("fx.receipt_sav", LANG)][0].set_value(True)
+    [b for b in at.button if b.label and t("fx.save", LANG) in b.label][0].click().run(); renders += 1
+    r = at.session_state["records"][-1]
+    assert r["kind"] == "saving" and r["item"] == "Ibimina" and r["evidence"] == "document", r
+    {b.key: b for b in at.button if b.key}["tile_offfarm"].click().run()
+    [n for n in at.number_input if n.label == t("fr.amount", LANG)][0].set_value(30000)
+    [b for b in at.button if b.label and t("fx.save", LANG) in b.label][0].click().run(); renders += 1
+    r = at.session_state["records"][-1]
+    assert r["kind"] == "offfarm" and r["item"] == "Livestock" and not at.exception, (r, at.exception)
 
 
 def vault_checks():
@@ -209,6 +227,34 @@ def share_checks():
         S.make_package(prof, [], validity="7d"); raise AssertionError("empty share allowed")
     except S.ShareError:
         pass
+
+
+def new_fields_checks():
+    import json
+    from datetime import date
+    from src import records as R, share as S
+    D = date(2026, 3, 1)
+    h = R.new_record("harvest", D, "Maize", None, 1200, "kg", retained_kg=400)
+    assert R.validate(h) is None and h["retained_kg"] == 400
+    assert R.validate(R.new_record("harvest", D, "Maize", None, 100, "kg", retained_kg=150)) == "v.retained", \
+        "kept-at-home more than the harvest was accepted"
+    assert R.validate(dict(R.new_record("sale", D, "Maize", 5000), retained_kg=1)) == "v.retained"
+    assert R.validate(R.new_record("offfarm", D, "Trade")) == "v.amount", "other income needs an amount"
+    recs = [h, R.new_record("sale", D, "Maize", 270000, 600, "kg"),                   # 450 RWF per kg
+            R.new_record("harvest", D, "Beans", None, 100, "kg", retained_kg=50),    # no beans sale: no price
+            R.new_record("saving", D, "Ibimina", 45000, evidence="document"),
+            R.new_record("saving", D, "MoMo", 5000), R.new_record("offfarm", D, "Livestock", 80000)]
+    s = R.summarise(recs)
+    assert s["food_value"] == {"Maize": 400 * 450}, s["food_value"]              # only a crop with its own sale price
+    assert s["kept_kg"] == {"Maize": 400, "Beans": 50}
+    assert s["saved_by"] == {"Ibimina": 45000, "MoMo": 5000} and s["saved"] == 50000
+    assert s["offfarm"] == 80000 and s["net"] == 270000, "other income must stay out of the farm net"
+    # an import cannot smuggle bad values, and a share round-trips the new fields
+    bad = json.dumps({"records": [dict(h, retained_kg=9999), dict(h, retained_kg="x")]})
+    assert R.parse_import(bad)[1] == [] and R.parse_import(bad)[2] == 2
+    pkg, code = S.make_package(R.EXAMPLE_PROFILE, recs)
+    _, back, _ = S.open_package(pkg, code)
+    assert any(r.get("retained_kg") == 400 for r in back) and any(r["kind"] == "offfarm" for r in back)
 
 
 def otp_checks():
@@ -398,7 +444,7 @@ def i18n_complete():
     assert all(m in STR for m in msgs)
 
 
-for fn in (farmer_flow, add_flow, engine_checks, vault_checks, share_checks, otp_checks, auth_flow, lender_flow, lender_open_flow, ussd_flow, i18n_complete):
+for fn in (farmer_flow, add_flow, engine_checks, vault_checks, share_checks, new_fields_checks, otp_checks, auth_flow, lender_flow, lender_open_flow, ussd_flow, i18n_complete):
     for LANG in ("rw", "en"):
         try:
             fn()

@@ -26,6 +26,9 @@ farmer chose to share, with the farmer's one-time code: summary, details, all en
 Auth (24 Oct): farmers sign in with phone + PIN; data is encrypted (scrypt + AES-256-GCM) in the browser's local
 storage via a tiny JS bridge (`ui/auth.py`), never stored server-side; sharing is a locked file + single-use code (`src/share.py`, `src/usedcodes.py`); sign-up verifies the phone with a one-time code (`src/otp.py`, DEMO: shown on screen, no SMS gateway yet).
 Verified lender accounts and a server audit log need a database and are NOT built. See `docs/security.md`.
+Record fields (25 Oct): saving records carry a place in `item` (MoMo, Ibimina, SACCO, Bank); harvests may carry `retained_kg`
+(kept at home); `offfarm` is a fifth kind (livestock, trade, casual labour...). Other income never enters the farm net; savings are shown
+beside the repayment worksheet, never merged into a ratio; food value uses the farmer's own sale price per kg and skips crops with none.
 Rules for the record tool: entries are self-reported unless the farmer says a receipt is held; `confirmed`
 evidence is reserved for a future verifier and import files can never grant it; **no score, no lending
 decision, ever**; claim no impact on loan approval without a pilot. Tests fail if the landing copy contains a

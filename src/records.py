@@ -19,7 +19,7 @@ import uuid
 from datetime import date, datetime
 from collections import defaultdict
 
-KINDS = {"harvest": "Harvest", "sale": "Sale", "expense": "Expense", "saving": "Saving"}
+KINDS = {"harvest": "Harvest", "sale": "Sale", "expense": "Expense", "saving": "Saving", "offfarm": "Other income"}
 EVIDENCE = {"self": "Self-reported",
             "document": "Receipt or mobile-money message held (not checked)",
             "confirmed": "Confirmed by buyer or cooperative"}
@@ -28,6 +28,8 @@ CROPS = ["Maize", "Beans", "Irish potato", "Cassava", "Sorghum", "Rice", "Banana
          "Tea", "Vegetables", "Milk", "Other"]
 EXPENSES = ["Seed", "Fertiliser", "Pesticide", "Labour", "Transport", "Equipment", "Land rent",
             "Loan repayment", "Other"]
+SAVING_PLACES = ["MoMo", "Ibimina", "SACCO", "Bank"]       # stored in `item` for saving records
+OFFFARM = ["Livestock", "Trade", "Casual labour", "Tailoring", "Other"]
 UNITS = ["kg", "litres", "count"]
 MAX_RECORDS = 2000
 
@@ -44,10 +46,14 @@ def season_of(d: date) -> str:
 
 
 def new_record(kind, d, item, amount_rwf=None, quantity=None, unit="kg", counterparty="",
-               evidence="self") -> dict:
-    return dict(id=uuid.uuid4().hex[:8], date=d.isoformat() if isinstance(d, date) else str(d),
-                kind=kind, item=item, quantity=quantity, unit=unit, amount_rwf=amount_rwf,
-                counterparty=counterparty.strip()[:60], evidence=evidence)
+               evidence="self", retained_kg=None) -> dict:
+    """`retained_kg` (harvest only): kilograms the household kept to eat. Self-reported like everything else."""
+    r = dict(id=uuid.uuid4().hex[:8], date=d.isoformat() if isinstance(d, date) else str(d),
+             kind=kind, item=item, quantity=quantity, unit=unit, amount_rwf=amount_rwf,
+             counterparty=counterparty.strip()[:60], evidence=evidence)
+    if retained_kg:
+        r["retained_kg"] = retained_kg
+    return r
 
 
 def validate(r: dict) -> str | None:
@@ -60,7 +66,7 @@ def validate(r: dict) -> str | None:
         return "v.kind"
     if r["evidence"] not in EVIDENCE:
         return "v.ev"
-    if r["kind"] in ("sale", "expense", "saving") and not (r.get("amount_rwf") or 0) > 0:
+    if r["kind"] in ("sale", "expense", "saving", "offfarm") and not (r.get("amount_rwf") or 0) > 0:
         return "v.amount"
     if r["kind"] == "harvest" and not (r.get("quantity") or 0) > 0:
         return "v.harvest"
@@ -68,6 +74,9 @@ def validate(r: dict) -> str | None:
         return "v.big_amount"
     if r.get("quantity") is not None and not 0 <= r["quantity"] <= 1e8:
         return "v.big_qty"
+    rk = r.get("retained_kg")
+    if rk is not None and not (r["kind"] == "harvest" and r.get("unit") == "kg" and 0 <= rk <= (r.get("quantity") or 0)):
+        return "v.retained"
     if not str(r.get("item", "")).strip():
         return "v.item"
     return None
@@ -94,6 +103,8 @@ def parse_import(text: str) -> tuple[dict, list[dict], int]:
                      amount_rwf=None if x.get("amount_rwf") is None else float(x["amount_rwf"]),
                      counterparty=str(x.get("counterparty", ""))[:60],
                      evidence=str(x.get("evidence", "self")))
+            if x.get("retained_kg") is not None:
+                r["retained_kg"] = float(x["retained_kg"])
             if r["evidence"] == "confirmed":      # only a verifier may set this; never trust a file
                 r["evidence"] = "document"
         except Exception:
@@ -117,6 +128,7 @@ def summarise(records: list[dict], season: str | None = None) -> dict:
           if season is None or season_of(datetime.strptime(r["date"], "%Y-%m-%d").date()) == season]
     tot = defaultdict(float)
     sales_by, exp_by, harv_kg, sold_kg = defaultdict(float), defaultdict(float), defaultdict(float), defaultdict(float)
+    kept_kg, saved_by, off_by = defaultdict(float), defaultdict(float), defaultdict(float)
     months, monthly = set(), defaultdict(lambda: defaultdict(float))
     ev = defaultdict(int)
     for r in rs:
@@ -131,17 +143,29 @@ def summarise(records: list[dict], season: str | None = None) -> dict:
         elif r["kind"] == "expense":
             tot["expenses"] += a; exp_by[r["item"]] += a; monthly[m]["out"] += a
         elif r["kind"] == "saving":
-            tot["saved"] += a
+            tot["saved"] += a; saved_by[r["item"]] += a
+        elif r["kind"] == "offfarm":
+            tot["offfarm"] += a; off_by[r["item"]] += a; monthly[m]["off"] += a
         elif r["kind"] == "harvest" and r["unit"] == "kg":
             harv_kg[r["item"]] += r.get("quantity") or 0
+            kept_kg[r["item"]] += r.get("retained_kg") or 0
     price = {c: sales_by[c] / sold_kg[c] for c in sold_kg if sold_kg[c] > 0 and sales_by[c] > 0}
     share_sold = {c: min(1.0, sold_kg[c] / harv_kg[c]) for c in harv_kg if harv_kg[c] > 0 and c in sold_kg}
     return dict(n=len(rs), sales=tot["sales"], expenses=tot["expenses"],
-                net=tot["sales"] - tot["expenses"], saved=tot["saved"],
+                net=tot["sales"] - tot["expenses"], saved=tot["saved"], offfarm=tot["offfarm"],
+                saved_by=dict(saved_by), offfarm_by=dict(off_by),
+                kept_kg={c: v for c, v in kept_kg.items() if v > 0},
+                food_value=food_value(dict(kept_kg), price),
                 sales_by=dict(sales_by), expenses_by=dict(exp_by), harvest_kg=dict(harv_kg),
                 price_per_kg=price, share_sold=share_sold,
                 months_with_records=len(months), evidence=dict(ev),
                 monthly={k: dict(v) for k, v in sorted(monthly.items())})
+
+
+def food_value(kept_kg: dict, price_per_kg: dict) -> dict:
+    """Value of food kept at home = kilograms kept x the farmer's OWN average sale price for that crop.
+    A crop with no recorded sale price is left out (never guessed). Not income: it is what buying that food would cost."""
+    return {c: kg * price_per_kg[c] for c, kg in kept_kg.items() if kg > 0 and c in price_per_kg}
 
 
 def _month_span(first: str, last: str) -> int:
@@ -172,7 +196,8 @@ def insights(records: list[dict]) -> dict:
         top_expense=top_exp and (top_exp[0], top_exp[1] / s["expenses"] if s["expenses"] else 0),
         biggest_sale=sales[0] if sales and sales[0][0] > 0 else None,
         receipt_share=(ev.get("document", 0) + ev.get("confirmed", 0)) / n,
-        n=n, net_by_month=net_by_month, monthly=s["monthly"])
+        n=n, net_by_month=net_by_month, monthly=s["monthly"], offfarm=s["offfarm"],
+        offfarm_by_month={m: v["off"] for m, v in s["monthly"].items() if v.get("off")})
 
 
 def instalment(principal: float, annual_rate_pct: float, months: int) -> float:
@@ -208,6 +233,8 @@ def story(profile: dict, records: list[dict], lg: str = "en") -> list[str]:
         out.append(T_("st.sale_months", k=i["sale_months"], m=i["span_months"]))
     if i["saved"] > 0:
         out.append(T_("st.saved", v=money(i["saved"])))
+    if i["offfarm"] > 0:
+        out.append(T_("st.offfarm", v=money(i["offfarm"])))
     out.append(T_("st.receipts", p=f"{i['receipt_share'] * 100:.0f}"))
     return out
 
@@ -256,6 +283,7 @@ def report_html(profile: dict, records: list[dict], season: str | None, example:
 <tr><td>{T_('rp.exp')}</td><td><b>{money(s['expenses'])}</b></td></tr>
 <tr><td>{T_('rp.net')}</td><td><b>{money(s['net'])}</b></td></tr>
 <tr><td>{T_('rp.saved')}</td><td><b>{money(s['saved'])}</b></td></tr>
+<tr><td>{T_('rp.offfarm')}</td><td><b>{money(s['offfarm'])}</b></td></tr>
 <tr><td>{T_('rp.months')}</td><td><b>{s['months_with_records']}</b></td></tr></table>
 <p style="font-size:.9rem">{T_('rp.formula')}</p>
 <h2>{T_('rp.by_crop')}</h2><table cellpadding=6>{rows}</table>
@@ -276,12 +304,14 @@ def example_records() -> list[dict]:
         r("expense", D(2025, 9, 14), "Seed", 18000, 30, "kg"),
         r("expense", D(2025, 9, 20), "Fertiliser", 42000, 100, "kg", "Agro-dealer", "document"),
         r("expense", D(2025, 10, 2), "Labour", 25000),
-        r("harvest", D(2026, 1, 20), "Maize", None, 900, "kg"),
+        r("harvest", D(2026, 1, 20), "Maize", None, 900, "kg", retained_kg=250),
         r("sale", D(2026, 1, 28), "Maize", 207000, 450, "kg", "Cooperative", "document"),
-        r("saving", D(2026, 2, 3), "Savings", 50000, evidence="document"),
+        r("saving", D(2026, 2, 3), "Ibimina", 50000, evidence="document"),
+        r("offfarm", D(2026, 4, 15), "Casual labour", 45000),
+        r("offfarm", D(2026, 8, 10), "Livestock", 70000),
         r("expense", D(2026, 2, 10), "Seed", 22000, 40, "kg"),
         r("expense", D(2026, 3, 1), "Labour", 30000),
         r("harvest", D(2026, 6, 12), "Beans", None, 400, "kg"),
         r("sale", D(2026, 6, 20), "Beans", 240000, 300, "kg", "Local trader"),
-        r("saving", D(2026, 6, 25), "Savings", 60000),
+        r("saving", D(2026, 6, 25), "MoMo", 60000),
     ]

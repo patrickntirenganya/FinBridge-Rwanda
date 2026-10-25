@@ -56,8 +56,8 @@ def my_records():
     auth.persist()
 
 
-KIND_ICON = {"harvest": "🌾", "sale": "💰", "expense": "🧾", "saving": "🏦"}
-TILES = [("harvest", "fx.harvested"), ("sale", "fx.sold"), ("expense", "fx.spent"), ("saving", "fx.saved")]
+KIND_ICON = {"harvest": "🌾", "sale": "💰", "expense": "🧾", "saving": "🏦", "offfarm": "🧑‍🔧"}
+TILES = [("harvest", "fx.harvested"), ("sale", "fx.sold"), ("expense", "fx.spent"), ("saving", "fx.saved"), ("offfarm", "fx.offfarm")]
 ITEM_ICON = {"Maize": "🌽", "Beans": "🫘", "Irish potato": "🥔", "Cassava": "🍠", "Sorghum": "🌾", "Rice": "🍚",
              "Banana": "🍌", "Coffee": "☕", "Tea": "🍃", "Vegetables": "🥬", "Milk": "🥛", "Other": "➕",
              "Seed": "🌱", "Fertiliser": "🧪", "Pesticide": "🧴", "Labour": "👷", "Transport": "🚚",
@@ -76,7 +76,7 @@ def _add_tab(ss):
 
     st.markdown(f"#### {t('fx.step1')}")
     ss.setdefault("add_kind", None)
-    for col, (k, key) in zip(st.columns(4), TILES):
+    for col, (k, key) in zip(st.columns(len(TILES)), TILES):
         if col.button(f"{KIND_ICON[k]}  {t(key)}", key=f"tile_{k}", width="stretch",
                       type="primary" if ss.add_kind == k else "secondary"):
             ss.add_kind = k
@@ -86,18 +86,18 @@ def _add_tab(ss):
         st.info(t("fx.pick"))
     else:
         with st.form("add", clear_on_submit=True):
-            it = "Savings"
-            if kind != "saving":
-                keys = R.EXPENSES if kind == "expense" else R.CROPS
-                st.markdown(f"#### {t('fx.step_exp' if kind == 'expense' else 'fx.step_crop')}")
-                label_of = {f"{ITEM_ICON.get(k, '')} {item(k)}": k for k in keys}
-                pick = st.pills("item", list(label_of), selection_mode="single", default=list(label_of)[0],
-                                label_visibility="collapsed")
-                it = label_of.get(pick, "")
-            qty = amt = None
+            keys = {"expense": R.EXPENSES, "saving": R.SAVING_PLACES, "offfarm": R.OFFFARM}.get(kind, R.CROPS)
+            step_lbl = {"expense": "fx.step_exp", "saving": "fx.step_place", "offfarm": "fx.step_off"}.get(kind, "fx.step_crop")
+            st.markdown(f"#### {t(step_lbl)}")
+            label_of = {f"{ITEM_ICON.get(k, '')} {item(k)}": k for k in keys}
+            pick = st.pills("item", list(label_of), selection_mode="single", default=list(label_of)[0],
+                            label_visibility="collapsed")
+            it = label_of.get(pick, "")
+            qty = amt = kept = None
             if kind == "harvest":
                 st.markdown(f"#### {t('fx.step_qty_h')}")
                 qty = st.number_input(t("fr.qty"), 0.0, 1e8, 0.0, 10.0, label_visibility="collapsed")
+                kept = st.number_input(t("fx.kept"), 0.0, 1e8, 0.0, 10.0, help=t("fx.kept_help"))
             else:
                 st.markdown(f"#### {t('fx.step_amt')}")
                 amt = st.number_input(t("fr.amount"), 0, 10**10, 0, 1000, label_visibility="collapsed")
@@ -109,10 +109,10 @@ def _add_tab(ss):
                 ul, umap = _opts(R.UNITS, lambda u: t(f"unit.{u}"))
                 unit = umap[c2.selectbox(t("fr.unit"), ul)]
                 who = st.text_input(t("fr.who"), max_chars=60) if kind in ("sale", "expense") else ""
-                has_doc = st.checkbox(t("fx.receipt"), help=t("ev.help"))
+                has_doc = st.checkbox(t("fx.receipt_sav" if kind == "saving" else "fx.receipt"), help=t("ev.help"))
             if st.form_submit_button(f"{KIND_ICON[kind]}  {t('fx.save')}", type="primary", width="stretch"):
                 rec = R.new_record(kind, when, it, float(amt) if amt else None, qty or None, unit, who,
-                                   "document" if has_doc else "self")
+                                   "document" if has_doc else "self", retained_kg=kept or None)
                 err = R.validate(rec)
                 if err:
                     st.error(t(err))

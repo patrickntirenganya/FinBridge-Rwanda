@@ -110,6 +110,26 @@ def _glance(p, recs, ins):
         if s["share_sold"]:
             st.markdown(f"**{t('ld.c_share')}**")
             _show(_hbar([(k, v * 100) for k, v in s["share_sold"].items()], T.SORGHUM))
+    if ins["offfarm_by_month"]:
+        st.markdown(f"**{t('ld.off_title')}**")
+        fig = go.Figure()
+        fig.add_bar(x=months, y=inn, name=t("ld.off_farm"), marker_color=T.TEA)
+        fig.add_bar(x=months, y=[ins["offfarm_by_month"].get(x, 0) for x in months], name=t("ld.off_other"),
+                    marker_color=T.SORGHUM)
+        T.layout(fig, height=280, showlegend=True, barmode="stack", legend=dict(orientation="h", y=-0.2))
+        fig.update_yaxes(tickformat=",", gridcolor=T.LINE)
+        _show(fig, t("ld.off_hint"))
+    if s["saved_by"]:
+        st.markdown(f"**{t('ld.sav_title')}**")
+        _show(_hbar(s["saved_by"].items(), T.TEA), t("ld.sav_note"))
+    if s["kept_kg"]:
+        with st.container(border=True):
+            st.markdown(f"**{t('ld.food_title')}**")
+            for c, kg in sorted(s["kept_kg"].items(), key=lambda kv: -kv[1]):
+                v = s["food_value"].get(c)
+                st.markdown("- " + (t("ld.food_line", c=item(c), kg=f"{kg:,.0f}", v=m_(v)) if v
+                                    else t("ld.food_noval", c=item(c), kg=f"{kg:,.0f}")))
+            st.caption(t("ld.food_note"))
 
 
 def _worksheet(recs, ins):
@@ -127,6 +147,9 @@ def _worksheet(recs, ins):
     st.markdown("- " + t("ld.w_avg", m=len(months), n=m_(sum(nets) / len(months))))
     st.markdown("- " + t("ld.w_cover", k=sum(1 for n in nets if n >= inst), m=len(months)))
     st.markdown("- " + t("ld.w_total", n=m_(sum(nets)), t=m_(inst * int(term))))
+    saved = ins["saved"]
+    if saved > 0 and inst > 0:           # shown beside the farm figures, never merged into them
+        st.markdown("- " + t("ld.sav_cover", s=m_(saved), k=int(saved // inst), i=m_(inst)))
     fig = go.Figure()
     fig.add_bar(x=months, y=nets, name=t("ld.w_net"), marker_color=[T.TEA if n >= 0 else T.SOIL for n in nets])
     fig.add_hline(y=inst, line=dict(color=T.SORGHUM, width=3, dash="dash"), annotation_text=t("ld.w_rep"),

@@ -13,8 +13,14 @@ import streamlit as st
 from src import records as R
 from src import share
 from src import vault as V
+from src.usedcodes import Registry
 from src.i18n import t, item, lang
 from ui import theme as T
+
+
+@st.cache_resource
+def _registry():
+    return Registry()
 
 
 def _state():
@@ -210,8 +216,11 @@ def lender_view():
                     if not (up and code):
                         raise share.ShareError
                     prof, recs, meta = share.open_package(up.getvalue().decode("utf-8"), code)
+                    share.claim(_registry(), meta)           # a right code is only right once
                 except share.Expired:
                     st.error(t("ld.expired"))
+                except share.Used:
+                    st.error(t("ld.used"))
                 except Exception:
                     ss.lender_lock = V.register_fail(lock)
                     st.error(t("ld.bad"))

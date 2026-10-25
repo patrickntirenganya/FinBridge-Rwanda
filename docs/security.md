@@ -23,6 +23,8 @@ how, and, just as important, what we do not and cannot protect. It is written fo
 | Guess lock-out | After 4 wrong tries: 30 s, doubling to 15 min. Same wording for wrong phone, wrong PIN or damaged file | `src/vault.py`, `ui/auth.py` |
 | Session | Key and data live in session memory only; cleared on Lock, leaving the page's session, and after 15 minutes idle | `ui/auth.py` |
 | Sharing | Farmer creates an encrypted `.fbshare` with a random 12-character code (about 59 bits, no confusable letters), chosen period, optional names, 1/7/30-day validity | `src/share.py` |
+| Phone check (sign-up) | 6-digit one-time code, 5 minutes, 3 tries, 30 s between sends, only a salted HMAC kept. **Demo build: no SMS is sent, the code is shown in a labelled box** until a gateway is connected | `src/otp.py`, `ui/auth.py` |
+| Single-use share code | Each share carries a random id inside the encrypted data; the first successful opening claims it, later openings are refused. **Demo limit: the record is in server memory, so it resets on restart** | `src/usedcodes.py`, `src/share.py` |
 | Share opening | Code attempts are rate-limited; expiry is stored inside the authenticated data; contents are re-validated like any import and can never carry `confirmed` evidence | `src/share.py`, `ui/lender.py` |
 | Untrusted input | Every imported file goes through `records.parse_import` (known fields and types only); farmer text shown on the lender page is HTML-escaped | `src/records.py`, `ui/lender.py` |
 | Browser bridge | A ~30-line JavaScript component copies opaque strings to and from local storage. It never sees a PIN or a record, and no user text is ever put into its code | `ui/auth.py` |
@@ -37,7 +39,7 @@ how, and, just as important, what we do not and cannot protect. It is written fo
 | Anyone with the share file guesses the code | 59-bit random code with the same slow key derivation | Negligible |
 | A lender keeps what they saw | Not preventable in any system that shows data (same as a printed report). The farmer is told this before sharing; the code is shown once; shares expire; names are off by default | Accepted; consent-based |
 | Lender impersonates an institution | Lenders do not have accounts yet, so identity is not verified; the optional institution name appears only on the lender's own access receipt | **Open.** Needs a database (see below) |
-| Phone number belongs to someone else | The number is a label, not verified (no SMS). It cannot unlock anything without the PIN | Open until an SMS gateway is added |
+| Phone number belongs to someone else | Sign-up needs a one-time code to that number. It cannot unlock anything without the PIN | Demo build shows the code on screen, so it proves nothing until an SMS gateway is connected |
 | Malicious file or hostile text (XSS) | Strict parsing, escaped output, no user text in script or HTML | Low |
 | Server operator reading records | They exist in server memory while a farmer is signed in (the app must compute on them). Never stored or logged. Fully client-side processing would remove this | Accepted for the prototype |
 | Lost phone or forgotten PIN | No recovery by design (we hold no key). Restore from the locked backup with the old PIN | Data loss if there is no backup |
@@ -47,7 +49,8 @@ how, and, just as important, what we do not and cannot protect. It is written fo
 - It is a prototype, not an audited product. No independent security review has been done.
 - A verified lender identity, a server-side audit log and revocable access need a small database. That is the planned
   next step (lender accounts with email and password, and a log of every share opened).
-- The farmer's phone number is not verified.
+- The farmer's phone number is only verified in demo form (the code is shown on screen, not texted).
+- "Used once" is remembered in server memory; a restart forgets it. A database makes it durable.
 - Expiry of a share is enforced by FinBridge when it opens the file, not by the file itself.
 
 ## Data-protection notes

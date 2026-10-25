@@ -1,5 +1,5 @@
 """Consent-based sharing: the farmer packages chosen records into an encrypted file and gives the lender a
-one-time code separately. No server is involved. Channel-agnostic and free of any UI.
+single-use code separately (see usedcodes.py). No server is involved. Channel-agnostic and free of any UI.
 
 What the farmer controls: which period, whether buyer/seller names are included, whether their name is
 included, and how long the share stays valid. What we cannot promise: a lender who has opened a share can keep
@@ -26,6 +26,10 @@ class ShareError(Exception):
 
 class Expired(ShareError):
     pass
+
+
+class Used(ShareError):
+    """The code was already used to open this share. A share opens once."""
 
 
 def new_code() -> str:
@@ -59,7 +63,7 @@ def make_package(profile: dict, records: list[dict], *, season: str | None = Non
     created = _now()
     expires = created + timedelta(hours=VALIDITY_HOURS[validity])
     code = new_code()
-    meta = {"created": created.isoformat(timespec="seconds"), "expires": expires.isoformat(timespec="seconds"),
+    meta = {"id": secrets.token_hex(8), "created": created.isoformat(timespec="seconds"), "expires": expires.isoformat(timespec="seconds"),
             "season": season, "names_included": include_names, "n": len(recs)}
     payload = json.dumps({"meta": meta, "profile": prof, "records": recs}, ensure_ascii=False).encode()
     salt = crypto.new_salt()
@@ -69,6 +73,16 @@ def make_package(profile: dict, records: list[dict], *, season: str | None = Non
                       "salt": crypto.b64e(salt), "nonce": crypto.b64e(nonce), "ct": crypto.b64e(ct)},
                      separators=(",", ":"))
     return pkg, code
+
+
+def claim(registry, meta: dict, now: datetime | None = None) -> None:
+    """Mark an opened share as used. Raises Used when it was opened before (or carries no id to track)."""
+    try:
+        sid, exp = str(meta["id"]), datetime.fromisoformat(meta["expires"]).timestamp()
+    except Exception as e:
+        raise Used("no id") from e
+    if not registry.claim(sid, exp, now.timestamp() if now else None):
+        raise Used("already opened")
 
 
 def open_package(pkg: str, code: str, now: datetime | None = None) -> tuple[dict, list[dict], dict]:

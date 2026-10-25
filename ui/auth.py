@@ -13,6 +13,7 @@ import uuid
 
 import streamlit as st
 
+from src import otp as O
 from src import records as R
 from src import vault as V
 from src.i18n import t
@@ -123,7 +124,7 @@ def persist():
 def lock_session():
     """Forget the unlocked data and key. The encrypted copy stays safe in the browser."""
     ss = st.session_state
-    for k in ("auth", "blob", "_hash", "demo", "last_share"):
+    for k in ("auth", "blob", "_hash", "demo", "last_share", "verified_phone", "otp", "otp_demo"):
         ss.pop(k, None)
     ss.records, ss.example = [], False
     ss.profile = dict(name="", district="", crops="", farm_ha=0.0)
@@ -206,9 +207,56 @@ def _sign_in_form(stored):
         _start(phone, prof, recs, key, salt)
 
 
-def _sign_up_form(stored):
-    with st.form("signup"):
+def _verify_phone() -> str | None:
+    """Step 1 of sign-up: a one-time code proves the farmer holds the phone. Returns the verified number or None."""
+    ss = st.session_state
+    if ss.get("verified_phone"):
+        st.success(t("otp.verified", p=V.mask_phone(ss["verified_phone"])))
+        if st.button(t("otp.change")):
+            for k in ("verified_phone", "otp", "otp_demo"):
+                ss.pop(k, None)
+            st.rerun()
+        return ss["verified_phone"]
+    with st.form("otp_send"):
         phone_raw = st.text_input(t("au.phone"), max_chars=20, autocomplete="tel")
+        send = st.form_submit_button(t("otp.send"), type="primary", width="stretch")
+    if send:
+        phone = V.normalise_phone(phone_raw)
+        if not phone:
+            st.error(t("au.phone_bad"))
+        else:
+            try:
+                ss.otp, code = O.issue(ss.get("otp"), phone)
+            except O.Wait as w:
+                st.warning(t("otp.wait", s=w.seconds))
+            else:
+                ss.otp_demo = None if O.send_sms(phone, t("otp.sms", c=code)) else code
+    if ss.get("otp"):
+        if ss.get("otp_demo"):
+            st.info(t("otp.demo_sms", c=ss.otp_demo))
+        else:
+            st.caption(t("otp.sent", p=V.mask_phone(ss.otp["phone"])))
+        with st.form("otp_check"):
+            code = st.text_input(t("otp.code"), max_chars=8, autocomplete="one-time-code")
+            ok = st.form_submit_button(t("otp.check"), width="stretch")
+        if ok:
+            phone = ss.otp["phone"]
+            ss.otp, res = O.verify(ss.otp, code)
+            if res == "ok":
+                ss["verified_phone"] = phone
+                ss.pop("otp_demo", None)
+                st.rerun()
+            st.error(t(f"otp.{res}"))
+    return None
+
+
+def _sign_up_form(stored):
+    phone_ok = _verify_phone()
+    if not phone_ok:
+        st.caption(t("au.why"))
+        return
+    with st.form("signup"):
+        phone_raw = phone_ok
         name = st.text_input(t("au.name"), max_chars=60)
         pin = st.text_input(t("au.pin"), type="password", max_chars=6, autocomplete="new-password")
         pin2 = st.text_input(t("au.pin2"), type="password", max_chars=6, autocomplete="new-password")

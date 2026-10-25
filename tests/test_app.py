@@ -211,6 +211,40 @@ def share_checks():
         pass
 
 
+def otp_checks():
+    from src import otp as O, usedcodes as U, share as S, records as R
+    st_, code = O.issue(None, "0788123456", now=1000)
+    assert len(code) == 6 and code.isdigit() and code not in str(st_), "code must not be stored in the clear"
+    try:
+        O.issue(st_, "0788123456", now=1010); raise AssertionError("resend cooldown not enforced")
+    except O.Wait:
+        pass
+    bad = "000000" if code != "000000" else "111111"
+    s2, r = O.verify(st_, bad, now=1020); assert r == "wrong"
+    assert O.verify(s2, code, now=2000)[1] == "expired"
+    s3, r = O.verify(s2, bad, now=1021); s3, r = O.verify(s3, bad, now=1022); assert r == "locked"
+    assert O.verify(s3, code, now=1023)[1] == "locked", "locked state accepted the right code"
+    s4, r = O.verify(st_, f"{code[:3]} {code[3:]}", now=1030); assert r == "ok" and s4 is None, "spaces must be ignored"
+    st5, code5 = O.issue(st_, "0788123456", now=1100)
+    assert O.verify(st5, code, now=1101)[1] in ("wrong", "locked") or code == code5, "old code still works"
+    # single-use share codes
+    from datetime import datetime, timedelta, timezone
+    reg = U.Registry()
+    pkg, c = S.make_package(R.EXAMPLE_PROFILE, R.example_records())
+    _, _, meta = S.open_package(pkg, c)
+    S.claim(reg, meta)
+    try:
+        S.claim(reg, meta); raise AssertionError("share opened twice")
+    except S.Used:
+        pass
+    pkg2, c2 = S.make_package(R.EXAMPLE_PROFILE, R.example_records())
+    S.claim(reg, S.open_package(pkg2, c2)[2])
+    try:
+        S.claim(reg, {k: v for k, v in meta.items() if k != "id"}); raise AssertionError("id-less share allowed")
+    except S.Used:
+        pass
+
+
 def auth_flow():
     """Sign up, add a record, check it is saved encrypted, lock, sign back in, and fail with a wrong PIN."""
     global renders
@@ -220,6 +254,14 @@ def auth_flow():
     ti = lambda lbl: [w for w in at.text_input if w.label == t(lbl, LANG)]
     # the sign-up tab comes first when nothing is stored; fill the sign-up form
     ti("au.phone")[0].set_value("0788 123 456")
+    [b for b in at.button if b.label == t("otp.send", LANG)][0].click().run(); renders += 1
+    assert at.session_state["otp_demo"] and not at.session_state.get("verified_phone")
+    ti("otp.code")[0].set_value("000000" if at.session_state["otp_demo"] != "000000" else "111111")
+    [b for b in at.button if b.label == t("otp.check", LANG)][0].click().run()
+    assert not at.session_state.get("verified_phone"), "wrong code verified the phone"
+    ti("otp.code")[0].set_value(at.session_state["otp_demo"])
+    [b for b in at.button if b.label == t("otp.check", LANG)][0].click().run(); renders += 1
+    assert at.session_state["verified_phone"] == "0788123456", "right code did not verify the phone"
     ti("au.pin")[0].set_value("829104")
     ti("au.pin2")[0].set_value("829104")
     [c for c in at.checkbox if c.label == t("au.ack", LANG)][0].set_value(True)
@@ -356,7 +398,7 @@ def i18n_complete():
     assert all(m in STR for m in msgs)
 
 
-for fn in (farmer_flow, add_flow, engine_checks, vault_checks, share_checks, auth_flow, lender_flow, lender_open_flow, ussd_flow, i18n_complete):
+for fn in (farmer_flow, add_flow, engine_checks, vault_checks, share_checks, otp_checks, auth_flow, lender_flow, lender_open_flow, ussd_flow, i18n_complete):
     for LANG in ("rw", "en"):
         try:
             fn()

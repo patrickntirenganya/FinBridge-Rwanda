@@ -24,7 +24,7 @@ The app reads no aggregate table. Pages: `Home` (landing, TypeScript + Tailwind)
 nothing stored server-side) and the USSD simulator; **for lenders** `Open a farmer's report` (opens the locked `.fbshare` file a
 farmer chose to share, with the farmer's one-time code: summary, details, all entries, evidence mix, what to check, questions to ask); `About`.
 Auth (24 Oct): farmers sign in with phone + PIN; data is encrypted (scrypt + AES-256-GCM) in the browser's local
-storage via a tiny JS bridge (`ui/auth.py`), never stored server-side; sharing is a locked file + code (`src/share.py`).
+storage via a tiny JS bridge (`ui/auth.py`), never stored server-side; sharing is a locked file + single-use code (`src/share.py`, `src/usedcodes.py`); sign-up verifies the phone with a one-time code (`src/otp.py`, DEMO: shown on screen, no SMS gateway yet).
 Verified lender accounts and a server audit log need a database and are NOT built. See `docs/security.md`.
 Rules for the record tool: entries are self-reported unless the farmer says a receipt is held; `confirmed`
 evidence is reserved for a future verifier and import files can never grant it; **no score, no lending

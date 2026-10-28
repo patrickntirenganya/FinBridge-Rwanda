@@ -24,6 +24,14 @@ def _load(name: str) -> dict:
     return json.loads((_AGG / name).read_text())
 
 
+def crops() -> list[str]:
+    return list(dict.fromkeys(b["crop"] for b in _load(YIELD_FILE)["benchmarks"]))
+
+
+def seasons_for(crop: str) -> list[str]:
+    return [b["season"] for b in _load(YIELD_FILE)["benchmarks"] if b["crop"] == crop]
+
+
 def crops_for(season: str) -> list[str]:
     return sorted({b["crop"] for b in _load(YIELD_FILE)["benchmarks"] if b["season"] == season})
 

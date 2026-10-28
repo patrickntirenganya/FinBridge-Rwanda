@@ -84,7 +84,43 @@ def farmer_flow():
     bad = '{"records":[{"date":"2026-01-01","kind":"sale","item":"Maize","amount_rwf":5000,"evidence":"confirmed"},' \
           '{"date":"nope","kind":"sale","item":"x","amount_rwf":1},{"date":"2026-01-01","kind":"sale","item":"x","amount_rwf":-5}]}'
     prof, recs, skipped = R.parse_import(bad)
-    assert len(recs) == 1 and recs[0]["evidence"] == "document" and skipped == 2, "import validation failed"
+    assert len(recs) == 1 and recs[0]["evidence"] == "self" and skipped == 2, "import validation failed"
+    # a file may carry a typed reference, shown as attached-not-checked, but can never carry "confirmed"
+    ok = '{"records":[{"date":"2026-01-01","kind":"sale","item":"Maize","amount_rwf":5000,"evidence":"confirmed","reference":"TX123"},' \
+         '{"date":"2026-01-02","kind":"sale","item":"Maize","amount_rwf":5000,"evidence":"document"}]}'
+    _, recs2, _ = R.parse_import(ok)
+    assert [r["evidence"] for r in recs2] == ["document", "self"] and recs2[0]["reference"] == "TX123", recs2
+    assert R.validate(R.new_record("sale", "2026-01-01", "Maize", 5000, evidence="document")) == "v.ref"
+    assert "confirmed" not in R.SELECTABLE_EVIDENCE
+
+
+def harvest_check_flow():
+    """B1 in the UI: a band appears for a harvest, and nothing about it lands in records, backup, report or share."""
+    global renders
+    import json
+    from src import records as R, benchmarks as B
+    from src.i18n import t as _t
+    at = fresh("farmer:my_records")
+    [b for b in at.button if b.label == _t("au.demo", LANG)][0].click().run(); renders += 1
+    before = json.dumps([at.session_state["records"], at.session_state["profile"]], sort_keys=True)
+    at.selectbox(key="cmp_crop").select(_t("cmp.crop.Maize", LANG)).run()
+    at.selectbox(key="cmp_season").select(_t("cmp.season.A", LANG)).run()
+    at.number_input(key="cmp_kg").set_value(500.0).run()
+    at.number_input(key="cmp_area").set_value(1.0).run(); renders += 1       # 1 ha -> 500 kg/ha
+    assert not at.exception, at.exception
+    blob = " ".join(m.value for m in at.markdown)
+    assert _t("cmp.below", LANG) in blob and "500" in blob, "below-band text missing"
+    assert any(B.SOURCE_LINE in c.value for c in at.caption), "source line missing"
+    assert any(_t("cmp.below_help", LANG) == i.value for i in at.info), "below-p25 guidance missing"
+    for bad in ("vulnerable", "Vulnerable"):
+        assert bad not in blob
+    after = json.dumps([at.session_state["records"], at.session_state["profile"]], sort_keys=True)
+    assert before == after, "the harvest comparison changed the records or profile"
+    assert "cmp_kg" not in json.dumps(at.session_state["records"])
+    at.number_input(key="cmp_kg").set_value(1500.0).run()
+    assert _t("cmp.typical", LANG) in " ".join(m.value for m in at.markdown)
+    at.number_input(key="cmp_kg").set_value(4000.0).run()
+    assert _t("cmp.above", LANG) in " ".join(m.value for m in at.markdown)
 
 
 def engine_checks():
@@ -132,10 +168,10 @@ def add_flow():
     {b.key: b for b in at.button if b.key}["tile_saving"].click().run()
     at.get("pills")[0].set_value([o for o in at.get("pills")[0].options if "Ibimina" in o][0])
     [n for n in at.number_input if n.label == t("fr.amount", LANG)][0].set_value(45000)
-    [c for c in at.checkbox if c.label == t("fx.receipt_sav", LANG)][0].set_value(True)
+    [x for x in at.text_input if x.label == t("fx.receipt_sav", LANG)][0].set_value("SMS-77")
     [b for b in at.button if b.label and t("fx.save", LANG) in b.label][0].click().run(); renders += 1
     r = at.session_state["records"][-1]
-    assert r["kind"] == "saving" and r["item"] == "Ibimina" and r["evidence"] == "document", r
+    assert r["kind"] == "saving" and r["item"] == "Ibimina" and r["evidence"] == "document" and r["reference"] == "SMS-77", r
     {b.key: b for b in at.button if b.key}["tile_offfarm"].click().run()
     [n for n in at.number_input if n.label == t("fr.amount", LANG)][0].set_value(30000)
     [b for b in at.button if b.label and t("fx.save", LANG) in b.label][0].click().run(); renders += 1
@@ -563,6 +599,10 @@ for fn in (farmer_flow, add_flow, engine_checks, vault_checks, share_checks, new
             import traceback
             failures.append((fn.__name__, LANG, [repr(e), traceback.format_exc().splitlines()[-6:]]))
 
+try:
+    harvest_check_flow()
+except Exception as e:
+    failures.append(("harvest_check_flow", "-", [repr(e)]))
 try:
     benchmarks_ok_and_never_stored()
 except Exception as e:

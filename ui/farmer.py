@@ -9,7 +9,7 @@ import json
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from src import records as R, share, ussd as U
+from src import benchmarks as B, records as R, share, ussd as U
 from src.i18n import t, item, lang, season_label
 from ui import auth, theme as T
 
@@ -45,13 +45,15 @@ def my_records():
     if not ss.records:
         st.markdown(f"### {t('fx.welcome')}")
 
-    tab_add, tab_sum, tab_share = st.tabs([t("fr.tab_add"), t("fr.tab_sum"), t("fr.tab_share")])
+    tab_add, tab_sum, tab_share, tab_cmp = st.tabs([t("fr.tab_add"), t("fr.tab_sum"), t("fr.tab_share"), t("cmp.tab")])
     with tab_add:
         _add_tab(ss)
     with tab_sum:
         _summary_tab(ss)
     with tab_share:
         _share_tab(ss)
+    with tab_cmp:
+        _compare_tab()
     T.note(t("fr.disclaimer"))
     auth.persist()
 
@@ -65,7 +67,7 @@ ITEM_ICON = {"Maize": "🌽", "Beans": "🫘", "Irish potato": "🥔", "Cassava"
 
 
 def _add_tab(ss):
-    """Tap what happened, tap the item, type the amount. Date, buyer and receipt are optional extras."""
+    """Tap what happened, tap the item, type the amount. Date, buyer and reference are optional extras."""
     with st.expander(t("fr.about"), expanded=False):
         p = ss.profile
         c1, c2 = st.columns(2)
@@ -109,10 +111,11 @@ def _add_tab(ss):
                 ul, umap = _opts(R.UNITS, lambda u: t(f"unit.{u}"))
                 unit = umap[c2.selectbox(t("fr.unit"), ul)]
                 who = st.text_input(t("fr.who"), max_chars=60) if kind in ("sale", "expense") else ""
-                has_doc = st.checkbox(t("fx.receipt_sav" if kind == "saving" else "fx.receipt"), help=t("ev.help"))
+                ref = st.text_input(t("fx.receipt_sav" if kind == "saving" else "fx.receipt"), max_chars=R.REF_MAX,
+                                    help=t("ev.help") + " " + t("fx.ref_help"))
             if st.form_submit_button(f"{KIND_ICON[kind]}  {t('fx.save')}", type="primary", width="stretch"):
                 rec = R.new_record(kind, when, it, float(amt) if amt else None, qty or None, unit, who,
-                                   "document" if has_doc else "self", retained_kg=kept or None)
+                                   "document" if ref.strip() else "self", retained_kg=kept or None, reference=ref)
                 err = R.validate(rec)
                 if err:
                     st.error(t(err))
@@ -131,11 +134,12 @@ def _add_tab(ss):
         df["item"] = df["item"].map(item)
         df["unit"] = df.unit.map(lambda u: t(f"unit.{u}"))
         df["evidence"] = df.evidence.map(lambda e: t("ev.short.self") if e == "self" else t("ev.short.document"))
-        st.dataframe(df[["date", "kind", "item", "quantity", "unit", "amount_rwf", "counterparty", "evidence"]]
+        df["reference"] = df["reference"].fillna("") if "reference" in df else ""
+        st.dataframe(df[["date", "kind", "item", "quantity", "unit", "amount_rwf", "counterparty", "evidence", "reference"]]
                      .rename(columns={"date": t("fr.col.date"), "kind": t("fr.col.kind"), "item": t("fr.col.item"),
                                       "quantity": t("fr.col.qty"), "unit": t("fr.col.unit"),
                                       "amount_rwf": t("fr.col.rwf"), "counterparty": t("fr.col.with"),
-                                      "evidence": t("fr.col.ev")}), hide_index=True, width="stretch")
+                                      "evidence": t("fr.col.ev"), "reference": t("fr.col.ref")}), hide_index=True, width="stretch")
         ids = {r["id"]: f'{r["date"]} · {t("kind." + r["kind"])} · {item(r["item"])}' for r in ss.records}
         c1, c2 = st.columns([3, 1])
         gone = c1.selectbox(t("fr.remove_label"), list(ids), format_func=ids.get, index=None,
@@ -193,6 +197,32 @@ def summary_view(records, key):
                 st.markdown(f"- {item(c)}: {v * 100:.0f}%")
         ev = s["evidence"]
         st.markdown(t("fr.evmix", a=ev.get("self", 0), b=ev.get("document", 0), c=ev.get("confirmed", 0)))
+
+
+def _compare_tab():
+    """How one harvest compares with similar plots. Computed here, shown here, never added to a record or export."""
+    st.markdown(f'<p class="lede">{t("cmp.lede")}</p>', unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    cl, cmap = _opts(B.crops(), lambda c: t(f"cmp.crop.{c}"))
+    crop = cmap[c1.selectbox(t("cmp.crop"), cl, key="cmp_crop")]
+    sl, smap = _opts(B.seasons_for(crop), lambda x: t(f"cmp.season.{x}"))
+    season = smap[c2.selectbox(t("cmp.season"), sl, key="cmp_season")]
+    c3, c4 = st.columns(2)
+    kg = c3.number_input(t("cmp.kg"), 0.0, 1e8, 0.0, 10.0, key="cmp_kg")
+    area = c4.number_input(t("cmp.area"), 0.0, 1e6, 0.0, 0.01, key="cmp_area")
+    ul, umap = _opts(["ha", "m2"], lambda u: t(f"cmp.unit.{u}"))
+    unit = umap[c4.radio(t("cmp.area_unit"), ul, horizontal=True, key="cmp_unit", label_visibility="collapsed")]
+    share = st.slider(t("cmp.share"), 10, 100, 100, 5, key="cmp_share")
+    st.caption(t("cmp.share_hint"))
+    res = B.band(crop, season, kg, area * (10000 if unit == "ha" else 1), share)
+    if not res:
+        st.info(t("cmp.enter"))
+        return
+    st.markdown(f"#### {t('cmp.' + res['band'])}")
+    st.markdown(t("cmp.range", y=f"{res['yield_kg_ha']:,}", a=f"{res['p25']:,}", m=f"{res['p50']:,}", b=f"{res['p75']:,}"))
+    if res["band"] == B.BELOW:
+        st.info(t("cmp.below_help"))
+    st.caption(t("cmp.foot", src=res["source"]) + " " + t("cmp.not_saved"))
 
 
 def _share_tab(ss):

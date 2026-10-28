@@ -203,11 +203,12 @@ def _entries(recs):
     df["item"] = df["item"].map(item)
     df["unit"] = df.unit.map(lambda u: t(f"unit.{u}"))
     df["evidence"] = df.evidence.map(lambda e: t("ev.short.self") if e == "self" else t("ev.short.document"))
-    st.dataframe(df[["date", "kind", "item", "quantity", "unit", "amount_rwf", "counterparty", "evidence"]]
+    df["reference"] = df["reference"].fillna("") if "reference" in df else ""
+    st.dataframe(df[["date", "kind", "item", "quantity", "unit", "amount_rwf", "counterparty", "evidence", "reference"]]
                  .rename(columns={"date": t("fr.col.date"), "kind": t("fr.col.kind"), "item": t("fr.col.item"),
                                   "quantity": t("fr.col.qty"), "unit": t("fr.col.unit"),
                                   "amount_rwf": t("fr.col.rwf"), "counterparty": t("fr.col.with"),
-                                  "evidence": t("fr.col.ev")}), hide_index=True, width="stretch")
+                                  "evidence": t("fr.col.ev"), "reference": t("fr.col.ref")}), hide_index=True, width="stretch")
 
 
 def _notes():

@@ -8,7 +8,7 @@ Design rules
   * Nothing is scored. The summary only adds up what the farmer recorded, and every
     figure is shown with its formula.
   * Evidence is never upgraded by the system. "self" = farmer's own entry.
-    "document" = farmer says they hold a receipt or mobile-money message (not checked).
+    "document" = the farmer typed a receipt or transaction reference, kept in `reference` (shown as "Reference attached, not checked").
     "confirmed" is reserved for a future buyer/cooperative verification step.
   * Data stays with the farmer: export/import as JSON; the app stores nothing server-side.
 """
@@ -21,7 +21,7 @@ from collections import defaultdict
 
 KINDS = {"harvest": "Harvest", "sale": "Sale", "expense": "Expense", "saving": "Saving", "offfarm": "Other income"}
 EVIDENCE = {"self": "Self-reported",
-            "document": "Receipt or mobile-money message held (not checked)",
+            "document": "Reference attached, not checked",
             "confirmed": "Confirmed by buyer or cooperative"}
 SELECTABLE_EVIDENCE = ["self", "document"]       # "confirmed" needs a verifier (future)
 CROPS = ["Maize", "Beans", "Irish potato", "Cassava", "Sorghum", "Rice", "Banana", "Coffee",
@@ -32,6 +32,7 @@ SAVING_PLACES = ["MoMo", "Ibimina", "SACCO", "Bank"]       # stored in `item` fo
 OFFFARM = ["Livestock", "Trade", "Casual labour", "Tailoring", "Other"]
 UNITS = ["kg", "litres", "count"]
 MAX_RECORDS = 2000
+REF_MAX = 40
 
 
 def season_of(d: date) -> str:
@@ -46,13 +47,15 @@ def season_of(d: date) -> str:
 
 
 def new_record(kind, d, item, amount_rwf=None, quantity=None, unit="kg", counterparty="",
-               evidence="self", retained_kg=None) -> dict:
+               evidence="self", retained_kg=None, reference="") -> dict:
     """`retained_kg` (harvest only): kilograms the household kept to eat. Self-reported like everything else."""
     r = dict(id=uuid.uuid4().hex[:8], date=d.isoformat() if isinstance(d, date) else str(d),
              kind=kind, item=item, quantity=quantity, unit=unit, amount_rwf=amount_rwf,
              counterparty=counterparty.strip()[:60], evidence=evidence)
     if retained_kg:
         r["retained_kg"] = retained_kg
+    if str(reference).strip():
+        r["reference"] = str(reference).strip()[:REF_MAX]
     return r
 
 
@@ -66,6 +69,8 @@ def validate(r: dict) -> str | None:
         return "v.kind"
     if r["evidence"] not in EVIDENCE:
         return "v.ev"
+    if r["evidence"] == "document" and not str(r.get("reference", "")).strip():
+        return "v.ref"
     if r["kind"] in ("sale", "expense", "saving", "offfarm") and not (r.get("amount_rwf") or 0) > 0:
         return "v.amount"
     if r["kind"] == "harvest" and not (r.get("quantity") or 0) > 0:
@@ -105,8 +110,15 @@ def parse_import(text: str) -> tuple[dict, list[dict], int]:
                      evidence=str(x.get("evidence", "self")))
             if x.get("retained_kg") is not None:
                 r["retained_kg"] = float(x["retained_kg"])
-            if r["evidence"] == "confirmed":      # only a verifier may set this; never trust a file
+            ref = str(x.get("reference", "")).strip()[:REF_MAX]
+            if ref:
+                r["reference"] = ref
+            # only a verifier may set "confirmed"; never trust a file. A claimed reference without text
+            # (older backups said "receipt held") falls back to self-reported.
+            if r["evidence"] == "confirmed":
                 r["evidence"] = "document"
+            if r["evidence"] == "document" and not ref:
+                r["evidence"] = "self"
         except Exception:
             skipped += 1
             continue
@@ -302,11 +314,11 @@ def example_records() -> list[dict]:
     D = date
     return [
         r("expense", D(2025, 9, 14), "Seed", 18000, 30, "kg"),
-        r("expense", D(2025, 9, 20), "Fertiliser", 42000, 100, "kg", "Agro-dealer", "document"),
+        r("expense", D(2025, 9, 20), "Fertiliser", 42000, 100, "kg", "Agro-dealer", "document", reference="EX-2025-0920"),
         r("expense", D(2025, 10, 2), "Labour", 25000),
         r("harvest", D(2026, 1, 20), "Maize", None, 900, "kg", retained_kg=250),
-        r("sale", D(2026, 1, 28), "Maize", 207000, 450, "kg", "Cooperative", "document"),
-        r("saving", D(2026, 2, 3), "Ibimina", 50000, evidence="document"),
+        r("sale", D(2026, 1, 28), "Maize", 207000, 450, "kg", "Cooperative", "document", reference="EX-COOP-0128"),
+        r("saving", D(2026, 2, 3), "Ibimina", 50000, evidence="document", reference="EX-GROUP-NOTE-7"),
         r("offfarm", D(2026, 4, 15), "Casual labour", 45000),
         r("offfarm", D(2026, 8, 10), "Livestock", 70000),
         r("expense", D(2026, 2, 10), "Seed", 22000, 40, "kg"),

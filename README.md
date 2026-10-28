@@ -57,7 +57,7 @@ control of who sees it:
 
 **The impact we expect, and what we do not claim.** If a farmer builds a season of records, a lender gets something to
 read instead of guessing, and the farmer keeps control of their data. These are hypotheses. **We have no evidence yet
-that the tool changes loan approvals, so we claim none.** Entries are the farmer's own word unless a receipt is held
+that the tool changes loan approvals, so we claim none.** Entries are the farmer's own word unless a receipt or transaction reference is typed in
 (and even that is unchecked), so nothing in the tool is called verified. See [limitations](#7-limitations-and-responsible-use).
 
 ## Contents
@@ -146,6 +146,11 @@ flowchart LR
 
 ### 3.1 For farmers
 
+**Harvest check (tab 4).** A farmer enters crop, season, harvest and plot area (and the share of the plot the crop
+covers, because most plots are mixed) and sees whether the harvest is below, typical for or above most similar AHS 2024
+plots, as a band with the quartiles, never as a verdict. It is computed on screen from `yield_benchmarks.json`, carries
+the source line, and is never saved in a record, backup, share file or report (a test proves this).
+
 **Sign in with a phone number and a PIN.** No email, no password, no account on our server. Creating a profile starts
 with a **one-time code** sent to the phone, so a farmer proves the number is theirs; in this build no SMS is sent and the
 code is shown in a clearly labelled demo box until a gateway is connected.
@@ -164,7 +169,7 @@ code is shown in a clearly labelled demo box until a gateway is connected.
 | 2. Which crop or cost? | Tap a picture button (maize, beans, potato, cassava, sorghum, rice, banana, coffee, tea, vegetables, milk, other; or seed, fertiliser, pesticide, labour, transport, equipment, land rent, loan repayment, other) |
 | 3. How much? | Type the amount in RWF (and the quantity for harvests and sales) |
 
-Date, buyer or seller, unit and "I have a receipt or mobile-money message" are tucked under *More details*. A
+Date, buyer or seller, unit and "Receipt or transaction reference (optional)" are tucked under *More details*. A
 confirmation sentence follows, such as "Saved: you sold Maize for 50,000 RWF."
 
 **Read a plain-language summary.** For the chosen season: *"Between these dates you sold X, spent Y, and have Z left."*
@@ -207,7 +212,7 @@ name, which appears only on their own access receipt.
 |---|---|
 | **At a glance** | A *"What the records say"* story of plain facts (period covered, totals, main income source, biggest cost, months with sales, savings, share backed by receipts), four key figures, monthly money in and out, cumulative cash, where income came from, where money went, price per kg and share of harvest sold |
 | **Repayment worksheet** | The lender types a loan amount, term and interest. The sheet shows the monthly repayment, the farmer's recorded net for each month against that line, and how many months covered it. It is arithmetic on figures the lender sets. It gives **no verdict**, and a *"read this with care"* box lists the caveats |
-| **Record quality** | Months with entries, how entries are backed (the farmer's own word or a receipt or message), simple counts, and questions the lender may ask |
+| **Record quality** | Months with entries, how entries are backed (the farmer's own word or a typed reference, not checked), simple counts, and questions the lender may ask |
 | **All entries** | Every record with its evidence type, plus a notes box that lives only in the session and can be downloaded |
 
 The *At a glance* tab also shows where savings are held, the food the household keeps (kilograms valued at the farmer's own
@@ -219,7 +224,8 @@ The monthly repayment uses the standard level-payment formula, `P·r / (1 − (1
 `P / n` when the rate is zero.
 
 **What the lender is told, and the farmer's records can never claim.** Every entry is *self-reported* unless the
-farmer says a receipt or mobile-money message is held (and that is not checked). A third level, *confirmed by a buyer
+farmer types a receipt or transaction reference, which is then labelled *Reference attached, not checked*. The app never
+parses or "verifies" messages. A third level, *confirmed by a buyer
 or cooperative*, is reserved for a future verifier, and an imported file can never grant it.
 
 ### 3.3 Throughout

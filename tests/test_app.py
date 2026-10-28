@@ -7,16 +7,17 @@ from streamlit.testing.v1 import AppTest
 
 logging.disable(logging.WARNING)
 ROOT = str(Path(__file__).resolve().parents[1])
-PAGES = ["farmer:phone_preview", "farmer:my_records", "landing:home", "lender:lender_view", "about:about"]
+PAGES = ["pages:overview", "pages:who", "pages:why", "pages:farmers", "pages:districts", "pages:methods",
+         "pages:recommendations", "farmer:phone_preview", "farmer:my_records", "landing:home", "lender:lender_view", "about:about"]
 
 
 def page_script(name, root):
     import sys
     sys.path.insert(0, root)
-    from ui import theme, farmer, landing, lender, about
+    from ui import theme, farmer, landing, lender, about, pages
     theme.apply()
     mod, _, fn = name.rpartition(":")
-    getattr({"farmer": farmer, "landing": landing, "lender": lender, "about": about}[mod], fn)()
+    getattr({"farmer": farmer, "landing": landing, "lender": lender, "about": about, "pages": pages}[mod], fn)()
 
 
 LANG = "rw"
@@ -388,25 +389,65 @@ def lender_flow():
     assert "not verified" in t("ld.disclaimer", "en") and "decision is yours" in t("ld.disclaimer", "en")
 
 
-def no_dataset_in_product():
-    """The product shows no survey statistic and reads no aggregate table."""
+EVIDENCE_ZONE = ["ui/pages.py", "ui/data.py"]
+FARMER_ZONE = ["src/records.py", "src/share.py", "src/vault.py", "src/crypto.py", "src/usedcodes.py", "src/otp.py",
+               "src/ussd.py", "src/benchmarks.py", "ui/farmer.py", "ui/auth.py", "ui/lender.py", "ui/landing.py"]
+FARMER_ONLY_MODULES = {"src.records", "src.share", "src.vault", "src.crypto", "src.usedcodes", "src.otp", "src.ussd",
+                       "src.benchmarks", "ui.farmer", "ui.auth", "ui.lender", "ui.landing", "records", "share", "vault",
+                       "crypto", "usedcodes", "otp", "ussd", "benchmarks"}
+EVIDENCE_MODULES = {"ui.data", "ui.pages", "data", "pages"}
+
+
+def _imports(path):
+    """Every module name a file imports, as dotted strings (relative imports resolved against the package)."""
+    import ast
+    names = set()
+    pkg = path.parent.name
+    for n in ast.walk(ast.parse(path.read_text())):
+        if isinstance(n, ast.Import):
+            names |= {a.name for a in n.names}
+        elif isinstance(n, ast.ImportFrom):
+            base = ("." * n.level and f"{pkg}.") + (n.module or "")
+            names.add(base)
+            names |= {f"{base}.{a.name}".strip(".") for a in n.names}
+    return names
+
+
+def zones_do_not_cross():
+    """Evidence zone and farmer zone never import each other; only benchmarks.py among the farmer files reads aggregates."""
+    root = Path(ROOT)
+    for f in EVIDENCE_ZONE:
+        bad = _imports(root / f) & FARMER_ONLY_MODULES
+        assert not bad, f"{f} (evidence zone) imports farmer-zone code: {bad}"
+    for f in FARMER_ZONE:
+        bad = _imports(root / f) & EVIDENCE_MODULES
+        assert not bad, f"{f} (farmer zone) imports evidence-zone code: {bad}"
+        if f != "src/benchmarks.py":
+            assert "aggregates" not in (root / f).read_text(), f"{f} (farmer zone) reads survey data"
+    # nothing outside the two zones (and app.py) may touch the evidence tables either
+    for f in list(root.glob("ui/*.py")) + list(root.glob("src/*.py")):
+        rel = f.relative_to(root).as_posix()
+        if rel not in EVIDENCE_ZONE + ["src/benchmarks.py"]:
+            assert "aggregates" not in f.read_text() or rel == "ui/__init__.py", f"{rel} reads aggregates outside its zone"
+    bm = (root / "src" / "benchmarks.py").read_text()
+    import re as _re
+    assert set(_re.findall(r'"(\w+\.(?:json|csv))"', bm)) == {"yield_benchmarks.json", "input_use.json"}, "loader allow-list"
+    # the evidence zone reads only committed aggregates, never microdata
+    for f in EVIDENCE_ZONE:
+        assert "load import" not in (root / f).read_text() or "src.load" not in _imports(root / f)
+        assert "src.load" not in _imports(root / f), f"{f} imports the microdata loader"
+
+
+def no_stats_on_landing():
+    """The landing page copy carries no percentage."""
     import re
     from ui import landing
+    from src import i18n
     for lg in ("rw", "en"):
-        from src import i18n
         i18n.lang = lambda lg=lg: lg
         landing.lang = i18n.lang
         blob = " ".join(landing.props()["s"].values())
         assert not re.search(r"\d+(\.\d+)?\s?%", blob), f"statistic on landing page ({lg})"
-    import re as _re
-    for f in list(Path(ROOT).glob("ui/*.py")) + list(Path(ROOT).glob("src/*.py")):
-        txt = f.read_text()
-        assert "ui.data" not in txt, f"{f.name} reads survey data"
-        if f.name != "benchmarks.py":  # the single allowed loader
-            assert "aggregates" not in txt, f"{f.name} reads survey data"
-    bm = (Path(ROOT) / "src" / "benchmarks.py").read_text()
-    assert set(_re.findall(r'"(\w+\.(?:json|csv))"', bm)) == {"yield_benchmarks.json", "input_use.json"}, "loader allow-list"
-    assert not (Path(ROOT) / "ui" / "pages.py").exists()
 
 
 def benchmarks_ok_and_never_stored():
@@ -492,10 +533,11 @@ try:
     benchmarks_ok_and_never_stored()
 except Exception as e:
     failures.append(("benchmarks_ok_and_never_stored", "-", [repr(e)]))
-try:
-    no_dataset_in_product()
-except Exception as e:
-    failures.append(("no_dataset_in_product", "-", [repr(e)]))
+for _f in (zones_do_not_cross, no_stats_on_landing):
+    try:
+        _f()
+    except Exception as e:
+        failures.append((_f.__name__, "-", [repr(e)]))
 
 print(f"{renders} renders, {len(failures)} failures")
 for f in failures[:10]:

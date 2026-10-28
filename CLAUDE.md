@@ -13,17 +13,25 @@ Judging: problem relevance (NST2 / Vision 2050), data use and methodology, tangi
 - Only 10.8% of loans for farm inputs come from formal lenders; 29.4% of all loans are for food.
 - FinScope (adults): formal credit 8.5% in farming-only households vs 19.8% in non-farming.
 
-Regenerate with `python analysis/key_findings.py`. These figures belong in the README and demo narration only; the product UI shows none of them.
+Regenerate with `python analysis/key_findings.py`. These figures live in the README, the demo narration and the Evidence pages (never in the farmer zone).
 
 ## Product (updated 24 Oct 2026)
 
-**The product shows no dataset statistic, with one narrow exception (decided 28 Oct).** The survey analysis lives in
-the README, `analysis/`, `pipeline/` and `data/aggregates/`. `ui/` may read ONLY `data/aggregates/yield_benchmarks.json`
-and `data/aggregates/input_use.json`, through the single loader `src/benchmarks.py`; the test allow-lists exactly those
-two files. The harvest band is computed on the fly, shown only to the farmer on screen, and NEVER written into a
-record, the JSON backup, the share file or the loan pack (tested). Every survey number shown to a farmer carries the
-source line "AHS 2024, plots of the same crop and season, for guidance only". No "vulnerable" label, no savings
-advice, no fertilizer doses. The improved-seed share is labelled "seasonal-crop plots where seed type was recorded". Pages: `Home` (landing, TypeScript + Tailwind), **for farmers** `My farm records`
+**Two zones, enforced by `tests/test_app.py` (decided 28 Oct).** One app, two kinds of page.
+- **Evidence zone** (`ui/pages.py`, `ui/data.py`; nav group "Evidence": Overview, Who gets formal credit, Loan purposes and
+  barriers, Farmers vs other adults, Districts, Data and methods): shows aggregate NISR statistics from `data/aggregates`
+  with CIs, n < 30 suppression and a source note. It never reads or imports farmer records, share, vault, crypto, auth,
+  lender or benchmark code, and never the microdata loader.
+- **Farmer zone** (`src/records.py`, `share.py`, `vault.py`, `crypto.py`, `usedcodes.py`, `otp.py`, `ussd.py`,
+  `benchmarks.py`, `ui/farmer.py`, `auth.py`, `lender.py`, `landing.py`): shows no survey statistic except the two
+  allow-listed files `data/aggregates/yield_benchmarks.json` and `input_use.json`, read only through `src/benchmarks.py`.
+  It never imports `ui/data.py` or `ui/pages.py`. Benchmark output (the harvest band) is computed on the fly, shown
+  only to the farmer on screen, and NEVER written into a record, the JSON backup, the share file or the loan pack
+  (tested). Every survey number shown to a farmer carries "AHS 2024, plots of the same crop and season, for guidance
+  only". No "vulnerable" label, no savings advice, no fertilizer doses. The improved-seed share is labelled "seasonal-crop
+  plots where seed type was recorded". The landing copy carries no percentage; Home has a "See the evidence" page link.
+Nav order: Home; Evidence; For farmers (My farm records, USSD simulator, Open a farmer's report); About.
+Pages: `Home` (landing, TypeScript + Tailwind), **for farmers** `My farm records`
 (record harvests, sales, expenses, savings; seasonal summary with visible formulas; downloadable report; JSON backup,
 nothing stored server-side) and the USSD simulator; **for lenders** `Open a farmer's report` (opens the locked `.fbshare` file a
 farmer chose to share, with the farmer's one-time code: summary, details, all entries, evidence mix, what to check, questions to ask); `About`.
@@ -75,7 +83,7 @@ streamlit run app.py
 
 ## Non-negotiable rules
 
-1. **Never commit microdata** (`.dta`, `.zip`, `data/raw/`, `*.pkl`). The app reads no survey data except the two benchmark files above.
+1. **Never commit microdata** (`.dta`, `.zip`, `data/raw/`, `*.pkl`). The farmer zone reads no survey data except the two benchmark files above; the Evidence zone reads only `data/aggregates`.
 2. **Every estimate is weighted.** AHS: weight=`weight`, PSU=`clust`, stratum=`district`. FinScope: weight=`pop_wt`, no PSU in public file, so CIs are understated; always say so.
 3. Cells with n < 30 are suppressed; CV > 0.30 is flagged "caution" (ochre bars).
 4. **No record linkage** between AHS and FinScope. Compare aggregates side by side only.
@@ -110,7 +118,7 @@ Pipeline exports `yield_benchmarks.json` (B1) and `input_use.json` (B2) built 28
 6. Native-speaker review of every Kinyarwanda string (`src/i18n.py`).
 
 Cut first if late: B5, F4, F5, B2. Never cut: deployment, README, demo video, tests passing.
-Rule conflict resolved 28 Oct (see Product). Insights pages (overview, who, why, districts, methods) were removed in e9c3c48 and are NOT in the app today.
+Rule conflict resolved 28 Oct (see Product). Insights pages restored 28 Oct from e9c3c48^.
 
 ## Next (after 23 Oct)
 Record-tool pilot plan with a SACCO and a cooperative; buyer/cooperative verification; consent-based sharing;

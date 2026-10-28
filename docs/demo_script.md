@@ -2,8 +2,8 @@
 
 **Target length: 2 minutes 50 seconds (hard limit 3:00). Screen-recorded with voice-over. Deliver as `.webm`.**
 
-The product shows no survey data, so the video does not either. The research is mentioned in one sentence at the start
-and the numbers are in the README.
+The farmer pages show no survey statistics. The Evidence pages do; show one (Overview) for a few seconds at the start,
+then move to the farmer tool. The full numbers are in the README.
 
 **Story in one line:** farmers have accounts but no way to show their income; FinBridge lets them keep records they
 own and share by choice, and lets a lender read those records without scores or decisions.

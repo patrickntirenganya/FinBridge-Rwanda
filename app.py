@@ -1,5 +1,5 @@
-"""FinBridge: farm records farmers own and lenders can read.
-Run: streamlit run app.py   (no survey data is read or shown by the product)
+"""FinBridge: evidence from NISR surveys, and farm records farmers own and lenders can read.
+Run: streamlit run app.py   (Evidence pages read data/aggregates; farmer pages read only src/benchmarks.py)
 """
 import streamlit as st
 
@@ -29,14 +29,30 @@ from ui import farmer as F  # noqa: E402
 from ui import landing as L  # noqa: E402
 from ui import lender as LD  # noqa: E402
 
+try:
+    from ui import pages as P  # noqa: E402  (evidence zone: reads data/aggregates only)
+except FileNotFoundError as e:
+    st.error(str(e))
+    st.stop()
+
+_overview = st.Page(P.overview, title=t("nav.overview"), url_path="overview")
+L.EVIDENCE_PAGE = _overview  # target of the "See the evidence" button on Home
 pg = st.navigation({
     "": [st.Page(L.home, title=t("nav.home"), url_path="home", default=True)],
+    t("nav.evidence"): [
+        _overview,
+        st.Page(P.who, title=t("nav.who"), url_path="who"),
+        st.Page(P.why, title=t("nav.why"), url_path="why"),
+        st.Page(P.farmers, title=t("nav.farmers_vs"), url_path="farmers"),
+        st.Page(P.districts, title=t("nav.districts"), url_path="districts"),
+        st.Page(P.methods, title=t("nav.methods"), url_path="methods"),
+    ],
     t("nav.farmers"): [
         st.Page(F.my_records, title=t("nav.records"), url_path="records"),
         st.Page(F.phone_preview, title=t("nav.ussd"), url_path="ussd"),
+        st.Page(LD.lender_view, title=t("nav.lender"), url_path="lender"),
     ],
-    t("nav.lenders"): [st.Page(LD.lender_view, title=t("nav.lender"), url_path="lender")],
-    t("nav.about_sec"): [st.Page(A.about, title=t("nav.about"), url_path="about")],
+    " ": [st.Page(A.about, title=t("nav.about"), url_path="about")],
 })
 pg.run()
 from ui import auth  # noqa: E402

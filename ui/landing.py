@@ -10,6 +10,7 @@ import streamlit as st
 
 from src.i18n import t, lang
 
+EVIDENCE_PAGE = None  # set by app.py: the st.Page that "See the evidence" opens
 BUNDLE = Path(__file__).parent / "landing" / "landing.html"
 
 KEYS = ["eyebrow", "cta_primary", "cta_secondary", "trust1", "trust2", "trust3", "card1", "card2",
@@ -38,3 +39,8 @@ def home():
     data = json.dumps(props(), ensure_ascii=False).replace("</", "<\\/")
     # st.iframe replaces the retired components.v1.html; height="content" fits the page to what it renders
     st.iframe(BUNDLE.read_text().replace("__FB_DATA__", data), width="stretch", height="content")
+
+    if EVIDENCE_PAGE is not None:
+        _, mid, _ = st.columns([1, 2, 1])
+        with mid:
+            st.page_link(EVIDENCE_PAGE, label=t("home.see_evidence"), icon=":material/bar_chart:", width="stretch")

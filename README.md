@@ -20,9 +20,10 @@ Survey 2024 and FinScope Rwanda 2024. It supports **NST2** (agricultural transfo
 | **Demo script** | [`docs/demo_script.md`](docs/demo_script.md) |
 | **Research data** | aggregate tables in [`data/aggregates/`](data/aggregates) (no respondent-level data) |
 
-> **One rule shapes everything.** The product shows **no survey statistics**, and it gives **no score, no default
-> prediction and no lending decision**. The research is the *why* and lives in this README; the app is the
-> *solution*.
+> **One app, two zones.** The **Evidence** pages show the survey research (aggregate NISR statistics with confidence
+> intervals); the **farmer** pages show no survey statistics except an optional peer reference for harvests and inputs.
+> A test enforces that the zones never import each other. Nothing gives a **score, a default prediction or a lending
+> decision**.
 
 ## At a glance
 
@@ -233,7 +234,7 @@ or cooperative*, is reserved for a future verifier, and an imported file can nev
 
 ### 3.4 What the product deliberately does not do
 
-- It shows no survey data.
+- It shows no survey statistics to farmers except the labelled peer reference (AHS 2024, same crop and season, guidance only), which is never saved or exported.
 - It gives no individual score, no default prediction and no lend or do-not-lend verdict.
 - It does not verify entries or the phone number.
 - It claims no effect on loan approval until it has been piloted.
@@ -294,8 +295,9 @@ flowchart TB
 2. **Security code has no UI.** `src/crypto.py`, `vault.py` and `share.py` are plain, separately tested modules.
 3. **Strings in one place.** All text is in `src/i18n.py` as Kinyarwanda and English pairs, with a test that checks
    every key is filled in both languages with matching placeholders.
-4. **Research and product are separate.** `pipeline/` and `analysis/` produce the research tables; the app reads none
-   of them, and a test fails if any `ui/` module does.
+4. **Research and product are separate.** `pipeline/` and `analysis/` produce the research tables; only the Evidence
+   pages read them. Farmer-zone code may read just the two benchmark files through `src/benchmarks.py`, and a test
+   fails if either zone imports the other.
 
 | Layer | Technology |
 |---|---|
@@ -514,6 +516,8 @@ src/
 
 ui/
   landing.py               embeds the landing bundle
+  pages.py, data.py        Evidence pages and their aggregate loader (evidence zone)
+  (src/benchmarks.py is the only farmer-zone reader of data/aggregates: two files)
   farmer.py                sign-in gate, tap-to-record flow, summary, sharing, USSD preview
   lender.py                opening a share; story, charts, worksheet, quality, entries
   auth.py                  sign-up, sign-in, restore, erase, browser-storage bridge, idle lock

@@ -3,6 +3,8 @@ bank_acct,Bank account in own name,20.2,0.44,19.3,21.1,13994,ok
 momo_registered,Registered mobile-money user,76.2,0.49,75.3,77.2,13994,ok
 formal_saving,Saves with a formal provider,42.9,0.55,41.9,44.0,13994,ok
 formal_credit,Borrowed from a formal provider (past 12 months),13.3,0.36,12.6,14.0,13994,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",12.8,0.36,12.1,13.5,13994,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,0.5,0.08,0.4,0.7,13994,ok
 informal_credit,Borrowed from an informal source (past 12 months),43.0,0.55,41.9,44.1,13994,ok
 insured,Holds any insurance (excl. RSSB/pension),17.4,0.41,16.6,18.2,13994,ok
 emergency_fund,Has an emergency fund,20.8,0.45,19.9,21.7,13994,ok

@@ -7,7 +7,7 @@ from streamlit.testing.v1 import AppTest
 
 logging.disable(logging.WARNING)
 ROOT = str(Path(__file__).resolve().parents[1])
-PAGES = ["pages:overview", "pages:who", "pages:opportunity", "pages:why", "pages:farmers", "pages:districts", "pages:methods",
+PAGES = ["pages:overview", "pages:who", "pages:opportunity", "pages:social", "pages:why", "pages:farmers", "pages:districts", "pages:methods",
          "pages:recommendations", "farmer:phone_preview", "farmer:my_records", "landing:home", "lender:lender_view", "about:about"]
 
 
@@ -459,6 +459,19 @@ def opportunity_map_ok():
     assert (d.hh_lo.dropna() <= d.households.dropna()).all() and (d.households.dropna() <= d.hh_hi.dropna()).all()
 
 
+def social_protection_ok():
+    """F3: VUP and Ubudehe-1 groups reproduce the verified figures, with the government loan shown separately."""
+    import pandas as pd
+    fs = pd.read_csv(Path(ROOT) / "data" / "aggregates" / "fs_by_group.csv")
+    g = lambda gv, ind, grp: fs[(fs.group_var == gv) & (fs.indicator == ind) & (fs.group == grp)].iloc[0]
+    v, o = "Received VUP cash transfer", "Did not receive one"
+    assert g("vup", "bank_acct", v).n == 1078 and abs(g("vup", "bank_acct", v).est - 7.1) < 0.2
+    assert abs(g("vup", "bank_acct", o).est - 21.3) < 0.2 and abs(g("vup", "momo_registered", v).est - 69.0) < 0.2
+    assert abs(g("vup", "emergency_fund", v).est - 16.3) < 0.2 and abs(g("vup", "formal_credit", v).est - 14.1) < 0.2
+    assert g("vup", "formal_credit_ex_govt", v).est < g("vup", "formal_credit", v).est   # the government loan is visible
+    assert g("ubudehe_1", "bank_acct", "Ubudehe category 1").n >= 30
+
+
 def no_stats_on_landing():
     """The landing page copy carries no percentage."""
     import re
@@ -554,7 +567,7 @@ try:
     benchmarks_ok_and_never_stored()
 except Exception as e:
     failures.append(("benchmarks_ok_and_never_stored", "-", [repr(e)]))
-for _f in (zones_do_not_cross, no_stats_on_landing, opportunity_map_ok):
+for _f in (zones_do_not_cross, no_stats_on_landing, opportunity_map_ok, social_protection_ok):
     try:
         _f()
     except Exception as e:

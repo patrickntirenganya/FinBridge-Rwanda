@@ -11,6 +11,12 @@ formal_saving,Saves with a formal provider,farm_status,Household farming status,
 formal_credit,Borrowed from a formal provider (past 12 months),farm_status,Household farming status,Farming + other work,16.3,14.9,17.7,0.72,4409,ok
 formal_credit,Borrowed from a formal provider (past 12 months),farm_status,Household farming status,Farming only,8.5,7.7,9.3,0.42,6766,ok
 formal_credit,Borrowed from a formal provider (past 12 months),farm_status,Household farming status,Not farming,19.8,18.0,21.6,0.94,2819,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",farm_status,Household farming status,Farming + other work,15.9,14.5,17.3,0.71,4409,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",farm_status,Household farming status,Farming only,7.9,7.1,8.7,0.41,6766,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",farm_status,Household farming status,Not farming,19.4,17.6,21.3,0.93,2819,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,farm_status,Household farming status,Farming + other work,0.5,0.3,0.8,0.14,4409,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,farm_status,Household farming status,Farming only,0.6,0.4,0.8,0.11,6766,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,farm_status,Household farming status,Not farming,0.4,0.0,0.7,0.18,2819,caution
 informal_credit,Borrowed from an informal source (past 12 months),farm_status,Household farming status,Farming + other work,48.8,46.9,50.8,0.99,4409,ok
 informal_credit,Borrowed from an informal source (past 12 months),farm_status,Household farming status,Farming only,45.1,43.5,46.7,0.8,6766,ok
 informal_credit,Borrowed from an informal source (past 12 months),farm_status,Household farming status,Not farming,28.3,26.2,30.5,1.09,2819,ok
@@ -40,6 +46,10 @@ formal_saving,Saves with a formal provider,sex,Sex,Female,36.8,35.4,38.2,0.71,78
 formal_saving,Saves with a formal provider,sex,Sex,Male,49.6,48.0,51.2,0.83,6186,ok
 formal_credit,Borrowed from a formal provider (past 12 months),sex,Sex,Female,11.1,10.2,12.0,0.46,7808,ok
 formal_credit,Borrowed from a formal provider (past 12 months),sex,Sex,Male,15.7,14.6,16.8,0.57,6186,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",sex,Sex,Female,10.7,9.8,11.6,0.45,7808,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",sex,Sex,Male,15.1,14.0,16.2,0.56,6186,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,sex,Sex,Female,0.5,0.3,0.7,0.1,7808,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,sex,Sex,Male,0.6,0.3,0.8,0.12,6186,ok
 informal_credit,Borrowed from an informal source (past 12 months),sex,Sex,Female,45.9,44.4,47.4,0.75,7808,ok
 informal_credit,Borrowed from an informal source (past 12 months),sex,Sex,Male,39.8,38.2,41.4,0.8,6186,ok
 insured,Holds any insurance (excl. RSSB/pension),sex,Sex,Female,14.5,13.5,15.5,0.52,7808,ok
@@ -74,6 +84,16 @@ formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age grou
 formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age group,31–45,17.7,16.5,19.0,0.62,5432,ok
 formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age group,46–60,17.8,16.1,19.5,0.87,2808,ok
 formal_credit,Borrowed from a formal provider (past 12 months),age_band,Age group,61+,10.0,8.5,11.5,0.78,2391,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",age_band,Age group,16–17,5.4,2.6,8.2,1.44,388,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",age_band,Age group,18–30,9.9,8.6,11.2,0.64,2975,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",age_band,Age group,31–45,17.1,15.9,18.3,0.61,5432,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",age_band,Age group,46–60,17.3,15.6,19.0,0.86,2808,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",age_band,Age group,61+,9.4,7.9,10.8,0.75,2391,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,age_band,Age group,16–17,0.0,0.0,0.0,0.0,388,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,age_band,Age group,18–30,0.4,0.1,0.7,0.15,2975,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,age_band,Age group,31–45,0.7,0.5,1.0,0.14,5432,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,age_band,Age group,46–60,0.7,0.4,1.1,0.18,2808,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,age_band,Age group,61+,0.7,0.2,1.2,0.25,2391,caution
 informal_credit,Borrowed from an informal source (past 12 months),age_band,Age group,16–17,13.6,9.7,17.6,2.01,388,ok
 informal_credit,Borrowed from an informal source (past 12 months),age_band,Age group,18–30,41.1,39.0,43.2,1.06,2975,ok
 informal_credit,Borrowed from an informal source (past 12 months),age_band,Age group,31–45,50.0,48.4,51.6,0.8,5432,ok
@@ -129,6 +149,16 @@ formal_credit,Borrowed from a formal provider (past 12 months),education,Educati
 formal_credit,Borrowed from a formal provider (past 12 months),education,Education,Secondary,15.4,13.9,17.0,0.8,2991,ok
 formal_credit,Borrowed from a formal provider (past 12 months),education,Education,University / higher,43.6,39.1,48.1,2.3,799,ok
 formal_credit,Borrowed from a formal provider (past 12 months),education,Education,Vocational,14.9,8.4,21.5,3.36,144,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",education,Education,No formal education,4.8,3.7,5.9,0.57,2510,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",education,Education,Primary,10.8,9.9,11.6,0.45,7550,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",education,Education,Secondary,14.9,13.4,16.4,0.78,2991,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",education,Education,University / higher,43.6,39.1,48.1,2.3,799,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",education,Education,Vocational,14.9,8.4,21.5,3.36,144,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,education,Education,No formal education,0.7,0.3,1.0,0.19,2510,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,education,Education,Primary,0.6,0.4,0.8,0.11,7550,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,education,Education,Secondary,0.5,0.2,0.9,0.17,2991,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,education,Education,University / higher,0.0,0.0,0.0,0.0,799,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,education,Education,Vocational,0.0,0.0,0.0,0.0,144,ok
 informal_credit,Borrowed from an informal source (past 12 months),education,Education,No formal education,45.1,42.6,47.6,1.27,2510,ok
 informal_credit,Borrowed from an informal source (past 12 months),education,Education,Primary,48.5,47.0,50.0,0.76,7550,ok
 informal_credit,Borrowed from an informal source (past 12 months),education,Education,Secondary,35.7,33.5,37.9,1.13,2991,ok
@@ -172,6 +202,10 @@ formal_saving,Saves with a formal provider,area,Urban / rural,Rural,36.6,35.3,37
 formal_saving,Saves with a formal provider,area,Urban / rural,Urban,57.1,55.3,58.9,0.92,5789,ok
 formal_credit,Borrowed from a formal provider (past 12 months),area,Urban / rural,Rural,11.1,10.3,11.9,0.42,8205,ok
 formal_credit,Borrowed from a formal provider (past 12 months),area,Urban / rural,Urban,18.2,16.8,19.5,0.69,5789,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",area,Urban / rural,Rural,10.6,9.8,11.4,0.41,8205,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",area,Urban / rural,Urban,17.8,16.5,19.2,0.69,5789,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,area,Urban / rural,Rural,0.6,0.4,0.8,0.1,8205,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,area,Urban / rural,Urban,0.4,0.2,0.6,0.12,5789,caution
 informal_credit,Borrowed from an informal source (past 12 months),area,Urban / rural,Rural,46.6,45.2,47.9,0.69,8205,ok
 informal_credit,Borrowed from an informal source (past 12 months),area,Urban / rural,Urban,35.0,33.3,36.7,0.86,5789,ok
 insured,Holds any insurance (excl. RSSB/pension),area,Urban / rural,Rural,16.1,15.1,17.1,0.5,8205,ok
@@ -206,6 +240,16 @@ formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe c
 formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe category,Category 3,17.3,16.2,18.5,0.6,5880,ok
 formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe category,Category 4,72.2,54.6,89.8,8.98,38,ok
 formal_credit,Borrowed from a formal provider (past 12 months),ubudehe,Ubudehe category,Not yet classified,5.7,0.0,11.6,3.01,56,caution
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",ubudehe,Ubudehe category,Category 1,4.6,3.0,6.3,0.85,1372,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",ubudehe,Ubudehe category,Category 2,10.4,9.4,11.3,0.49,6476,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",ubudehe,Ubudehe category,Category 3,17.2,16.0,18.3,0.6,5880,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",ubudehe,Ubudehe category,Category 4,72.2,54.6,89.8,8.98,38,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",ubudehe,Ubudehe category,Not yet classified,5.7,0.0,11.6,3.01,56,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,ubudehe,Ubudehe category,Category 1,1.1,0.4,1.8,0.36,1372,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,ubudehe,Ubudehe category,Category 2,0.7,0.4,1.0,0.14,6476,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,ubudehe,Ubudehe category,Category 3,0.3,0.1,0.4,0.07,5880,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,ubudehe,Ubudehe category,Category 4,0.0,0.0,0.0,0.0,38,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,ubudehe,Ubudehe category,Not yet classified,0.0,0.0,0.0,0.0,56,ok
 informal_credit,Borrowed from an informal source (past 12 months),ubudehe,Ubudehe category,Category 1,35.9,32.5,39.3,1.73,1372,ok
 informal_credit,Borrowed from an informal source (past 12 months),ubudehe,Ubudehe category,Category 2,46.9,45.3,48.5,0.82,6476,ok
 informal_credit,Borrowed from an informal source (past 12 months),ubudehe,Ubudehe category,Category 3,40.4,38.7,42.0,0.82,5880,ok
@@ -241,6 +285,58 @@ budgets,Always budgets,ubudehe,Ubudehe category,Category 2,42.6,40.4,44.9,1.14,3
 budgets,Always budgets,ubudehe,Ubudehe category,Category 3,48.2,46.0,50.4,1.13,3289,ok
 budgets,Always budgets,ubudehe,Ubudehe category,Category 4,81.9,69.1,94.6,6.51,34,ok
 budgets,Always budgets,ubudehe,Ubudehe category,Not yet classified,,,,,26,suppressed
+bank_acct,Bank account in own name,vup,Household got a VUP direct cash transfer,Did not receive one,21.3,20.4,22.2,0.46,12844,ok
+bank_acct,Bank account in own name,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,7.1,4.7,9.5,1.23,1078,ok
+momo_registered,Registered mobile-money user,vup,Household got a VUP direct cash transfer,Did not receive one,77.0,76.0,78.0,0.51,12844,ok
+momo_registered,Registered mobile-money user,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,69.0,65.4,72.6,1.85,1078,ok
+formal_saving,Saves with a formal provider,vup,Household got a VUP direct cash transfer,Did not receive one,43.6,42.4,44.7,0.57,12844,ok
+formal_saving,Saves with a formal provider,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,38.2,34.3,42.2,2.0,1078,ok
+formal_credit,Borrowed from a formal provider (past 12 months),vup,Household got a VUP direct cash transfer,Did not receive one,13.4,12.6,14.1,0.38,12844,ok
+formal_credit,Borrowed from a formal provider (past 12 months),vup,Household got a VUP direct cash transfer,Received VUP cash transfer,14.1,11.1,17.1,1.53,1078,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",vup,Household got a VUP direct cash transfer,Did not receive one,13.1,12.4,13.8,0.37,12844,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",vup,Household got a VUP direct cash transfer,Received VUP cash transfer,10.7,8.0,13.3,1.37,1078,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,vup,Household got a VUP direct cash transfer,Did not receive one,0.3,0.2,0.4,0.06,12844,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,3.8,2.3,5.4,0.81,1078,ok
+informal_credit,Borrowed from an informal source (past 12 months),vup,Household got a VUP direct cash transfer,Did not receive one,43.2,42.1,44.4,0.57,12844,ok
+informal_credit,Borrowed from an informal source (past 12 months),vup,Household got a VUP direct cash transfer,Received VUP cash transfer,42.6,38.6,46.6,2.04,1078,ok
+insured,Holds any insurance (excl. RSSB/pension),vup,Household got a VUP direct cash transfer,Did not receive one,17.7,16.9,18.6,0.43,12844,ok
+insured,Holds any insurance (excl. RSSB/pension),vup,Household got a VUP direct cash transfer,Received VUP cash transfer,13.6,10.7,16.6,1.5,1078,ok
+emergency_fund,Has an emergency fund,vup,Household got a VUP direct cash transfer,Did not receive one,21.2,20.2,22.1,0.47,12844,ok
+emergency_fund,Has an emergency fund,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,16.3,13.3,19.3,1.53,1078,ok
+own_phone,Owns a mobile phone,vup,Household got a VUP direct cash transfer,Did not receive one,68.8,67.7,69.8,0.55,12844,ok
+own_phone,Owns a mobile phone,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,50.0,45.9,54.1,2.09,1078,ok
+smartphone,Owns a smartphone,vup,Household got a VUP direct cash transfer,Did not receive one,21.7,20.8,22.6,0.47,12844,ok
+smartphone,Owns a smartphone,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,6.4,4.1,8.7,1.18,1078,ok
+tracks_money,Always keeps track of money received and spent,vup,Household got a VUP direct cash transfer,Did not receive one,58.0,56.4,59.5,0.78,6695,ok
+tracks_money,Always keeps track of money received and spent,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,48.0,42.2,53.8,2.97,514,ok
+budgets,Always budgets,vup,Household got a VUP direct cash transfer,Did not receive one,45.3,43.7,46.8,0.79,6695,ok
+budgets,Always budgets,vup,Household got a VUP direct cash transfer,Received VUP cash transfer,35.9,30.3,41.6,2.89,514,ok
+bank_acct,Bank account in own name,ubudehe_1,Ubudehe category 1 or not,Other categories,21.3,20.4,22.3,0.47,12450,ok
+bank_acct,Bank account in own name,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,6.2,4.1,8.2,1.05,1372,ok
+momo_registered,Registered mobile-money user,ubudehe_1,Ubudehe category 1 or not,Other categories,78.1,77.1,79.1,0.51,12450,ok
+momo_registered,Registered mobile-money user,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,57.6,54.0,61.1,1.83,1372,ok
+formal_saving,Saves with a formal provider,ubudehe_1,Ubudehe category 1 or not,Other categories,44.0,42.9,45.2,0.58,12450,ok
+formal_saving,Saves with a formal provider,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,30.7,27.4,34.0,1.69,1372,ok
+formal_credit,Borrowed from a formal provider (past 12 months),ubudehe_1,Ubudehe category 1 or not,Other categories,14.1,13.3,14.8,0.39,12450,ok
+formal_credit,Borrowed from a formal provider (past 12 months),ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,5.7,3.9,7.5,0.91,1372,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",ubudehe_1,Ubudehe category 1 or not,Other categories,13.6,12.9,14.4,0.38,12450,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,4.6,3.0,6.3,0.85,1372,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,ubudehe_1,Ubudehe category 1 or not,Other categories,0.5,0.3,0.7,0.08,12450,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,1.1,0.4,1.8,0.36,1372,caution
+informal_credit,Borrowed from an informal source (past 12 months),ubudehe_1,Ubudehe category 1 or not,Other categories,43.8,42.7,44.9,0.58,12450,ok
+informal_credit,Borrowed from an informal source (past 12 months),ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,35.9,32.5,39.3,1.73,1372,ok
+insured,Holds any insurance (excl. RSSB/pension),ubudehe_1,Ubudehe category 1 or not,Other categories,18.0,17.1,18.9,0.44,12450,ok
+insured,Holds any insurance (excl. RSSB/pension),ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,11.8,9.4,14.1,1.2,1372,ok
+emergency_fund,Has an emergency fund,ubudehe_1,Ubudehe category 1 or not,Other categories,21.9,21.0,22.8,0.48,12450,ok
+emergency_fund,Has an emergency fund,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,9.4,7.4,11.4,1.03,1372,ok
+own_phone,Owns a mobile phone,ubudehe_1,Ubudehe category 1 or not,Other categories,70.0,68.9,71.1,0.55,12450,ok
+own_phone,Owns a mobile phone,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,38.8,35.2,42.3,1.82,1372,ok
+smartphone,Owns a smartphone,ubudehe_1,Ubudehe category 1 or not,Other categories,22.0,21.0,22.9,0.48,12450,ok
+smartphone,Owns a smartphone,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,3.4,1.8,4.9,0.79,1372,ok
+tracks_money,Always keeps track of money received and spent,ubudehe_1,Ubudehe category 1 or not,Other categories,58.0,56.4,59.6,0.8,6546,ok
+tracks_money,Always keeps track of money received and spent,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,49.9,44.5,55.2,2.72,607,ok
+budgets,Always budgets,ubudehe_1,Ubudehe category 1 or not,Other categories,45.5,43.9,47.1,0.8,6546,ok
+budgets,Always budgets,ubudehe_1,Ubudehe category 1 or not,Ubudehe category 1,34.7,29.2,40.3,2.83,607,ok
 bank_acct,Bank account in own name,province,Province,East,16.0,14.4,17.6,0.81,3375,ok
 bank_acct,Bank account in own name,province,Province,Kigali,52.5,49.5,55.5,1.53,1903,ok
 bank_acct,Bank account in own name,province,Province,North,14.3,12.3,16.3,1.01,2174,ok
@@ -261,6 +357,16 @@ formal_credit,Borrowed from a formal provider (past 12 months),province,Province
 formal_credit,Borrowed from a formal provider (past 12 months),province,Province,North,12.8,11.0,14.7,0.95,2174,ok
 formal_credit,Borrowed from a formal provider (past 12 months),province,Province,South,12.8,11.4,14.3,0.73,3519,ok
 formal_credit,Borrowed from a formal provider (past 12 months),province,Province,West,10.7,9.4,12.1,0.69,3023,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",province,Province,East,10.1,8.8,11.4,0.64,3375,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",province,Province,Kigali,22.2,19.9,24.6,1.19,1903,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",province,Province,North,12.6,10.7,14.5,0.95,2174,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",province,Province,South,12.2,10.8,13.6,0.71,3519,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",province,Province,West,10.2,8.9,11.5,0.67,3023,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,province,Province,East,0.5,0.2,0.8,0.14,3375,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,province,Province,Kigali,0.4,0.0,0.9,0.23,1903,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,province,Province,North,0.3,0.1,0.5,0.12,2174,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,province,Province,South,0.8,0.4,1.2,0.21,3519,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,province,Province,West,0.6,0.3,0.9,0.16,3023,ok
 informal_credit,Borrowed from an informal source (past 12 months),province,Province,East,47.1,44.9,49.4,1.14,3375,ok
 informal_credit,Borrowed from an informal source (past 12 months),province,Province,Kigali,30.7,28.1,33.4,1.35,1903,ok
 informal_credit,Borrowed from an informal source (past 12 months),province,Province,North,44.2,41.4,47.0,1.41,2174,ok
@@ -416,6 +522,66 @@ formal_credit,Borrowed from a formal provider (past 12 months),district,District
 formal_credit,Borrowed from a formal provider (past 12 months),district,District,Rusizi,14.6,10.7,18.6,2.0,480,ok
 formal_credit,Borrowed from a formal provider (past 12 months),district,District,Rutsiro,8.3,5.2,11.5,1.6,400,ok
 formal_credit,Borrowed from a formal provider (past 12 months),district,District,Rwamagana,16.5,12.4,20.5,2.09,464,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Bugesera,12.6,9.0,16.2,1.84,560,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Burera,10.7,7.0,14.3,1.87,416,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Gakenke,9.5,6.4,12.6,1.59,447,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Gasabo,21.7,18.4,25.0,1.69,848,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Gatsibo,15.5,10.9,20.1,2.33,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Gicumbi,11.8,8.3,15.4,1.79,512,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Gisagara,9.5,5.5,13.4,2.01,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Huye,9.7,6.6,12.9,1.61,480,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Kamonyi,13.3,10.1,16.5,1.64,623,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Karongi,6.5,3.7,9.2,1.42,399,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Kayonza,5.2,3.0,7.5,1.13,448,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Kicukiro,26.2,21.7,30.8,2.32,607,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Kirehe,5.1,3.0,7.2,1.07,464,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Muhanga,16.1,11.8,20.4,2.19,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Musanze,16.5,11.4,21.7,2.63,399,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Ngoma,4.1,2.3,5.9,0.92,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Ngororero,8.4,5.2,11.7,1.65,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Nyabihu,13.6,8.9,18.3,2.41,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Nyagatare,9.5,6.9,12.1,1.34,639,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Nyamagabe,13.4,8.6,18.2,2.45,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Nyamasheke,11.3,8.0,14.6,1.69,432,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Nyanza,13.9,9.6,18.1,2.15,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Nyarugenge,18.0,13.4,22.6,2.35,448,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Nyaruguru,8.2,3.5,12.8,2.39,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Rubavu,9.1,6.2,12.0,1.47,512,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Ruhango,13.0,9.3,16.7,1.88,416,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Rulindo,13.7,9.4,18.0,2.19,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Rusizi,13.6,9.8,17.4,1.94,480,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Rutsiro,8.2,5.1,11.4,1.59,400,ok
+formal_credit_ex_govt,"Formal credit, excluding Government (Ubudehe/VUP) loans",district,District,Rwamagana,16.4,12.3,20.5,2.09,464,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Bugesera,0.6,0.0,1.3,0.34,560,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Burera,0.1,0.0,0.3,0.1,416,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Gakenke,0.6,0.0,1.3,0.39,447,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Gasabo,0.7,0.0,1.5,0.45,848,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Gatsibo,0.0,0.0,0.0,0.0,400,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Gicumbi,0.1,0.0,0.2,0.07,512,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Gisagara,0.2,0.0,0.6,0.19,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Huye,0.5,0.0,1.1,0.36,480,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Kamonyi,0.6,0.0,1.2,0.35,623,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Karongi,0.1,0.0,0.3,0.09,399,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Kayonza,0.1,0.0,0.3,0.1,448,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Kicukiro,0.4,0.0,0.9,0.23,607,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Kirehe,0.9,0.1,1.6,0.39,464,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Muhanga,0.7,0.0,1.5,0.43,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Musanze,0.5,0.0,1.1,0.33,399,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Ngoma,0.5,0.0,1.5,0.49,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Ngororero,0.5,0.0,1.4,0.43,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Nyabihu,0.7,0.0,1.6,0.44,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Nyagatare,0.7,0.0,1.7,0.52,639,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Nyamagabe,0.9,0.1,1.7,0.41,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Nyamasheke,0.8,0.0,1.6,0.4,432,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Nyanza,1.0,0.0,2.6,0.78,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Nyarugenge,0.0,0.0,0.0,0.0,448,ok
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Nyaruguru,1.1,0.0,2.7,0.82,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Rubavu,0.7,0.0,1.5,0.43,512,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Ruhango,1.4,0.0,3.5,1.1,416,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Rulindo,0.3,0.0,0.8,0.24,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Rusizi,1.2,0.0,2.4,0.6,480,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Rutsiro,0.1,0.0,0.2,0.06,400,caution
+govt_loan,Got a Government (Ubudehe credit scheme / VUP) loan,district,District,Rwamagana,0.4,0.0,0.9,0.27,464,caution
 informal_credit,Borrowed from an informal source (past 12 months),district,District,Bugesera,50.3,45.0,55.6,2.73,560,ok
 informal_credit,Borrowed from an informal source (past 12 months),district,District,Burera,49.9,43.5,56.4,3.29,416,ok
 informal_credit,Borrowed from an informal source (past 12 months),district,District,Gakenke,34.8,29.0,40.6,2.97,447,ok

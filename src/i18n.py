@@ -558,6 +558,11 @@ STR: dict[str, tuple[str, str]] = {
                   "Where SACCOs could reach existing savers with credit"),
     "sum.opportunity": ("Incamake: ingo zifite konti ariko zafashe inguzanyo zo mu bimina gusa ni {pct}% by'ingo z'abahinzi. "
                         "Ikarita yerekana aho ziherereye. Ntivuga ko zose zikeneye cyangwa zujuje ibisabwa.", ""),
+    "nav.social": ("Ubufasha bwa leta n'imari", "Social protection and finance"),
+    "soc.title": ("Ubufasha bwa leta n'imari", "Social protection and finance"),
+    "sum.social": ("Incamake: abantu bakuru bo mu ngo zahawe amafaranga ya VUP bafite konti ya banki ku kigero gito "
+                   "ugereranyije n'abandi. Ni isano, si impamvu. Inguzanyo za leta (Ubudehe/VUP) zibarwa mu nguzanyo zemewe, "
+                   "bityo zerekanwe ukwazo.", ""),
     'nav.evidence': ('Ibimenyetso', 'Evidence'),
     'nav.overview': ('Incamake', 'Overview'),
     'nav.why_records': ("Impamvu y'igikoresho cyo kwandika", 'Why a record tool'),

@@ -43,6 +43,7 @@ pg = st.navigation({
         _overview,
         st.Page(P.who, title=t("nav.who"), url_path="who"),
         st.Page(P.opportunity, title=t("nav.opportunity"), url_path="opportunity"),
+        st.Page(P.social, title=t("nav.social"), url_path="social"),
         st.Page(P.why, title=t("nav.why"), url_path="why"),
         st.Page(P.farmers, title=t("nav.farmers_vs"), url_path="farmers"),
         st.Page(P.districts, title=t("nav.districts"), url_path="districts"),

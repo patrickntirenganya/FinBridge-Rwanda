@@ -14,6 +14,8 @@ FS_INDICATORS = {
     "momo_registered": "Registered mobile-money user",
     "formal_saving": "Saves with a formal provider",
     "formal_credit": "Borrowed from a formal provider (past 12 months)",
+    "formal_credit_ex_govt": "Formal credit, excluding Government (Ubudehe/VUP) loans",
+    "govt_loan": "Got a Government (Ubudehe credit scheme / VUP) loan",
     "informal_credit": "Borrowed from an informal source (past 12 months)",
     "insured": "Holds any insurance (excl. RSSB/pension)",
     "emergency_fund": "Has an emergency fund",
@@ -30,6 +32,8 @@ FS_GROUPS = {
     "education": "Education",
     "area": "Urban / rural",
     "ubudehe": "Ubudehe category",
+    "vup": "Household got a VUP direct cash transfer",
+    "ubudehe_1": "Ubudehe category 1 or not",
     "province": "Province",
     "district": "District",
 }
@@ -64,6 +68,8 @@ def build_finscope() -> pd.DataFrame:
         "formal_saving": _yes(df, [f"g3a_{i:02d}" for i in range(1, 11)]),
         # bank, digital, MFI, NDFI, MoKash, SACCO, government (VUP/Ubudehe), employer, guarantee fund
         "formal_credit": _yes(df, h(1, 2, 3, 4, 5, 6, 7, 8, 16)),
+        "formal_credit_ex_govt": _yes(df, h(1, 2, 3, 4, 5, 6, 8, 16)),
+        "govt_loan": _yes(df, h(7)),
         # savings group, money lender, agri buyer, church, shop credit, other
         "informal_credit": _yes(df, h(9, 10, 11, 12, 15, 17)),
         "insured": (df.i4a == 1) | _yes(df, [f"i6_{i:02d}" for i in range(1, 13)]),
@@ -86,6 +92,9 @@ def build_finscope() -> pd.DataFrame:
     out["area"] = df.a6.map({1: "Urban", 2: "Rural"})
     out["ubudehe"] = df.c13a.map({1: "Category 1", 2: "Category 2", 3: "Category 3",
                                   4: "Category 4", 5: "Not yet classified"})
+    out["vup"] = df.c13d.map({1: "Received VUP cash transfer", 2: "Did not receive one"})    # 99 = don't know -> excluded
+    out["ubudehe_1"] = df.c13a.map({1: "Ubudehe category 1", 2: "Other categories", 3: "Other categories",
+                                    4: "Other categories", 5: "Other categories"})
     out["province"] = df.a1.map(labels(m, "a1"))
     out["district"] = df.a2.map(labels(m, "a2"))
     # raw barrier codes kept for barrier tables

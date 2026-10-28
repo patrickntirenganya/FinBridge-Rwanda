@@ -234,6 +234,78 @@ def _opportunity_map(d, counts):
     return fig
 
 
+def _paired(df, inds, names, colors, groups):
+    """Grouped bars with 95% CI whiskers: one cluster per indicator, one bar per group."""
+    fig = go.Figure()
+    for g, col in zip(groups, colors):
+        r = df[df.group == g].set_index("indicator").reindex(inds)
+        fig.add_bar(name=g, x=[names[i] for i in inds], y=r.est, marker_color=col,
+                    error_y=dict(type="data", symmetric=False, array=r.hi - r.est, arrayminus=r.est - r.lo,
+                                 color=T.INK, thickness=1.2, width=4),
+                    text=[f"{v:.1f}%" for v in r.est], textposition="outside", textfont=dict(size=12),
+                    customdata=r[["lo", "hi", "n"]].values,
+                    hovertemplate="%{x}<br>" + g + ": %{y:.1f}% (95% CI %{customdata[0]:.1f}–%{customdata[1]:.1f})"
+                                  "<br>n = %{customdata[2]}<extra></extra>")
+    fig.update_yaxes(ticksuffix="%", rangemode="tozero", gridcolor=T.LINE)
+    fig.update_xaxes(gridcolor="rgba(0,0,0,0)")
+    return T.layout(fig, height=420, showlegend=True, barmode="group", legend=dict(orientation="h", y=1.12))
+
+
+def social():
+    T.hero(t("soc.title"), photo="farmer-phone-call")
+    T.summary("sum.social")
+    fs = D["fs_by_group"]
+    vup = fs[fs.group_var == "vup"]
+    ub = fs[fs.group_var == "ubudehe_1"]
+    g = lambda tab, ind, grp: tab[(tab.indicator == ind) & (tab.group == grp)].iloc[0]
+    V, N = "Received VUP cash transfer", "Did not receive one"
+    st.markdown(
+        '<p class="lede">The Vision Umurenge Programme (VUP) pays direct cash transfers to the poorest households. '
+        "Are those households also connected to formal finance? Among adults in households that received a transfer, "
+        f"<b>{g(vup, 'bank_acct', V).est:.1f}%</b> have a bank account, against <b>{g(vup, 'bank_acct', N).est:.1f}%</b> "
+        "elsewhere. These are associations, not effects of the programme.</p>", unsafe_allow_html=True)
+    names = {"bank_acct": "Bank account", "momo_registered": "Mobile money", "formal_saving": "Formal saving",
+             "emergency_fund": "Emergency fund", "insured": "Insurance"}
+    inds = list(names)
+    st.subheader("1. Households that received a VUP cash transfer")
+    st.plotly_chart(_paired(vup, inds, names, [T.SOIL, T.TEA], [V, N]), use_container_width=True,
+                    config={"displayModeBar": False})
+    T.note(f"{int(g(vup, 'bank_acct', V).n):,} sampled adults in transfer households vs "
+           f"{int(g(vup, 'bank_acct', N).n):,} others. Households answering 'don't know' are left out. {FS_SRC}")
+
+    st.subheader("2. Formal credit looks similar, but part of it is a government loan")
+    cn = {"formal_credit": "Formal credit (as defined here)", "formal_credit_ex_govt": "Excluding Ubudehe/VUP loans",
+          "govt_loan": "Ubudehe / VUP loan only"}
+    st.plotly_chart(_paired(vup, list(cn), cn, [T.SOIL, T.TEA], [V, N]), use_container_width=True,
+                    config={"displayModeBar": False})
+    st.markdown(
+        "Our formal-credit definition counts a loan from the Government Ubudehe credit scheme or VUP as formal. "
+        f"Without it, the transfer group's rate is **{g(vup, 'formal_credit_ex_govt', V).est:.1f}%** against "
+        f"**{g(vup, 'formal_credit_ex_govt', N).est:.1f}%** for others. Shown separately so the comparison is transparent.")
+
+    st.subheader("3. Ubudehe category 1 (the poorest) compared with other categories")
+    U1, UO = "Ubudehe category 1", "Other categories"
+    st.plotly_chart(_paired(ub, inds + ["formal_credit"], {**names, "formal_credit": "Formal credit"},
+                            [T.SOIL, T.TEA], [U1, UO]), use_container_width=True, config={"displayModeBar": False})
+
+    st.subheader("4. Farm households: formal loans by poverty status")
+    ahs = D["ahs_by_group"]
+    pov = ahs[(ahs.indicator == "loan_formal") & (ahs.group_var == "poverty")]
+    st.plotly_chart(T.ci_bars(pov.assign(group=pov.group.map({"Poor": "Poor households", "Not poor": "Not poor"}))),
+                    use_container_width=True, config={"displayModeBar": False})
+    vs = D["ahs_loan_sources"].set_index("code").loc[7]
+    st.markdown(f"VUP financial services are the source of **{vs.est:.1f}%** of all loans reported by agricultural "
+                f"households (95% CI {vs.lo:.1f}–{vs.hi:.1f}).")
+    T.note(AHS_SRC + " Poverty status from EICV7.")
+
+    st.subheader("A route to consider: graduation")
+    st.info("The graduation approach pairs a transfer of assets and support with coaching and savings. Randomised trials in "
+            "six countries found lasting gains in consumption and assets (Banerjee et al., *Science*, 2015: "
+            "[paper](https://economics.mit.edu/sites/default/files/2022-08/science.1260799.pdf)). Connecting transfer "
+            "recipients to a SACCO account is a hypothesis for Rwanda, not something these data show. FinScope intervals "
+            "are understated because the public file has no cluster variable.")
+
+
 def districts():
     T.hero("District patterns", photo="farmer-field")
     T.summary("sum.districts")

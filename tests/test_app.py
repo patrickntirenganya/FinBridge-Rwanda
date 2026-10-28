@@ -276,10 +276,10 @@ def share_checks():
     import json
     from datetime import datetime, timedelta, timezone
     from src import share as S, records as R
-    prof, recs = dict(R.EXAMPLE_PROFILE, name="Ada"), R.example_records()
+    prof, recs = dict(R.EXAMPLE_PROFILE, name="AdaLovelace-Quokka77"), R.example_records()
     pkg, code = S.make_package(prof, recs, include_names=False, include_farmer_name=False, validity="1d")
     assert len(S.normalise_code(code)) == 12 and set(S.normalise_code(code)) <= set(S.ALPHABET)
-    assert "Cooperative" not in pkg and "Ada" not in pkg and "Maize" not in pkg, "plaintext leaked into the share"
+    assert "Cooperative" not in pkg and "AdaLovelace-Quokka77" not in pkg and "Maize" not in pkg, "plaintext leaked into the share"
     p, r, meta = S.open_package(pkg, code.lower().replace("-", " "))
     assert len(r) == len(recs) and all(x["counterparty"] == "" for x in r), "names must be dropped unless chosen"
     assert p["name"] == "" and meta["names_included"] is False
@@ -554,6 +554,38 @@ def social_protection_ok():
     assert g("ubudehe_1", "bank_acct", "Ubudehe category 1").n >= 30
 
 
+def tontine_bridge_ok():
+    """F2: verified figures (81.1% tontine members; 57.8% of tontine borrowers hold a SACCO account, n = 1,850; 35.5% farm)."""
+    import pandas as pd
+    b = pd.read_csv(Path(ROOT) / "data" / "aggregates" / "ahs_tontine_bridge.csv").set_index("indicator")
+    assert abs(b.loc["tontine_member", "est"] - 81.1) < 0.1 and abs(b.loc["tontine_member", "lo"] - 79.2) < 0.1
+    assert abs(b.loc["tontine_member", "hi"] - 83.1) < 0.1
+    assert abs(b.loc["acct_sacco", "est"] - 57.8) < 0.1 and b.loc["acct_sacco", "n"] == 1850
+    assert abs(b.loc["acct_sacco", "lo"] - 55.3) < 0.1 and abs(b.loc["acct_sacco", "hi"] - 60.2) < 0.1
+    assert abs(b.loc["farm_loan", "est"] - 35.5) < 0.1 and (b.reliability == "ok").all()
+
+
+def recommendation_cards_ok():
+    """Five cards follow doc 02 section 4; every card has data, a hypothesis and a link target; no causal wording."""
+    import re
+    from ui import pages
+    cards = pages.recommendation_cards()
+    main = [c for c in cards if not c.get("other")]
+    assert [c["title"] for c in main] == ["SACCO credit for existing savers", "Link tontines to SACCOs",
+                                           "Season-shaped input credit", "Reach women-headed households",
+                                           "Connect VUP recipients to accounts"], [c["title"] for c in main]
+    for c in cards:
+        assert c["data"] and c["hypothesis"] and c["page"] in ("opportunity", "who", "why", "social")
+        text = " ".join([c["data"], c["hypothesis"]]).lower()
+        assert not re.search(r"\b(because|causes?|caused|due to|leads? to|results? in)\b", c["data"].lower()), c["title"]
+        assert "vulnerable" not in text
+    for c in main[:3] + main[4:]:
+        assert c["model"] and c["model_url"].startswith("https://"), c["title"]        # a model elsewhere is cited
+    assert main[3]["finding"].endswith("(unadjusted)")
+    # the two input measures are told apart (about 1 in 9 loans vs the formal share of those loans)
+    assert "counts loans by purpose" in main[2]["data"] and "by lender" in main[2]["data"]
+
+
 def no_stats_on_landing():
     """The landing page copy carries no percentage."""
     import re
@@ -657,7 +689,7 @@ try:
     benchmarks_ok_and_never_stored()
 except Exception as e:
     failures.append(("benchmarks_ok_and_never_stored", "-", [repr(e)]))
-for _f in (zones_do_not_cross, no_stats_on_landing, opportunity_map_ok, social_protection_ok):
+for _f in (zones_do_not_cross, no_stats_on_landing, opportunity_map_ok, social_protection_ok, tontine_bridge_ok, recommendation_cards_ok):
     try:
         _f()
     except Exception as e:

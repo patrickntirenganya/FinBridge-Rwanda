@@ -617,6 +617,27 @@ STR: dict[str, tuple[str, str]] = {
     "lp.ld_title": ("Gahunda y'inguzanyo y'umuhinzi", "The farmer's loan plan"),
     "lp.ld_none": ("Umuhinzi ntiyashyizemo gahunda y'inguzanyo.", 'The farmer did not include a loan plan.'),
     "lp.ld_total": ('Ikiguzi giteganyijwe', 'Expected cost'),
+    "ton.title": ("Ibimina: ikiraro gisanzwe gihari", "Tontines: an existing bridge"),
+    "ton.lede": ("Ibimina ni byo bikoreshwa cyane mu kuguza no kuzigama mu ngo z'abahinzi. Benshi mu bafata inguzanyo mu bimina "
+                 "banasanzwe bafite konti ya SACCO. Ibi ntibivuga ko ibimina byakwinjiza abantu mu nguzanyo za SACCO, "
+                 "bivuga gusa ko isano isanzwe ihari.",
+                 "Tontines are the most common way farm households save and borrow. Most households that borrowed from a tontine "
+                 "also hold a SACCO account. This does not show that tontines would lead members into SACCO credit; it shows "
+                 "that the link already exists."),
+    "ton.s1": ("by'ingo zifite umunyamuryango w'ikimina", "of households have a tontine member"),
+    "ton.s2": ("by'ingo zafashe inguzanyo mu kimina zifite konti ya SACCO", "of tontine borrowers already hold a SACCO account"),
+    "ton.s3": ("by'ingo zifite konti zafashe inguzanyo zo mu bimina gusa, zayafashe ku mpamvu z'ubuhinzi",
+               "of savers who borrowed only informally borrowed for a farm purpose"),
+    "ton.india": ("Isomo ry'ahandi: mu Buhinde, gahunda ya SHG–Bank Linkage (NABARD, guhera mu 1992) ituma amabanki aguriza "
+                  "amatsinda yo kuzigama, mu gipimo cy'ubwizigame bwayo, nta ngwate. Ibimina by'u Rwanda ni byo bisa na yo. "
+                  "Ko byakora mu Rwanda ni igitekerezo, si ikimenyetso. Isoko: "
+                  "[NABARD and microfinance (2002)](https://findevgateway.org/sites/default/files/publications/files/mfg-en-paper-nabard-and-microfinance-2002.pdf).",
+                  "Lesson from elsewhere: India's SHG–Bank Linkage programme (NABARD, since 1992) lets banks lend to savings groups in "
+                  "multiples of the group's savings, without collateral. Rwanda's tontines are the closest equivalent. Whether it "
+                  "would work here is a hypothesis, not a finding. Source: "
+                  "[NABARD and microfinance (2002)](https://findevgateway.org/sites/default/files/publications/files/mfg-en-paper-nabard-and-microfinance-2002.pdf)."),
+    "ton.note": ("Farm purposes: inputs, equipment or livestock. A household counts as a tontine member if any member takes part.",
+                 "Farm purposes: inputs, equipment or livestock. A household counts as a tontine member if any member takes part."),
     # ---- evidence pages (restored 28 Oct; aggregate statistics with CIs)
     "home.see_evidence": ("Reba ibimenyetso", "See the evidence"),
     "nav.opportunity": ("Aho SACCO yagera ku bazigama", "Where SACCOs could reach savers"),
@@ -637,7 +658,7 @@ STR: dict[str, tuple[str, str]] = {
     'nav.why': ("Intego z'inguzanyo n'inzitizi", 'Loan purposes and barriers'),
     'nav.farmers_vs': ("Abahinzi n'abandi bantu bakuru", 'Farmers vs other adults'),
     'nav.districts': ('Uturere', 'Districts'),
-    'nav.actions': ('Icyakorwa', 'What to do'),
+    'nav.actions': ("Ibyo ibimenyetso bigaragaza", 'What the evidence suggests'),
     'nav.methods': ("Amakuru n'uburyo", 'Data and methods'),
     'lang.en_note': ('Iyi paji iri mu Cyongereza. Incamake mu Kinyarwanda iri hejuru.', 'This page is in English.'),
     'ov.title': ("Kimwe cya kabiri cy'ingo z'abahinzi mu Rwanda zifite konti mu kigo cy'imari ariko nta nguzanyo", "Half of Rwanda's farm households have a formal account but no formal loan"),
@@ -661,7 +682,9 @@ STR: dict[str, tuple[str, str]] = {
     'sum.why': ("Incamake: ibiribwa ni {food}% by'inguzanyo zose, naho {inp}% gusa by'inguzanyo z'imbuto n'ifumbire zituruka mu bigo by'imari bigengwa.", ''),
     'sum.farmers': ("Incamake: FinScope ireba abantu bakuru bose, bityo ituma tugereranya abahinzi n'abandi.", ''),
     'sum.districts': ('Incamake: uturere ntitugereranywa ku rutonde. Buri karere gafite ingo nke zabajijwe, bityo itandukaniro rito ntirifite agaciro.', ''),
-    'sum.actions': ("Incamake: buri nama ihuzwa n'icyavuye mu makuru. Zimwe zifite ibimenyetso bihagije, izindi ni ibitekerezo bigomba kubanza kugeragezwa.", ''),
+    'sum.actions': ("Incamake: buri nama ihuzwa n'icyavuye mu makuru. Icyavuye mu makuru kigaragara neza; buri gitekerezo ni ukwiyemeza "
+                    "kugerageza mbere, kuko amakuru atagaragaza ko cyakora.", ''),
+    "rec.title": ("Ibyo ibimenyetso bigaragaza", "What the evidence suggests"),
     'sum.methods': ("Incamake: amakuru ni ay'ibarura ry'ingo z'abahinzi (AHS) 2024 na FinScope 2024. Ibyavuye byose bikoresha uburemere bw'ibarura kandi bifite intera y'ukuri ya 95%.", ''),
 }
 

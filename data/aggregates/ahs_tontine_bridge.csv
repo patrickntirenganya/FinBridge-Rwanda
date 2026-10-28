@@ -1,0 +1,4 @@
+indicator,label,base,est,se,lo,hi,n,reliability
+tontine_member,Household has a tontine member,All agricultural households,81.1,0.99,79.2,83.1,3724,ok
+acct_sacco,Holds a SACCO account,Households that borrowed from a tontine,57.8,1.27,55.3,60.2,1850,ok
+farm_loan,"Borrowed for a farm purpose (inputs, equipment or livestock)",Households with an account that borrowed only informally,35.5,1.89,31.8,39.2,1328,ok

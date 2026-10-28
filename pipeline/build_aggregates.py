@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from src.survey import wprop, wprop_by
 from src.indicators import (build_finscope, build_ahs, FS_INDICATORS, FS_GROUPS,
-                            AHS_INDICATORS, AHS_GROUPS, FORMAL_LOAN_SOURCES, AGRI_PURPOSES,
+                            AHS_INDICATORS, AHS_GROUPS, FORMAL_LOAN_SOURCES, AGRI_PURPOSES, TONTINE_BRIDGE,
                             FS_FARMER_GROUPS)
 from src.models import ahs_model, fs_records_model
 from src.load import finscope, ahs, labels
@@ -178,6 +178,13 @@ def main():
     opp[["district_households", "households", "hh_lo", "hh_hi"]] = opp[["district_households", "households", "hh_lo", "hh_hi"]].round(0)
     opp.loc[opp.reliability == "suppressed", ["households", "hh_lo", "hh_hi"]] = None
     opp.sort_values("households", ascending=False).to_csv(OUT / "ahs_district_opportunity.csv", index=False)
+
+    # F2: tontine -> SACCO bridge
+    rows = []
+    for col, lab, base, base_lab in TONTINE_BRIDGE:
+        sub = H if base is None else H[H[base]]
+        rows.append(dict(indicator=col, label=lab, base=base_lab, **wprop(sub[col], sub.weight, sub.clust, sub.district)))
+    flag(pd.DataFrame(rows)).to_csv(OUT / "ahs_tontine_bridge.csv", index=False)
 
     _, cm = ahs("Credits")
     src = shares(L, "s10q6", labels(cm, "s10q6"))

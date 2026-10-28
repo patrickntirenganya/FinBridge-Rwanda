@@ -221,7 +221,7 @@ def ci_bars(df, label_col="group", color=TEA, height=None, xmax=None, ticksuffix
         y=shown[label_col], x=shown.hi, mode="text", text=[f"  {v:.1f}%" for v in shown.est],
         textposition="middle right", textfont=dict(color=INK, size=13), hoverinfo="skip"))
     fig.update_yaxes(autorange="reversed")
-    fig.update_xaxes(ticksuffix=ticksuffix, range=[0, xmax or max(5, (shown.hi.max() or 0) * 1.25)])
+    fig.update_xaxes(ticksuffix=ticksuffix, range=[0, xmax or max(5, (shown.hi.max() or 0) * 1.35)])
     return layout(fig, height=height or 70 + 42 * len(shown))
 
 

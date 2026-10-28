@@ -115,7 +115,16 @@ AHS_INDICATORS = {
     "coop": "Member of an agricultural cooperative",
     "crop_ins": "Took crop insurance this season",
     "land_title": "Owns titled land",
+    "tontine_member": "Any household member takes part in a tontine",
 }
+
+# F2 tontine bridge: (indicator column, label, base column that defines who is counted, base label)
+TONTINE_BRIDGE = [
+    ("tontine_member", "Household has a tontine member", None, "All agricultural households"),
+    ("acct_sacco", "Holds a SACCO account", "loan_tontine", "Households that borrowed from a tontine"),
+    ("farm_loan", "Borrowed for a farm purpose (inputs, equipment or livestock)", "informal_only_saver",
+     "Households with an account that borrowed only informally"),
+]
 
 AHS_GROUPS = {
     "quintile": "Consumption quintile (EICV7)",
@@ -151,6 +160,9 @@ def build_ahs():
     H["loan_formal"] = H.hhid.isin(loans.loc[loans.s10q6.isin(FORMAL_LOAN_SOURCES), "hhid"])
     H["loan_tontine"] = H.hhid.isin(loans.loc[loans.s10q6 == 5, "hhid"])
     H["banked_not_financed"] = H.acct_formal & ~H.loan_formal
+    H["tontine_member"] = H.hhid.isin(sv.loc[sv.s10cq8 == 1, "hhid"])
+    H["informal_only_saver"] = H.acct_formal & H.loan_any & ~H.loan_formal
+    H["farm_loan"] = H.hhid.isin(loans.loc[loans.s10aq7.isin(AGRI_PURPOSES), "hhid"])
     # s10aq1 is labelled "tried to obtain a loan" but every "yes" carries a denial reason
     H["denied"] = H.hhid.isin(cr.loc[cr.s10aq1 == 1, "hhid"])
 

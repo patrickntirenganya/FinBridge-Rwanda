@@ -41,6 +41,10 @@ def home():
     st.iframe(BUNDLE.read_text().replace("__FB_DATA__", data), width="stretch", height="content")
 
     if EVIDENCE_PAGE is not None:
+        st.markdown("<style>[data-testid='stPageLink'] a{background:#2F6B4F;color:#fff !important;border-radius:12px;"
+                    "padding:.85rem 1.2rem;justify-content:center;font-weight:700;font-size:1.05rem}"
+                    "[data-testid='stPageLink'] a:hover{background:#245640}"
+                    "[data-testid='stPageLink'] a *{color:#fff !important}</style>", unsafe_allow_html=True)
         _, mid, _ = st.columns([1, 2, 1])
         with mid:
             st.page_link(EVIDENCE_PAGE, label=t("home.see_evidence"), icon=":material/bar_chart:", width="stretch")

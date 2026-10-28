@@ -9,3 +9,4 @@ denied,Reported a loan denial,5.0,0.46,4.1,5.9,3724,ok
 coop,Member of an agricultural cooperative,11.8,0.98,9.9,13.7,3724,ok
 crop_ins,Took crop insurance this season,1.7,0.25,1.2,2.2,3724,ok
 land_title,Owns titled land,81.1,0.86,79.4,82.8,3724,ok
+tontine_member,Any household member takes part in a tontine,81.1,0.99,79.2,83.1,3724,ok

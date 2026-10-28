@@ -36,17 +36,24 @@ except FileNotFoundError as e:
     st.stop()
 
 _overview = st.Page(P.overview, title=t("nav.overview"), url_path="overview")
+_who = st.Page(P.who, title=t("nav.who"), url_path="who")
+_opp = st.Page(P.opportunity, title=t("nav.opportunity"), url_path="opportunity")
+_why = st.Page(P.why, title=t("nav.why"), url_path="why")
+_social = st.Page(P.social, title=t("nav.social"), url_path="social")
+_recs = st.Page(P.recommendations, title=t("nav.actions"), url_path="recommendations")
+P.LINKS.update(opportunity=_opp, who=_who, why=_why, social=_social)
 L.EVIDENCE_PAGE = _overview  # target of the "See the evidence" button on Home
-pg = st.navigation({
+pg = st.navigation(expanded=True, pages={
     "": [st.Page(L.home, title=t("nav.home"), url_path="home", default=True)],
     t("nav.evidence"): [
         _overview,
-        st.Page(P.who, title=t("nav.who"), url_path="who"),
-        st.Page(P.opportunity, title=t("nav.opportunity"), url_path="opportunity"),
-        st.Page(P.social, title=t("nav.social"), url_path="social"),
-        st.Page(P.why, title=t("nav.why"), url_path="why"),
+        _who,
+        _opp,
+        _social,
+        _why,
         st.Page(P.farmers, title=t("nav.farmers_vs"), url_path="farmers"),
         st.Page(P.districts, title=t("nav.districts"), url_path="districts"),
+        _recs,
         st.Page(P.methods, title=t("nav.methods"), url_path="methods"),
     ],
     t("nav.farmers"): [

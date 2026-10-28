@@ -112,7 +112,7 @@ Done: landing page, farmer tool, USSD preview, lender view (print stylesheet, se
 Pipeline exports `yield_benchmarks.json` (B1) and `input_use.json` (B2) built 28 Oct; medians reproduce doc 03 within 2%.
 
 1. **Deploy** both tools and cross-link them; have both URLs in hand before anything else (Insights/Records on Streamlit Community Cloud, `app.py`, Python 3.11+). Never cut.
-2. DONE 28 Oct: F1 SACCO opportunity map (`ahs_district_opportunity.csv`, Evidence > "Where SACCOs could reach savers"). DONE 28 Oct: F3 social protection page (`vup`, `ubudehe_1` groups; `govt_loan` shown separately). Next: review the existing Recommendations page against doc 02 section 4 before re-adding it to the nav.
+2. DONE 28 Oct: F1 SACCO opportunity map (`ahs_district_opportunity.csv`, Evidence > "Where SACCOs could reach savers"). DONE 28 Oct: F3 social protection page (`vup`, `ubudehe_1` groups; `govt_loan` shown separately). DONE 28 Oct: F2 tontine bridge (on the SACCO map page) and the Recommendations page rewritten to doc 02 section 4 (five cards plus two "other ideas", in the nav before Data and methods). Screenshots in `docs/screenshots/`.
 3. DONE 28 Oct: B1 harvest check (tab 4 of the records page) and B4 evidence levels. Remaining 29 Oct: B3 DONE 28 Oct (tab 5 "Loan plan", `src/loanplan.py`, stored in `profile["loan_plan"]`, shared only when ticked); recommendations page review; README.
 4. 30 Oct morning, only if all above is tested: B2 inputs reference, then B5 district shock exposure or F4 adjusted regression.
 5. **Demo video** (<= 3 min, `docs/demo_script.md`; story: Insights finds the 759k, Records shows how one farmer prepares) and submit by early evening 30 Oct. Never cut.

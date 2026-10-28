@@ -183,29 +183,47 @@ def opportunity():
     mode = st.radio("Show", ["Number of households", "Share of district households"], horizontal=True,
                     key="opp_mode")
     counts = mode.startswith("Number")
-    c1, c2 = st.columns([1, 1])
+    c1, c2 = st.columns([4, 6])
     with c1:
         st.plotly_chart(_opportunity_map(d, counts), use_container_width=True, config={"displayModeBar": False})
     with c2:
-        tab = d.sort_values("households", ascending=False, na_position="last").assign(
-            Households=lambda x: x.households.map(lambda v: "" if pd.isna(v) else f"{v:,.0f}"),
-            Range=lambda x: [("not reported" if pd.isna(a) else f"{a:,.0f}–{b:,.0f}") for a, b in zip(x.hh_lo, x.hh_hi)],
-            Share=lambda x: [("" if pd.isna(a) else f"{a:.1f}% ({b:.1f}–{c:.1f})") for a, b, c in zip(x.pct, x.lo, x.hi)],
-            Note=lambda x: x.reliability.map({"ok": "", "caution": "Interpret with caution",
-                                              "suppressed": "Too few sampled households"}))
-        st.dataframe(tab[["district", "province", "Households", "Range", "Share", "n", "Note"]].rename(
-            columns={"district": "District", "province": "Province", "Range": "95% range", "Share": "Share (95% CI)",
-                     "n": "Sampled"}), hide_index=True, height=520, use_container_width=True)
+        def cell(r):
+            if pd.isna(r.households):
+                return "not reported (too few sampled)"
+            return f"{r.households:,.0f} ({r.hh_lo:,.0f}–{r.hh_hi:,.0f})" + ("  ⚠ caution" if r.reliability == "caution" else "")
+        tab = d.sort_values("households", ascending=False, na_position="last")
+        tab = pd.DataFrame({"District": tab.district, "Households (95% range)": [cell(r) for r in tab.itertuples()],
+                            "Share (95% CI)": [("" if pd.isna(r.pct) else f"{r.pct:.1f}% ({r.lo:.1f}–{r.hi:.1f})") for r in tab.itertuples()]})
+        st.dataframe(tab, hide_index=True, height=520, use_container_width=True,
+                     column_config={"District": st.column_config.TextColumn(width="small")})
     st.caption(f"The {len(ok)} districts with enough sampled households add up to {ok.households.sum() / 1000:,.0f}k of "
                f"the national ≈{national / 1000:,.0f}k. The remainder is in the {len(d) - len(ok)} Kigali districts "
-               "shown in grey (fewer than 30 sampled households each), so their counts are not reported.")
+               "shown in grey (fewer than 30 sampled households each), so their counts are not reported. Sampled households per "
+               "district range from "
+               f"{int(d.n.min())} to {int(d.n.max())}; hover over a district on the map to see its own n.")
     shaky = d[d.reliability == "caution"]
     if len(shaky):
         st.warning("Estimates for " + ", ".join(shaky.district) + " are imprecise (coefficient of variation above 0.30). "
                    "Do not rank them against other districts.")
+    _tontine_bridge()
     T.note("Districts are sorted by estimated count, not ranked: intervals overlap, so neighbouring districts often do "
            "not differ clearly. Counts = district share x weighted households in the district. "
            + AHS_SRC + " Boundaries: geoBoundaries (CC BY 4.0), simplified; for display only.")
+
+
+def _tontine_bridge():
+    """F2: savings groups that already connect to SACCOs, as in India's SHG-Bank Linkage."""
+    b = D["ahs_tontine_bridge"].set_index("indicator")
+    st.subheader(t("ton.title"))
+    st.markdown(t("ton.lede"))
+    steps = [("tontine_member", "ton.s1", ""), ("acct_sacco", "ton.s2", "informal"), ("farm_loan", "ton.s3", "")]
+    for col, (key, base_key, kind) in zip(st.columns(3), steps):
+        r = b.loc[key]
+        with col:
+            T.fact(f"{r.est:.1f}%", t(base_key), kind)
+            st.caption(f"95% CI {r.lo:.1f}–{r.hi:.1f} · n = {int(r.n):,} · {r.base}")
+    st.info(t("ton.india"))
+    T.note(AHS_SRC + " " + t("ton.note"))
 
 
 def _opportunity_map(d, counts):
@@ -217,7 +235,8 @@ def _opportunity_map(d, counts):
     fig = go.Figure(go.Choroplethmap(
         geojson=geo, featureidkey="properties.shapeName", locations=ok.district, z=z, zmin=0,
         colorscale=[[0, "#E6EEE8"], [1, T.TEA]], marker_line_color="white", marker_line_width=0.8, marker_opacity=0.95,
-        colorbar=dict(title="" if counts else "%", thickness=12, len=0.6, ticksuffix="" if counts else "%"),
+        colorbar=dict(title="" if counts else "%", thickness=12, len=0.6, ticksuffix="" if counts else "%",
+                      x=0.95, xanchor="left"),
         customdata=ok[["hh_lo", "hh_hi", "pct", "lo", "hi", "n"]].values,
         hovertemplate="%{location}<br>" + ("%{z:,.0f} households (95% %{customdata[0]:,.0f}–%{customdata[1]:,.0f})"
                                            if counts else "%{z:.1f}% (95% CI %{customdata[3]:.1f}–%{customdata[4]:.1f})")
@@ -228,25 +247,28 @@ def _opportunity_map(d, counts):
             colorscale=[[0, "#B9C3BC"], [1, "#B9C3BC"]], showscale=False, marker_line_color="white",
             marker_line_width=0.8, marker_opacity=0.95, customdata=grey[["n"]].values,
             hovertemplate="%{location}<br>Too few sampled households<br>n = %{customdata[0]}<extra></extra>"))
-    fig.update_layout(map=dict(style="white-bg", center=dict(lat=-1.95, lon=29.88), zoom=6.45), height=520,
-                      margin=dict(l=0, r=0, t=10, b=0), paper_bgcolor="rgba(0,0,0,0)",
+    fig.update_layout(map=dict(style="white-bg", center=dict(lat=-1.95, lon=29.88), zoom=6.75), height=520,
+                      margin=dict(l=0, r=44, t=10, b=0), paper_bgcolor="rgba(0,0,0,0)",
                       font=dict(family=T.FONT, color=T.INK, size=13))
     return fig
 
 
 def _paired(df, inds, names, colors, groups):
-    """Grouped bars with 95% CI whiskers: one cluster per indicator, one bar per group."""
+    """Grouped bars with 95% CI whiskers: one cluster per indicator, one bar per group. Labels sit above the whisker."""
     fig = go.Figure()
     for g, col in zip(groups, colors):
         r = df[df.group == g].set_index("indicator").reindex(inds)
-        fig.add_bar(name=g, x=[names[i] for i in inds], y=r.est, marker_color=col,
+        fig.add_bar(name=g, x=[names[i] for i in inds], y=r.est, marker_color=col, offsetgroup=g,
                     error_y=dict(type="data", symmetric=False, array=r.hi - r.est, arrayminus=r.est - r.lo,
                                  color=T.INK, thickness=1.2, width=4),
-                    text=[f"{v:.1f}%" for v in r.est], textposition="outside", textfont=dict(size=12),
                     customdata=r[["lo", "hi", "n"]].values,
                     hovertemplate="%{x}<br>" + g + ": %{y:.1f}% (95% CI %{customdata[0]:.1f}–%{customdata[1]:.1f})"
                                   "<br>n = %{customdata[2]}<extra></extra>")
-    fig.update_yaxes(ticksuffix="%", rangemode="tozero", gridcolor=T.LINE)
+        fig.add_trace(go.Scatter(x=[names[i] for i in inds], y=r.hi, mode="text", text=[f"{v:.1f}%" for v in r.est],
+                                 textposition="top center", textfont=dict(size=10, color=T.INK), showlegend=False,
+                                 hoverinfo="skip", offsetgroup=g, cliponaxis=False))
+    top = max(df[df.group.isin(groups) & df.indicator.isin(inds)].hi.max() * 1.15, 5)
+    fig.update_yaxes(ticksuffix="%", range=[0, top], gridcolor=T.LINE)
     fig.update_xaxes(gridcolor="rgba(0,0,0,0)")
     return T.layout(fig, height=420, showlegend=True, barmode="group", legend=dict(orientation="h", y=1.12))
 
@@ -353,7 +375,7 @@ def _district_map(d, national):
     fig.add_trace(go.Choroplethmap(
         geojson=geo, featureidkey="properties.shapeName", locations=ok.name, z=ok.est, zmin=0, zmax=hi,
         colorscale=[[0, "#E6EEE8"], [1, T.TEA]], marker_line_color="white", marker_line_width=0.8,
-        marker_opacity=0.95, colorbar=dict(title="%", thickness=12, len=0.6, ticksuffix="%"),
+        marker_opacity=0.95, colorbar=dict(title="%", thickness=12, len=0.6, ticksuffix="%", x=0.95, xanchor="left"),
         customdata=ok[["lo", "hi", "n"]].values,
         hovertemplate="%{location}: %{z:.1f}%<br>95% CI %{customdata[0]:.1f}–%{customdata[1]:.1f}"
                       "<br>n = %{customdata[2]}<extra></extra>"))
@@ -364,8 +386,8 @@ def _district_map(d, national):
             colorscale=[[0, "#B9C3BC"], [1, "#B9C3BC"]], showscale=False, marker_line_color="white",
             marker_line_width=0.8, marker_opacity=0.95, customdata=gd[["n"]].fillna(0).values,
             hovertemplate="%{location}<br>Estimate unreliable or suppressed<br>n = %{customdata[0]:.0f}<extra></extra>"))
-    fig.update_layout(map=dict(style="white-bg", center=dict(lat=-1.95, lon=29.88), zoom=6.45),
-                      height=520, margin=dict(l=0, r=0, t=10, b=0), paper_bgcolor="rgba(0,0,0,0)",
+    fig.update_layout(map=dict(style="white-bg", center=dict(lat=-1.95, lon=29.88), zoom=6.75),
+                      height=520, margin=dict(l=0, r=44, t=10, b=0), paper_bgcolor="rgba(0,0,0,0)",
                       font=dict(family=T.FONT, color=T.INK, size=13))
     return fig
 
@@ -417,70 +439,113 @@ def _clear(a, b):
     return a.lo > b.hi or b.lo > a.hi
 
 
-def recommendations():
+LINKS: dict = {}   # evidence page key -> st.Page, set by app.py so cards can link to the pages their figures come from
+
+SRC_PBC = "https://camlmac.pbc.gov.cn/en/3688110/3688172/4048362/2025080817551068801/index.html"
+SRC_NABARD = "https://findevgateway.org/sites/default/files/publications/files/mfg-en-paper-nabard-and-microfinance-2002.pdf"
+SRC_OAF = "https://www.globalgiving.org/pfil/59148/2025_Q4_One_Acre_Fund_Performance_Report.pdf"
+SRC_GRAD = "https://economics.mit.edu/sites/default/files/2022-08/science.1260799.pdf"
+
+
+def recommendation_cards():
+    """Five cards that follow doc 02 section 4, then two further ideas the data allow. Pure data (tested)."""
     seg = D["ahs_segments"].set_index("segment")
     nat_ = D["ahs_national"].set_index("indicator")
     hh = D["meta"]["ahs_weighted_households"]
     purpose = D["ahs_loan_purpose"].set_index("category")
+    br = D["ahs_tontine_bridge"].set_index("indicator")
     informal = seg.loc["Account, borrowed only informally"]
     sex, size, title, coop = _grp("head_sex"), _grp("farm_size"), _grp("titled"), _grp("coop_member")
     f, m = sex.loc["Female-headed"], sex.loc["Male-headed"]
     small, large = size.loc["< 0.1 ha"], size.loc["> 1 ha"]
     tit, notit = title.loc["Has titled land"], title.loc["No titled land"]
     cm, nm = coop.loc["Cooperative member"], coop.loc["Not a member"]
-    inputs = purpose.loc["Agricultural inputs"]
-    food = purpose.loc["Food purchase"]
-    acct_sex = _grp("head_sex", "acct_formal")
+    inputs, acct_sex = purpose.loc["Agricultural inputs"], _grp("head_sex", "acct_formal")
+    fs = D["fs_by_group"]
+    vup = fs[(fs.group_var == "vup") & (fs.indicator == "bank_acct")].set_index("group")
+    vy, vn = vup.loc["Received VUP cash transfer"], vup.loc["Did not receive one"]
+    clear = lambda a, b_: "Evidence-backed" if _clear(a, b_) else "Hypothesis"
+    return [
+        dict(n=1, title="SACCO credit for existing savers", finding="Evidence-backed", who="SACCOs, banks, microfinance institutions",
+             data=f"{informal.est:.1f}% of agricultural households (about {informal.est / 100 * hh / 1000:,.0f}k) hold a bank, SACCO or "
+                  f"microfinance account yet borrowed only informally. {nat_.loc['acct_sacco'].est:.1f}% have a SACCO account; "
+                  f"{nat_.loc['loan_formal'].est:.1f}% have a formal loan.",
+             hypothesis="That the savings history a SACCO already holds can predict repayment well enough to offer these savers "
+                        "credit. This is untested here; a small pilot would test it.",
+             model="China's credit-household files: rural credit cooperatives keep a credit record on each household and extend "
+                   "small loans without collateral to rated households.", model_url=SRC_PBC, page="opportunity",
+             page_label="Where SACCOs could reach savers"),
+        dict(n=2, title="Link tontines to SACCOs", finding="Evidence-backed", who="SACCOs, cooperatives, MINAGRI",
+             data=f"{br.loc['tontine_member'].est:.1f}% of agricultural households have a tontine member, and "
+                  f"{br.loc['acct_sacco'].est:.1f}% of tontine borrowers already hold a SACCO account.",
+             hypothesis="That group loans backed by group savings would reach members who do not borrow formally today. "
+                        "The data show the overlap, not that it would lead to loans.",
+             model="India's SHG-Bank Linkage: banks lend to savings groups in multiples of group savings, without collateral.",
+             model_url=SRC_NABARD, page="opportunity", page_label="Tontines: an existing bridge"),
+        dict(n=3, title="Season-shaped input credit", finding="Evidence-backed", who="Lenders, input suppliers, MINAGRI",
+             data=f"About 1 in 9 loans ({inputs.est:.1f}%) is for farm inputs. Among those input loans, only "
+                  f"{inputs.formal_source_pct:.1f}% came from a formal lender; the rest came from tontines, relatives and others. "
+                  "(The first figure counts loans by purpose, the second counts them by lender.)",
+             hypothesis="That input credit repaid flexibly across the season would raise uptake at SACCOs.",
+             model="One Acre Fund (Tubura): seed and fertiliser on credit, repaid in any amount before the deadline; its "
+                   "preliminary 2025 Rwanda repayment was 99%.", model_url=SRC_OAF, page="why",
+             page_label="Loan purposes and barriers"),
+        dict(n=4, title="Reach women-headed households", finding=clear(f, m) + " (unadjusted)", who="Lenders, MINAGRI, gender programmes",
+             data=f"{f.est:.1f}% of female-headed households have a formal loan, against {m.est:.1f}% of male-headed. "
+                  f"{acct_sex.loc['Female-headed'].est:.1f}% of female-headed and {acct_sex.loc['Male-headed'].est:.1f}% of "
+                  "male-headed households have an account. These figures are not adjusted for wealth, farm size or land title.",
+             hypothesis="That products and outreach designed for women farmers who already hold accounts would narrow the gap. "
+                        "An adjusted analysis (F4, not built yet) should confirm the gap first.",
+             model="", model_url="", page="who", page_label="Who gets formal credit"),
+        dict(n=5, title="Connect VUP recipients to accounts", finding=clear(vy, vn) + " (FinScope, intervals understated)",
+             who="MINALOC, VUP, SACCOs",
+             data=f"{vy.est:.1f}% of adults in households that received a VUP cash transfer have a bank account, against "
+                  f"{vn.est:.1f}% of others.",
+             hypothesis="That a graduation pathway linking transfers to a SACCO account would raise account ownership and savings. "
+                        "These data show the gap, not what would close it.",
+             model="The graduation approach (BRAC): asset transfer, consumption support, coaching and savings; randomised trials in "
+                   "six countries found lasting gains.", model_url=SRC_GRAD, page="social",
+             page_label="Social protection and finance"),
+        dict(n=6, title="Ease the collateral barrier for small farms", finding=clear(small, large), who="Lenders, land administration",
+             data=f"Formal loans: {small.est:.1f}% on farms under 0.1 ha, {large.est:.1f}% over 1 ha. Households with titled land: "
+                  f"{tit.est:.1f}%, without: {notit.est:.1f}%.",
+             hypothesis="That group guarantees or titled-land alternatives would help. Farm size and land title move together with "
+                        "wealth, so these are associations.",
+             model="", model_url="", page="who", page_label="Who gets formal credit", other=True),
+        dict(n=7, title="Use cooperatives as a channel", finding=clear(cm, nm), who="Cooperatives, lenders",
+             data=f"{cm.est:.1f}% of cooperative members have a formal loan, against {nm.est:.1f}% of others; "
+                  f"{nat_.loc['coop'].est:.1f}% of households belong to a cooperative."
+                  + ("" if _clear(cm, nm) else " The intervals overlap, so the data cannot confirm a difference."),
+             hypothesis="That bulk or group lending through cooperatives would reach more households.",
+             model="", model_url="", page="who", page_label="Who gets formal credit", other=True),
+    ]
 
-    T.hero("What lenders and policymakers can do", photo="farmer-beans")
+
+def recommendations():
+    T.hero(t("rec.title"), photo="farmer-beans")
     T.summary("sum.actions")
     st.markdown(
-        '<p class="lede">Each idea below is tied to one finding in this tool. '
-        '<b>Evidence-backed</b> means the data show the gap clearly. <b>Hypothesis</b> means the '
-        'data point that way but cannot prove it, so test it with a small pilot first.</p>',
-        unsafe_allow_html=True)
+        '<p class="lede">Each idea is tied to one finding in this tool. <b>Evidence-backed</b> describes the data: the gap is clear. '
+        "<b>Hypothesis</b> describes the idea: the data point that way but cannot show it would work, so test it with a small "
+        "pilot first.</p>", unsafe_allow_html=True)
+    cards = recommendation_cards()
+    for other_ in (False, True):
+        if other_:
+            st.subheader("Other ideas the data allow")
+        for c in [c for c in cards if c.get("other", False) == other_]:
+            with st.container(border=True):
+                st.subheader(f"{c['n']}. {c['title']}" if not other_ else c["title"])
+                kind = "" if c["finding"].startswith("Evidence-backed") else "informal"
+                st.markdown(f'<div class="fact {kind}"><span><b style="font-size:1.05rem">Finding: {c["finding"]}</b> · '
+                            f'Idea: hypothesis until piloted · For: {c["who"]}</span></div>', unsafe_allow_html=True)
+                st.markdown(f"**What the data show.** {c['data']}")
+                st.markdown(f"**Hypothesis.** {c['hypothesis']}")
+                if c["model"]:
+                    st.markdown(f"**Model elsewhere.** {c['model']} [Source]({c['model_url']})")
+                if c["page"] in LINKS:
+                    st.page_link(LINKS[c["page"]], label=f"Figures: {c['page_label']}", icon=":material/arrow_forward:")
+                else:
+                    st.caption(f"Figures: {c['page_label']}")
+    T.note("These are ideas drawn from group-level patterns. They are not causal findings, and this tool does not score individuals "
+           "or make lending decisions. " + AHS_SRC + " Card 5 uses FinScope, whose intervals are understated (no PSU in the public file).")
 
-    recs = [
-        ("1. Offer credit to people who already save", "Evidence-backed",
-         "SACCOs, banks and microfinance institutions",
-         f"{informal.est:.1f}% of agricultural households (about {informal.est / 100 * hh / 1000:,.0f}k) "
-         f"hold an account yet borrowed only informally. {nat_.loc['acct_sacco'].est:.1f}% have a SACCO "
-         f"account, but only {nat_.loc['loan_formal'].est:.1f}% have a formal loan.",
-         "Use savings history to offer starter loans, so a saver does not need to look elsewhere. "
-         "The gap is in credit products, not in access to an account."),
-        ("2. Reach women-headed households", "Evidence-backed" if _clear(f, m) else "Hypothesis",
-         "Lenders, MINAGRI, gender programmes",
-         f"{f.est:.1f}% of female-headed households have a formal loan, against {m.est:.1f}% of "
-         f"male-headed. Account ownership is closer ({acct_sex.loc['Female-headed'].est:.1f}% vs "
-         f"{acct_sex.loc['Male-headed'].est:.1f}%), so the gap widens at the loan stage.",
-         "Design loan products and outreach for women farmers who already hold accounts."),
-        ("3. Create farm-input finance", "Evidence-backed",
-         "Lenders, input suppliers, MINAGRI",
-         f"Farm inputs are {inputs.est:.1f}% of all loans, yet only {inputs.formal_source_pct:.1f}% of "
-         f"those loans come from formal lenders. Food purchases are {food.est:.1f}% of loans.",
-         "Test seasonal input loans repaid at harvest. That the product would work is a hypothesis; "
-         "the missing supply is what the data show."),
-        ("4. Ease the collateral barrier for small farms", "Evidence-backed" if _clear(small, large) else "Hypothesis",
-         "Lenders, land administration",
-         f"Formal loans: {small.est:.1f}% on farms under 0.1 ha, {large.est:.1f}% over 1 ha. "
-         f"Households with titled land: {tit.est:.1f}%, without: {notit.est:.1f}%.",
-         "Explore group guarantees or titled-land alternatives. Farm size and land title move together "
-         "with wealth, so this is an association, not proof that collateral is the cause."),
-        ("5. Use cooperatives as a channel", "Evidence-backed" if _clear(cm, nm) else "Hypothesis",
-         "Cooperatives, lenders",
-         f"{cm.est:.1f}% of cooperative members have a formal loan, against {nm.est:.1f}% of others. "
-         f"Only {nat_.loc['coop'].est:.1f}% of households belong to a cooperative.",
-         "Pilot bulk or group lending through cooperatives. The intervals overlap, so the data cannot "
-         "yet confirm that membership makes a difference." if not _clear(cm, nm) else
-         "Pilot bulk or group lending through cooperatives."),
-    ]
-    for title_, tag, who_, evidence, action in recs:
-        with st.container(border=True):
-            st.subheader(title_)
-            kind = "" if tag == "Evidence-backed" else "informal"
-            st.markdown(f'<div class="fact {kind}"><span><b style="font-size:1.05rem">{tag}</b> · '
-                        f'For: {who_}</span></div>', unsafe_allow_html=True)
-            st.markdown(f"**What the data show.** {evidence}")
-            st.markdown(f"**What to do.** {action}")
-    T.note("These are ideas drawn from group-level patterns. They are not causal findings, and this tool "
-           "does not score individuals or make lending decisions. " + AHS_SRC)

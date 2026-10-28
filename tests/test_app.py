@@ -123,6 +123,52 @@ def harvest_check_flow():
     assert _t("cmp.above", LANG) in " ".join(m.value for m in at.markdown)
 
 
+def loan_plan_flow():
+    """B3: the plan is validated, saved with the profile, escaped, exported on its own, and shared only when ticked."""
+    global renders
+    import json
+    from src import loanplan as LP, records as R, share as S
+    from src.i18n import t as _t
+    assert LP.sanitize({"purpose": "bogus"}) is None and LP.sanitize(None) is None
+    p = LP.sanitize({"purpose": "inputs", "cost_rwf": 1e12, "plant_month": 13, "harvest_month": "2", "repay": ["crop_sales", "x"],
+                     "groups": ["twigire", "y"], "items": [{"item": "<b>Seed</b>", "qty": "5", "unit": "kg"}, {"item": " "}]})
+    assert p["cost_rwf"] is None and p["plant_month"] is None and p["harvest_month"] == 2
+    assert p["repay"] == ["crop_sales"] and p["groups"] == ["twigire"] and len(p["items"]) == 1
+    assert LP.validate(p) == "lp.v_cost" and LP.validate(dict(p, cost_rwf=1000)) is None
+    assert LP.validate(dict(p, purpose="other", cost_rwf=1000)) == "lp.v_other"
+    page = LP.plan_html({"name": "<script>alert(1)</script>"}, dict(p, cost_rwf=1000), LANG)
+    assert "<script>alert" not in page and "&lt;b&gt;Seed" in page and _t("lp.note", LANG) in page
+    # saved with the profile through backup and vault paths; junk is dropped on import
+    prof = dict(R.EXAMPLE_PROFILE_WITH_PLAN)
+    prof2, _, _ = R.parse_import(R.export_json(prof, R.example_records()))
+    assert prof2["loan_plan"]["cost_rwf"] == 95000 and prof2["loan_plan"]["groups"] == ["tontine", "cooperative"]
+    assert "loan_plan" not in R.parse_import('{"profile": {"loan_plan": {"purpose": "nope"}}, "records": []}')[0]
+    # the plan is not part of the records report, and goes into a share only when ticked
+    assert "Maize seed" not in R.report_html(prof, R.example_records(), None, True)
+    for flag in (False, True):
+        pkg, code = S.make_package(prof, R.example_records(), include_plan=flag)
+        got, _, _ = S.open_package(pkg, code)
+        assert ("loan_plan" in got) is flag, flag
+    # the farmer tab: prefilled in the demo, save changes the profile
+    at = fresh("farmer:my_records")
+    [b for b in at.button if b.label == _t("au.demo", LANG)][0].click().run(); renders += 1
+    assert at.number_input(key="lp_cost").value == 95000
+    at.number_input(key="lp_cost").set_value(120000)
+    [b for b in at.button if b.label == _t("lp.save", LANG)][0].click().run(); renders += 1
+    assert not at.exception and at.session_state["profile"]["loan_plan"]["cost_rwf"] == 120000, at.exception
+    assert any(_t("lp.lede", LANG) in m.value for m in at.markdown), "plan copy missing"
+    at.number_input(key="lp_cost").set_value(0)
+    [b for b in at.button if b.label == _t("lp.save", LANG)][0].click().run()
+    assert at.session_state["profile"]["loan_plan"]["cost_rwf"] == 120000, "invalid plan overwrote the saved one"
+    assert any(e.value == _t("lp.v_cost", LANG) for e in at.error)
+    [b for b in at.button if b.label == _t("lp.clear", LANG)][0].click().run()
+    assert "loan_plan" not in at.session_state["profile"]
+    # the lender's example shows the plan
+    lt = fresh("lender:lender_view")
+    [b for b in lt.button if b.label == _t("ld.try", LANG)][0].click().run(); renders += 1
+    assert not lt.exception and any(_t("lp.ld_title", LANG) in m.value for m in lt.markdown)
+
+
 def engine_checks():
     from src import records as R
     from src.i18n import t
@@ -599,6 +645,10 @@ for fn in (farmer_flow, add_flow, engine_checks, vault_checks, share_checks, new
             import traceback
             failures.append((fn.__name__, LANG, [repr(e), traceback.format_exc().splitlines()[-6:]]))
 
+try:
+    loan_plan_flow()
+except Exception as e:
+    failures.append(("loan_plan_flow", "-", [repr(e)]))
 try:
     harvest_check_flow()
 except Exception as e:

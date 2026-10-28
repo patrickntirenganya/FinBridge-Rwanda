@@ -16,6 +16,7 @@ from __future__ import annotations
 import html
 import json
 import uuid
+from src import loanplan
 from datetime import date, datetime
 from collections import defaultdict
 
@@ -97,6 +98,9 @@ def parse_import(text: str) -> tuple[dict, list[dict], int]:
         profile["farm_ha"] = max(0.0, min(1e4, float(prof_in.get("farm_ha", 0))))
     except (TypeError, ValueError):
         profile["farm_ha"] = 0.0
+    plan = loanplan.sanitize(prof_in.get("loan_plan"))
+    if plan:
+        profile["loan_plan"] = plan
     rows = data.get("records", []) if isinstance(data, dict) else []
     keep, skipped = [], 0
     for x in rows[:MAX_RECORDS]:
@@ -306,6 +310,7 @@ def report_html(profile: dict, records: list[dict], season: str | None, example:
 
 
 EXAMPLE_PROFILE = dict(name="Example farmer", district="Huye", crops="Maize, beans", farm_ha=0.6)
+EXAMPLE_PROFILE_WITH_PLAN = dict(EXAMPLE_PROFILE, loan_plan=loanplan.EXAMPLE_PLAN)   # demo only
 
 
 def example_records() -> list[dict]:

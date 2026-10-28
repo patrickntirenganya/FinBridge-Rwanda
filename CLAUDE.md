@@ -38,6 +38,7 @@ farmer chose to share, with the farmer's one-time code: summary, details, all en
 Auth (24 Oct): farmers sign in with phone + PIN; data is encrypted (scrypt + AES-256-GCM) in the browser's local
 storage via a tiny JS bridge (`ui/auth.py`), never stored server-side; sharing is a locked file + single-use code (`src/share.py`, `src/usedcodes.py`); sign-up verifies the phone with a one-time code (`src/otp.py`, DEMO: shown on screen, no SMS gateway yet).
 Verified lender accounts and a server audit log need a database and are NOT built. See `docs/security.md`.
+Loan plan (28 Oct): purpose, items, cost, planting/harvest months, repayment, groups; self-reported; no score; never in the records report.
 Record fields (25 Oct): saving records carry a place in `item` (MoMo, Ibimina, SACCO, Bank); harvests may carry `retained_kg`
 (kept at home); `offfarm` is a fifth kind (livestock, trade, casual labour...). Other income never enters the farm net; savings are shown
 beside the repayment worksheet, never merged into a ratio; food value uses the farmer's own sale price per kg and skips crops with none.
@@ -112,7 +113,7 @@ Pipeline exports `yield_benchmarks.json` (B1) and `input_use.json` (B2) built 28
 
 1. **Deploy** both tools and cross-link them; have both URLs in hand before anything else (Insights/Records on Streamlit Community Cloud, `app.py`, Python 3.11+). Never cut.
 2. DONE 28 Oct: F1 SACCO opportunity map (`ahs_district_opportunity.csv`, Evidence > "Where SACCOs could reach savers"). DONE 28 Oct: F3 social protection page (`vup`, `ubudehe_1` groups; `govt_loan` shown separately). Next: review the existing Recommendations page against doc 02 section 4 before re-adding it to the nav.
-3. DONE 28 Oct: B1 harvest check (tab 4 of the records page) and B4 evidence levels. Remaining 29 Oct: B3 loan purpose sheet; recommendations page; README.
+3. DONE 28 Oct: B1 harvest check (tab 4 of the records page) and B4 evidence levels. Remaining 29 Oct: B3 DONE 28 Oct (tab 5 "Loan plan", `src/loanplan.py`, stored in `profile["loan_plan"]`, shared only when ticked); recommendations page review; README.
 4. 30 Oct morning, only if all above is tested: B2 inputs reference, then B5 district shock exposure or F4 adjusted regression.
 5. **Demo video** (<= 3 min, `docs/demo_script.md`; story: Insights finds the 759k, Records shows how one farmer prepares) and submit by early evening 30 Oct. Never cut.
 6. Native-speaker review of every Kinyarwanda string (`src/i18n.py`).

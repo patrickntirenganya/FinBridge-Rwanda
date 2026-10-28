@@ -50,14 +50,14 @@ def _now() -> datetime:
 
 
 def make_package(profile: dict, records: list[dict], *, season: str | None = None, include_names: bool = False,
-                 include_farmer_name: bool = True, validity: str = "7d") -> tuple[str, str]:
+                 include_farmer_name: bool = True, include_plan: bool = False, validity: str = "7d") -> tuple[str, str]:
     """Returns (package_json, code). Only the chosen data goes in; the code is never stored anywhere."""
     from datetime import date
     recs = [r for r in records if season is None or R.season_of(date.fromisoformat(r["date"])) == season]
     if not recs:
         raise ShareError("nothing to share")
     recs = [dict(r, counterparty=r["counterparty"] if include_names else "") for r in recs]
-    prof = dict(profile)
+    prof = {k: v for k, v in profile.items() if include_plan or k != "loan_plan"}   # the plan goes only if ticked
     if not include_farmer_name:
         prof["name"] = ""
     created = _now()

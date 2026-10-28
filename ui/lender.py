@@ -197,6 +197,29 @@ def _quality(recs, ins):
         st.markdown(f"- {t(f'ld.ask{i}')}")
 
 
+def _plan(p):
+    """The farmer's loan purpose sheet, only if the farmer chose to include it. The file is untrusted: text is escaped."""
+    plan = p.get("loan_plan")
+    st.markdown(f"#### {t('lp.ld_title')}")
+    if not plan:
+        st.caption(t("lp.ld_none"))
+        return
+    e = lambda x: html.escape(str(x))
+    purpose = t(f"lp.p_{plan['purpose']}") + (f": {plan['purpose_other']}" if plan.get("purpose_other") else "")
+    mon = lambda m: t(f"lp.m{m}") if m else t("rp.none")
+    st.markdown(f"**{t('lp.what')}** {e(purpose)}")
+    if plan["items"]:
+        st.dataframe(pd.DataFrame([dict(zip([t("lp.item"), t("lp.qty"), t("lp.unit")], [i["item"], i["qty"], i["unit"]]))
+                                   for i in plan["items"]]), hide_index=True, width="stretch")
+    if plan.get("cost_rwf") is not None:
+        st.markdown(f"**{t('lp.ld_total')}:** {plan['cost_rwf']:,.0f} {t('rwf')}")
+    st.markdown(f"**{t('lp.plant')}:** {mon(plan.get('plant_month'))} · **{t('lp.harvest')}:** {mon(plan.get('harvest_month'))}")
+    st.markdown(f"**{t('lp.repay')}:** " + (", ".join(t(f"lp.r_{k}") for k in plan["repay"]) or t("rp.none")))
+    st.markdown(f"**{t('lp.groups')}:** " + (", ".join(t(f"lp.g_{k}") for k in plan["groups"]) or t("rp.none")))
+    st.caption(t("lp.note"))
+    st.divider()
+
+
 def _entries(recs):
     df = pd.DataFrame(recs).sort_values("date", ascending=False)
     df["kind"] = df.kind.map(lambda k: t(f"kind.{k}"))
@@ -255,7 +278,7 @@ def lender_view():
                     ss.lender_skipped = 0
                     st.rerun()
         if st.button(t("ld.try")):
-            ss.lender_records, ss.lender_profile, ss.lender_example = R.example_records(), dict(R.EXAMPLE_PROFILE), True
+            ss.lender_records, ss.lender_profile, ss.lender_example = R.example_records(), dict(R.EXAMPLE_PROFILE_WITH_PLAN), True
             ss.lender_meta, ss.lender_skipped = None, 0
             st.rerun()
         st.markdown(f"### {t('ld.how_title')}")
@@ -295,6 +318,7 @@ def lender_view():
         st.download_button(t("ld.dl"), R.report_html(p, recs, None, ss.lender_example, lang()),
                            "farm_record_summary.html", "text/html")
     with tabs[1]:
+        _plan(p)
         _worksheet(recs, ins)
     with tabs[2]:
         _quality(recs, ins)

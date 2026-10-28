@@ -327,7 +327,7 @@ def _forgot(stored):
 
 def _start_demo():
     ss = st.session_state
-    ss.records, ss.profile, ss.example = R.example_records(), dict(R.EXAMPLE_PROFILE), True
+    ss.records, ss.profile, ss.example = R.example_records(), dict(R.EXAMPLE_PROFILE_WITH_PLAN), True
     ss["demo"] = True
     ss["last_active"] = time.time()
     st.rerun()

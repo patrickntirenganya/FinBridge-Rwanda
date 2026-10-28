@@ -9,7 +9,7 @@ import json
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from src import benchmarks as B, records as R, share, ussd as U
+from src import benchmarks as B, loanplan as LP, records as R, share, ussd as U
 from src.i18n import t, item, lang, season_label
 from ui import auth, theme as T
 
@@ -45,7 +45,8 @@ def my_records():
     if not ss.records:
         st.markdown(f"### {t('fx.welcome')}")
 
-    tab_add, tab_sum, tab_share, tab_cmp = st.tabs([t("fr.tab_add"), t("fr.tab_sum"), t("fr.tab_share"), t("cmp.tab")])
+    tab_add, tab_sum, tab_share, tab_cmp, tab_plan = st.tabs(
+        [t("fr.tab_add"), t("fr.tab_sum"), t("fr.tab_share"), t("cmp.tab"), t("lp.tab")])
     with tab_add:
         _add_tab(ss)
     with tab_sum:
@@ -54,6 +55,8 @@ def my_records():
         _share_tab(ss)
     with tab_cmp:
         _compare_tab()
+    with tab_plan:
+        _plan_tab(ss)
     T.note(t("fr.disclaimer"))
     auth.persist()
 
@@ -225,6 +228,62 @@ def _compare_tab():
     st.caption(t("cmp.foot", src=res["source"]) + " " + t("cmp.not_saved"))
 
 
+ITEM_ROWS = 5
+
+
+def _plan_tab(ss):
+    """Loan purpose sheet: a clear plan for a SACCO officer. Saved in the profile (encrypted with the records)."""
+    st.markdown(f"#### {t('lp.title')}")
+    st.markdown(f'<p class="lede">{t("lp.lede")}</p>', unsafe_allow_html=True)
+    cur = ss.profile.get("loan_plan") or dict(LP.EMPTY)
+    with st.form("loan_plan"):
+        pl, pmap = _opts(LP.PURPOSES, lambda k: t(f"lp.p_{k}"))
+        pick = st.radio(t("lp.purpose"), pl, index=LP.PURPOSES.index(cur["purpose"]) if cur["purpose"] in LP.PURPOSES else None,
+                        horizontal=True, key="lp_purpose")
+        other = st.text_input(t("lp.other"), cur.get("purpose_other", ""), max_chars=40, key="lp_other")
+        st.markdown(f"**{t('lp.items')}**")
+        rows = []
+        for i in range(ITEM_ROWS):
+            it = cur["items"][i] if i < len(cur["items"]) else {}
+            c1, c2, c3 = st.columns([3, 1, 1])
+            name = c1.text_input(t("lp.item"), it.get("item", ""), max_chars=40, key=f"lp_item{i}", label_visibility="collapsed" if i else "visible")
+            qty = c2.number_input(t("lp.qty"), 0.0, 1e8, float(it.get("qty") or 0), 1.0, key=f"lp_qty{i}", label_visibility="collapsed" if i else "visible")
+            unit = c3.text_input(t("lp.unit"), it.get("unit", ""), max_chars=12, key=f"lp_unit{i}", label_visibility="collapsed" if i else "visible")
+            rows.append(dict(item=name, qty=qty or None, unit=unit))
+        cost = st.number_input(t("lp.cost"), 0, 10**10, int(cur.get("cost_rwf") or 0), 5000, key="lp_cost")
+        mkeys = [None] + list(range(1, 13))
+        ml, mmap = _opts(mkeys, lambda m: t("lp.none_month") if m is None else t(f"lp.m{m}"))
+        c1, c2 = st.columns(2)
+        pm = mmap[c1.selectbox(t("lp.plant"), ml, index=mkeys.index(cur.get("plant_month")), key="lp_plant")]
+        hm = mmap[c2.selectbox(t("lp.harvest"), ml, index=mkeys.index(cur.get("harvest_month")), key="lp_harvest")]
+        rl, rmap = _opts(LP.REPAY, lambda k: t(f"lp.r_{k}"))
+        repay = st.pills(t("lp.repay"), rl, selection_mode="multi", default=[t(f"lp.r_{k}") for k in cur["repay"]], key="lp_repay")
+        gl, gmap = _opts(LP.GROUPS, lambda k: t(f"lp.g_{k}"))
+        groups = st.pills(t("lp.groups"), gl, selection_mode="multi", default=[t(f"lp.g_{k}") for k in cur["groups"]], key="lp_groups")
+        go_ = st.form_submit_button(t("lp.save"), type="primary", width="stretch")
+    if go_:
+        plan = LP.sanitize(dict(purpose=pmap.get(pick, ""), purpose_other=other, items=rows, cost_rwf=cost or None,
+                                plant_month=pm, harvest_month=hm, repay=[rmap[x] for x in repay or []],
+                                groups=[gmap[x] for x in groups or []]))
+        err = LP.validate(plan) if plan else "lp.v_purpose"
+        if err:
+            st.error(t(err))
+        else:
+            ss.profile["loan_plan"] = plan
+            st.success(t("lp.saved"))
+    plan = ss.profile.get("loan_plan")
+    if plan:
+        page = LP.plan_html(ss.profile, plan, lang(), ss.example)
+        c1, c2 = st.columns(2)
+        c1.download_button(t("lp.dl"), page, "loan_plan.html", "text/html", width="stretch")
+        if c2.button(t("lp.clear"), width="stretch"):
+            ss.profile.pop("loan_plan", None)
+            st.rerun()
+        with st.expander(t("lp.preview")):
+            st.html(page)
+    T.note(t("lp.note"))
+
+
 def _share_tab(ss):
     if not ss.records:
         st.write(t("fr.share_empty"))
@@ -237,13 +296,16 @@ def _share_tab(ss):
     c1, c2 = st.columns(2)
     names = c1.checkbox(t("sh.names"), value=False)
     mine = c2.checkbox(t("sh.myname"), value=True)
+    has_plan = bool(ss.profile.get("loan_plan"))
+    with_plan = st.checkbox(t("lp.share"), value=False, disabled=not has_plan, key="share_plan",
+                            help=None if has_plan else t("lp.share_none"))
     vkeys = list(share.VALIDITY_HOURS)
     vlabels = {k: t(f"sh.v{k}") for k in vkeys}
     valid = st.radio(t("sh.valid"), vkeys, index=1, horizontal=True, format_func=vlabels.get)
     if st.button(t("sh.make"), type="primary", width="stretch"):
         try:
             pkg, code = share.make_package(ss.profile, ss.records, season=season, include_names=names,
-                                           include_farmer_name=mine, validity=valid)
+                                           include_farmer_name=mine, include_plan=with_plan and has_plan, validity=valid)
         except share.ShareError:
             st.error(t("sh.none"))
         else:

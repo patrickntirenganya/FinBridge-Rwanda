@@ -146,6 +146,14 @@ flowchart LR
 
 ### 3.1 For farmers
 
+**Loan plan (tab 5).** The most cited reason for a refused loan in AHS is an "unclear purpose" (29.7% of 295 refusals,
+wide CIs). The loan purpose sheet lets a farmer state what the money is for (inputs, equipment, livestock, other), the
+items and quantities, the expected cost, planting and harvest months, how it would be repaid (crop sales, other income)
+and which groups they belong to (tontine, cooperative, Twigire Muhinzi), and download it as a one-page printable
+summary. It is saved with the profile (encrypted, in the JSON backup), goes to a lender **only if the farmer ticks
+"include my loan plan"** when sharing, and says plainly that a clear plan does not guarantee a loan. That a plan helps
+approval is a hypothesis, not a finding.
+
 **Harvest check (tab 4).** A farmer enters crop, season, harvest and plot area (and the share of the plot the crop
 covers, because most plots are mixed) and sees whether the harvest is below, typical for or above most similar AHS 2024
 plots, as a band with the quartiles, never as a verdict. It is computed on screen from `yield_benchmarks.json`, carries

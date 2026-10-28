@@ -3,27 +3,47 @@
 **Farm records that farmers own and lenders can read.**
 
 Most of Rwanda's farming households have a bank, SACCO or microfinance account, yet only a small share hold a
-formal loan. Lenders say they cannot see a farm's income, and farmers have nothing to show them. FinBridge closes
-that gap: a farmer keeps simple records on any phone, locks them with a PIN, and chooses to share them with a lender
-who reads them as a plain story with charts. The tool never scores anyone and never decides a loan.
+formal loan. FinBridge has two connected parts that share one evidence base:
 
-Built for the **NISR 2026 Big Data Hackathon**. The design follows from our analysis of NISR's Agricultural Household
-Survey 2024 and FinScope Rwanda 2024. It supports **NST2** (agricultural transformation, financial inclusion) and
-**Vision 2050**.
+- **Evidence** (for SACCOs, BNR, MINAGRI and AFR): an analysis of NISR's Agricultural Household Survey 2024 and
+  FinScope Rwanda 2024 showing where farm households are *banked but not financed*, who is left out, and why.
+- **Farmer tools** (the response to that evidence): a farmer keeps simple records on any phone, locks them with a PIN,
+  and chooses to share them with a lender who reads them as a plain story with charts. The tool never scores anyone and
+  never decides a loan.
+
+Built for the **NISR 2026 Big Data Hackathon**, **Track 2: Financial Inclusion and Poverty Reduction**. It supports
+**NST2** (agricultural transformation, financial inclusion) and **Vision 2050**.
 
 | | |
 |---|---|
-| **Live app** | _add the Streamlit Cloud link here after deploying_ |
-| **Demo video (≤ 3 min)** | _add the link here_ |
+| **Live app** | _paste the Streamlit Community Cloud URL here_ |
+| **Demo video (≤ 3 min)** | _paste the link here_ |
+| **Judges: how to log in** | No account is needed, see [Trying the live app](#trying-the-live-app) |
+| **Screenshots** | [`docs/screenshots/`](docs/screenshots): every page at 1280 px and 390 px |
 | **Source code** | https://github.com/patrickntirenganya/FinBridge-Rwanda |
 | **Security note** | [`docs/security.md`](docs/security.md) |
 | **Demo script** | [`docs/demo_script.md`](docs/demo_script.md) |
-| **Research data** | aggregate tables in [`data/aggregates/`](data/aggregates) (no respondent-level data) |
+| **Evidence and feature plan** | [`docs/02_evidence_and_features.md`](docs/02_evidence_and_features.md), [`docs/03_combined_build_plan.md`](docs/03_combined_build_plan.md) |
+| **Data** | NISR microdata is not redistributed; the aggregate tables we built are in [`data/aggregates/`](data/aggregates) and the download links are in [section 6](#6-research-data-and-methods) |
 
 > **One app, two zones.** The **Evidence** pages show the survey research (aggregate NISR statistics with confidence
 > intervals); the **farmer** pages show no survey statistics except an optional peer reference for harvests and inputs.
 > A test enforces that the zones never import each other. Nothing gives a **score, a default prediction or a lending
 > decision**.
+
+## Trying the live app
+
+No login is needed and nothing you do is saved on a server.
+
+| To see | Do this |
+|---|---|
+| The evidence | Open **Home**, press **See the evidence**, then browse the Evidence pages (overview, who gets formal credit, the SACCO map, social protection, loan purposes, farmers vs other adults, districts, what the evidence suggests, data and methods) |
+| The farmer tool | Open **My farm records** and press **Just looking? Try the demo**. It loads invented records and an example loan plan, so every tab (add, summary, share, harvest check, loan plan) can be tried. Nothing is stored |
+| The lender view | Open **Open a farmer's report** and press **See an example farmer** |
+| A real sign-up (optional) | **My farm records → Create profile**: enter any valid Rwandan mobile number (for example `0788123456`), press *Send a code*, and type the 6-digit code **shown on screen** (this build has no SMS gateway), then choose a non-trivial PIN. Data is encrypted in your own browser |
+| A farmer-to-lender share | Sign in or use the demo, open the **Share** tab, create a share, download the `.fbshare` file, then open it on **Open a farmer's report** with the code shown. The code works once |
+
+Apps that get no visits go to sleep on Streamlit Community Cloud; if you see a "wake up" button, press it.
 
 ## At a glance
 
@@ -36,8 +56,15 @@ having an account not turn into credit, and what would let a lender see a farm t
 published tables ([validation](#validation)). The models show associations, not causes, so we make no claim that
 records alone would change who gets a loan. That is what a pilot must test ([roadmap](#12-roadmap)).
 
-**What we built.** A tool that turns a farmer's own records into something a lender can read, with the farmer in
-control of who sees it:
+**What the evidence says.** Besides the national gap, the analysis locates it. About **759,000** households
+(35.1% of farm households) hold an account yet borrowed only informally, concentrated in districts such as
+Nyagatare, Gisagara and Gicumbi. **81.1%** of farm households have a tontine member and **57.8%** of tontine borrowers
+already hold a SACCO account, so a link between savings groups and SACCOs already exists. Adults in households that
+received a VUP cash transfer are much less likely to have a bank account (**7.1% vs 21.3%**). Each is an association,
+and the recommendations page labels every idea a hypothesis until it is piloted.
+
+**What we built.** Evidence pages with the findings above, and a tool that turns a farmer's own records into something
+a lender can read, with the farmer in control of who sees it:
 
 1. **The farmer records** harvests, sales, costs, savings (and where they are held: MoMo, Ibimina, SACCO or bank),
    food kept at home, and income from outside crop sales. This works on a smartphone or, through the USSD simulator,
@@ -46,6 +73,8 @@ control of who sees it:
 3. **The farmer chooses to share.** They make a locked file and give the lender a single-use code.
 4. **The lender reads a plain story with charts** and a repayment worksheet that is arithmetic on the lender's own
    terms. There is no score and no decision. The lender decides.
+5. **The farmer can state a loan purpose** (the most cited reason for refusal is an "unclear purpose") and see how a
+   harvest compares with similar plots, as guidance only.
 
 **Who it is for.**
 
@@ -53,6 +82,7 @@ control of who sees it:
 |---|---|
 | **Smallholder farmers**, above all women-led, poorer and small-plot households | The groups the data shows are most left out of formal credit |
 | **Loan officers** at SACCOs, MFIs and banks | They need evidence about farmers they cannot otherwise assess |
+| **BNR, MINAGRI, AFR** | The Evidence pages show where the gap sits and which ideas deserve a pilot |
 | **Later:** cooperatives, buyers and policymakers | Buyers could confirm sales; policymakers can see where the gap sits |
 
 **The impact we expect, and what we do not claim.** If a farmer builds a season of records, a lender gets something to
@@ -62,7 +92,7 @@ that the tool changes loan approvals, so we claim none.** Entries are the farmer
 
 ## Contents
 
-0. [At a glance](#at-a-glance)
+0. [Trying the live app](#trying-the-live-app) and [At a glance](#at-a-glance)
 1. [The problem](#1-the-problem)
 2. [From research to product](#2-from-research-to-product)
 3. [What the product does](#3-what-the-product-does)
@@ -96,6 +126,20 @@ Among Rwanda's **2.16 million agricultural households** (AHS 2024, survey-weight
 | Loans for farm inputs that come from formal lenders | 10.8% |
 | Loans taken to buy food | 29.4% |
 
+**Where and who** (AHS 2024; the SACCO map page and the social protection page carry the intervals):
+
+| Finding | Estimate |
+|---|---|
+| Largest district counts of account holders who borrowed only informally | Nyagatare ≈ 48,800, Gisagara ≈ 42,400 (53.3% of its households), Gicumbi ≈ 37,200, Nyamagabe ≈ 34,800 |
+| Households with a tontine member | 81.1% (95% CI 79.2–83.1) |
+| Tontine borrowers who already hold a SACCO account | 57.8% (95% CI 55.3–60.2, n = 1,850) |
+| Informal-only borrowers with an account who borrowed for a farm purpose | 35.5% |
+| Most cited reasons for a refused loan | unclear purpose 29.7%, collateral 23.6%, insufficient income 20.9% (n = 295, wide CIs) |
+
+FinScope Rwanda 2024 (adults): in households that received a VUP direct cash transfer, **7.1%** have a bank account
+against **21.3%** elsewhere (n = 1,078; FinScope intervals are understated). Formal credit looks similar (14.1% vs
+13.4%) only because Government (Ubudehe/VUP) loans count as formal; without them it is 10.7% vs 13.1%.
+
 FinScope Rwanda 2024 (adults): formal credit reaches **8.5%** of adults in farming-only households against **19.8%**
 in non-farming households. About **13.5%** of farming adults own a smartphone, while **64.2%** own a phone of any kind
 and **73.8%** are registered mobile-money users.
@@ -106,6 +150,11 @@ AHS estimates match NISR's published tables ([validation](#validation)).
 **What it means.** Farmers are already inside the financial system but cannot turn that into credit. Lenders cannot
 judge a farm they cannot see, so most borrowing stays informal and small. The missing piece is a record a lender can
 read, one that works for people with basic phones and little digital experience.
+
+**Policy context.** MINAGRI states that NST2 and PSTA5 aim to raise agriculture's share of the national loan portfolio
+from 6% to 10% by 2029
+([source](https://www.minagri.gov.rw/updates/news-details/minagri-and-rab-spiu-encourage-farmers-to-embrace-the-national-agriculture-insurance-scheme-nais)).
+That target is about loan *value*, so we use it as context only and never derive it from our household percentages.
 
 ## 2. From research to product
 
@@ -120,6 +169,9 @@ need a field pilot.
 | Loans for farm inputs rarely come from formal lenders | Input costs (seed, fertiliser, labour) recorded by category so an input-finance lender can see them | Hypothesis, needs a pilot |
 | Female-headed and smallest households have lower formal-loan rates | A free, phone-first tool with no individual score, so it adds no new hurdle | Hypothesis, needs a pilot |
 | About half of farming adults say they already track money | Make tracking a one-minute tap flow instead of a new habit | Design assumption |
+| The most cited reason for a refused loan is an unclear purpose (29.7% of 295 refusals) | A loan purpose sheet: what the money is for, items, cost, timing, repayment, groups | Hypothesis, needs a pilot |
+| Plots differ widely and most are intercropped, so one national yield benchmark would mislead | A harvest check against AHS plots of the same crop and season, as a band, never saved or exported | Guidance only |
+| Savers and tontine members already exist at scale | Evidence pages that show where, and recommendations labelled as hypotheses (savers, tontines, input credit, women-headed households, VUP recipients) | Hypotheses, need a pilot |
 
 The adjusted models below show the gaps are not just a side effect of wealth or land. They are **associations, not
 causes**.
@@ -144,7 +196,25 @@ flowchart LR
     F --> G{{Lender decides.<br/>The tool never does.}}
 ```
 
+### 3.0 The Evidence pages
+
+| Page | What it shows |
+|---|---|
+| **Overview** | The four-way split (account and formal loan, account but informal only, account but no borrowing, no account) and where households borrow |
+| **Who gets formal credit** | Formal-loan rates by consumption quintile, sex of head, farm size, land title, cooperative membership |
+| **Where SACCOs could reach savers** (F1) | A map and table of district counts of account holders who borrowed only informally, with 95% ranges, districts under n = 30 greyed out and not ranked; plus *Tontines: an existing bridge* (F2) and the India SHG–Bank Linkage lesson |
+| **Social protection and finance** (F3) | VUP and Ubudehe category 1 against others on bank account, mobile money, saving, emergency fund and insurance, and the government-loan effect on "formal credit" shown separately |
+| **Loan purposes and barriers** | What loans are for, where input loans come from, why loans are refused, why adults do not borrow |
+| **Farmers vs other adults** | FinScope comparison of farming and non-farming adults |
+| **Districts** | Any indicator by district, with confidence intervals and suppression |
+| **What the evidence suggests** | Five recommendations, each split into *what the data show* (evidence-backed or not) and *hypothesis*, with a model from elsewhere, its source and a link to the figures |
+| **Data and methods** | Data sources, weights, suppression, validation against NISR's published tables |
+
+Screenshots of every page are in [`docs/screenshots/`](docs/screenshots).
+
 ### 3.1 For farmers
+
+**Five tabs:** add a record, my summary, share, harvest check, loan plan.
 
 **Loan plan (tab 5).** The most cited reason for a refused loan in AHS is an "unclear purpose" (29.7% of 295 refusals,
 wide CIs). The loan purpose sheet lets a farmer state what the money is for (inputs, equipment, livestock, other), the
@@ -295,9 +365,13 @@ flowchart TB
         SHARE[src/share.py]
         USSD[src/ussd.py]
         LAND[ui/landing.py]
+        BM[src/benchmarks.py<br/>2 aggregate files]
+        EV[ui/pages.py + ui/data.py<br/>Evidence zone: data/aggregates]
     end
     UI --- AUTH --> VAULT
     AUTH --> REC
+    UI --- BM
+    UI --- EV
     UI --- USSD --> REC
     UI --- SHARE --> REC
     LAND --- LP[ui/landing/landing.html<br/>built from frontend/]
@@ -316,7 +390,7 @@ flowchart TB
 | Layer | Technology |
 |---|---|
 | App framework | Streamlit 1.65+ (pages, forms, `st.iframe`, Components v2 for the storage bridge) |
-| Charts | Plotly |
+| Charts and maps | Plotly (CI bars, choropleth maps) |
 | Landing page | TypeScript, Tailwind CSS 3, Vite, built to one self-contained HTML file |
 | Cryptography | `cryptography` (AES-256-GCM, scrypt) |
 | Data and tables | pandas, numpy |
@@ -342,10 +416,14 @@ and download:
 | `ahs_national.csv`, `ahs_segments.csv` | National indicators and the four-way account/loan segmentation |
 | `ahs_by_group.csv` | Indicators by quintile, head's sex, farm size, province, district, cooperative and more |
 | `ahs_loan_sources.csv`, `ahs_loan_purpose.csv`, `ahs_denial_reasons.csv` | Where loans come from, what they are for, why they are refused |
-| `fs_national.csv`, `fs_by_group.csv`, `fs_barriers.csv`, `fs_farmer_digital.csv`, `fs_records_link.csv` | FinScope adult indicators, barriers, phone and mobile-money use, record-keeping |
+| `fs_national.csv`, `fs_by_group.csv`, `fs_barriers.csv`, `fs_farmer_digital.csv`, `fs_records_link.csv` | FinScope adult indicators (including the VUP and Ubudehe-1 groups for F3), barriers, phone and mobile-money use, record-keeping |
+| `ahs_district_opportunity.csv` | F1: per district, the share and number of households with an account that borrowed only informally, with 95% ranges, n and reliability (3 Kigali districts suppressed, n < 30) |
+| `ahs_tontine_bridge.csv` | F2: tontine membership, SACCO accounts among tontine borrowers, farm-purpose borrowing among informal-only savers |
+| `yield_benchmarks.json`, `input_use.json` | Farmer harvest check and peer input use (the only two files the farmer pages may read) |
 | `models.csv` | Odds ratios with confidence intervals |
 | `validation.csv`, `meta.json` | Checks against NISR's published tables; sample sizes and build date |
 
+District boundaries for the maps are in `data/geo/` (geoBoundaries ADM2, CC BY 4.0).
 `docs/01_dataset_audit.md` and `docs/variable_inventory.csv` document the datasets and variables we examined.
 
 ### Methods
@@ -364,6 +442,18 @@ and download:
   (no interpolation). Groups under 100 plots are omitted. Bands are guidance for the farmer on screen only and are
   never stored or exported. Input-use shares are plot-level weighted proportions; the improved-seed denominator is
   seasonal-crop plots where seed type was recorded.
+- **District counts (F1).** Per district: the design-based share of households with a formal account that borrowed only
+  informally, multiplied by that district's weighted household count; the CI bounds scale the same way. Districts with
+  fewer than 30 sampled households are not reported, so the 27 reported districts sum to about 749,000 against the
+  national ≈ 759,000. Districts are sorted by count, never ranked, because the intervals overlap.
+- **Tontine bridge (F2).** A household is a tontine member if any member answers yes to `s10cq8`; the SACCO share is
+  computed on households that took a tontine loan; the farm-purpose share (inputs, equipment or livestock) on
+  households with an account that borrowed only informally.
+- **Social protection (F3).** FinScope `c13d` (household received a VUP direct cash transfer; "don't know" excluded) and
+  Ubudehe category 1 against the rest. `formal_credit` counts a Government (Ubudehe/VUP) loan as formal, so the page also
+  shows credit without it and that loan on its own.
+- **Recommendations.** Each card separates a *finding* (evidence-backed when the confidence intervals of the compared
+  groups do not overlap) from an *idea* (always a hypothesis until piloted). Raw gaps are labelled unadjusted.
 - **No record linkage** between AHS and FinScope. They are compared side by side as aggregates.
 
 ### Validation
@@ -399,7 +489,14 @@ python analysis/key_findings.py         # prints the headline findings with CIs 
   a denial" (n = 295, wide intervals).
 - The AHS milk, egg and honey files contain many exact duplicate rows and are not used.
 - The "always track money" question went to about half of respondents; estimates use answerers only.
-- FinScope intervals are understated (no cluster variable in the public file).
+- FinScope intervals are understated (no cluster variable in the public file), so the VUP comparison is more certain
+  than it looks.
+- Three Kigali districts (Gasabo, Kicukiro, Nyarugenge) have too few sampled agricultural households to report, and
+  district counts rest on about 120 sampled households per district, so single-district differences are not meaningful.
+- The adjusted regression (F4), the what-if calculator (F5) and the shocks page (F6) are not built.
+- Every recommendation beyond "this gap exists" is a hypothesis. We have no pilot and no evidence on loan approval.
+- Yield bands compare self-reported harvests with self-reported survey plots; most plots are intercropped, so a band
+  is guidance and never a verdict.
 
 **Product limits**
 - Entries are self-reported and unverified. The prototype cannot tell a true record from a false one.
@@ -442,7 +539,7 @@ npm run build          # type-checks, builds, and writes ui/landing/landing.html
 ## 9. Test it
 
 ```bash
-python tests/test_app.py        # must print "... 0 failures"
+python tests/test_app.py        # must print "199 renders, 0 failures" (about two minutes)
 ```
 
 The suite needs only `requirements.txt`. It covers:
@@ -458,7 +555,11 @@ The suite needs only `requirements.txt`. It covers:
 | **Lender page** | Opens a real share; hostile text in a farmer's file is escaped |
 | **USSD** | Every screen is 160 characters or fewer, both languages, menus re-prompt on bad input |
 | **Language** | Every string exists in both languages with matching placeholders |
-| **Separation** | The landing copy contains no percentage and no `ui/` module reads survey data |
+| **Zones** | The Evidence zone never imports farmer, share, vault or crypto code, and the farmer zone never imports the Evidence loader; only `src/benchmarks.py` reads aggregate files, and only two |
+| **Benchmarks** | Harvest bands reproduce the reference medians; a band never appears in a record, backup, share file or report |
+| **Evidence figures** | 30 districts match the boundary file and total about 759k; tontine figures; VUP and Ubudehe figures; the recommendation cards (structure, sources, no causal wording) |
+| **Loan plan and evidence levels** | Plan validation, escaping, backup round trip, shared only when ticked; a typed reference is "attached, not checked" and an import can never grant "confirmed" |
+| **Landing** | The landing copy contains no percentage |
 
 The browser-storage bridge cannot run inside `AppTest`, so it was verified separately in a real browser: create a
 profile, confirm the stored vault holds no plaintext, reload, see the remembered phone, refuse a wrong PIN, accept the
@@ -475,6 +576,8 @@ The app deploys to **Streamlit Community Cloud** from this public repository.
 5. Deploy. Cloud installs `requirements.txt` (app dependencies only).
 6. After it is live: create a profile, reload and sign in again (this checks browser storage on the live domain),
    then try the lender page and the demo. Check a real phone.
+
+**Live app.** _paste the URL here after deploying._ The deployed app needs no login: see [Trying the live app](#trying-the-live-app).
 
 Notes: apps that get no visits go to sleep and need a click to wake, so open the app shortly before judging. One
 sign-up briefly uses about 64 MB for key derivation.
@@ -493,14 +596,19 @@ sign-up briefly uses about 64 MB for key derivation.
 | Criterion | How FinBridge answers it |
 |---|---|
 | **Problem relevance (NST2 / Vision 2050)** | A direct response to the gap between financial access and formal credit among farm households, supporting agricultural transformation and financial inclusion |
-| **Data use and methodology** | Two NISR surveys analysed with survey weights and design-based errors; adjusted models; estimates validated against NISR's published tables; findings traced to each design choice ([section 2](#2-from-research-to-product)) |
+| **Data use and methodology** | Two NISR surveys analysed with survey weights and design-based errors, with a district map of the 759k gap, a tontine bridge and a social-protection lens; adjusted models; estimates validated against NISR's published tables; every recommendation split into finding and hypothesis; findings traced to each design choice ([section 2](#2-from-research-to-product)) |
 | **Tangible impact** | A working tool that farmers and lenders can use today, built for basic phones; honest about what a pilot must still prove |
-| **Technical innovation** | Local-first encryption with consent-based sharing and no server database; one record engine across web and USSD; a lender story generated from the farmer's own records; TypeScript and Tailwind front end |
+| **Technical innovation** | Evidence and tools in one app with a tested boundary between them; local-first encryption with consent-based sharing and no server database; one record engine across web and USSD; a lender story generated from the farmer's own records; TypeScript and Tailwind front end |
 | **Usability** | Three-tap recording, plain-language summaries, large targets, Kinyarwanda first, phone-number-and-PIN sign-in, a one-click demo |
 
 ## 12. Roadmap
 
 Not part of the hackathon build:
+
+0. **Analysis still to add:** adjusted regression of formal loans (F4), a transparent what-if calculator for converting
+   existing savers (F5), and a shocks-without-a-cushion page (F6), as set out in
+   [`docs/02_evidence_and_features.md`](docs/02_evidence_and_features.md). Household-level shock alerts, satellite
+   farm lending and pest or weather SMS need data feeds we do not have.
 
 1. **Pilot** with a SACCO and a cooperative, to test whether lenders find the records useful and measure any effect on
    access.
@@ -521,6 +629,8 @@ requirements-pipeline.txt  extra packages to rebuild the research tables
 
 src/
   records.py               record engine: validation, summaries, insights, farm story, loan instalment, report
+  loanplan.py              loan purpose sheet: validation, sanitising, one-page printable summary
+  benchmarks.py            harvest band and peer input use (reads two aggregate files only)
   vault.py                 PIN-locked profile: create, unlock, reseal, PIN rules, lock-out
   share.py                 encrypted share package, one-time code, expiry
   crypto.py                scrypt and AES-256-GCM primitives
@@ -530,8 +640,8 @@ src/
 
 ui/
   landing.py               embeds the landing bundle
-  pages.py, data.py        Evidence pages and their aggregate loader (evidence zone)
-  (src/benchmarks.py is the only farmer-zone reader of data/aggregates: two files)
+  pages.py, data.py        Evidence pages (overview, who, SACCO map, social protection, loan purposes, farmers vs
+                           adults, districts, recommendations, methods) and their aggregate loader (evidence zone)
   farmer.py                sign-in gate, tap-to-record flow, summary, sharing, USSD preview
   lender.py                opening a share; story, charts, worksheet, quality, entries
   auth.py                  sign-up, sign-in, restore, erase, browser-storage bridge, idle lock
@@ -548,7 +658,8 @@ data/geo/                  district boundaries (display only; not used by the ap
 data/raw/                  NISR microdata, git-ignored, never committed
 
 tests/test_app.py          the test suite
-docs/                      security note, demo script, dataset audit, variable inventory
+docs/                      security note, demo script, evidence and build plans, dataset audit, variable inventory
+docs/screenshots/          every page at 1280 px and 390 px
 ```
 
 **Contributor rules.**
@@ -571,5 +682,12 @@ docs/                      security note, demo script, dataset audit, variable i
 - National Institute of Statistics of Rwanda (2024). *Agricultural Household Survey 2024*, main report and microdata.
 - National Institute of Statistics of Rwanda and Access to Finance Rwanda (2024). *FinScope Rwanda 2024*.
 - Republic of Rwanda. *National Strategy for Transformation (NST2)* and *Vision 2050*.
+- MINAGRI and RAB SPIU: agriculture's share of the loan portfolio, NST2 and PSTA5 target, and NAIS.
+  https://www.minagri.gov.rw/updates/news-details/minagri-and-rab-spiu-encourage-farmers-to-embrace-the-national-agriculture-insurance-scheme-nais
+- People's Bank of China: guidelines on rural credit households. https://camlmac.pbc.gov.cn/en/3688110/3688172/4048362/2025080817551068801/index.html
+- NABARD and microfinance (2002), India's SHG–Bank Linkage. https://findevgateway.org/sites/default/files/publications/files/mfg-en-paper-nabard-and-microfinance-2002.pdf
+- One Acre Fund (2025). *Q4 performance report*. https://www.globalgiving.org/pfil/59148/2025_Q4_One_Acre_Fund_Performance_Report.pdf
+- Banerjee, A. et al. (2015). A multifaceted program causes lasting progress for the very poor: evidence from six
+  countries. *Science* 348(6236). https://economics.mit.edu/sites/default/files/2022-08/science.1260799.pdf
 - Runfola, D. et al. (2020). geoBoundaries: a global database of political administrative boundaries. *PLOS ONE*
   15(4): e0231866.

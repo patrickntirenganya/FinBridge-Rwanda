@@ -17,9 +17,13 @@ Regenerate with `python analysis/key_findings.py`. These figures belong in the R
 
 ## Product (updated 24 Oct 2026)
 
-**The product shows no dataset statistic.** The survey analysis is the research that justifies and shapes the
-product; it lives in the README, `analysis/`, `pipeline/` and `data/aggregates/`, never in the app UI.
-The app reads no aggregate table. Pages: `Home` (landing, TypeScript + Tailwind), **for farmers** `My farm records`
+**The product shows no dataset statistic, with one narrow exception (decided 28 Oct).** The survey analysis lives in
+the README, `analysis/`, `pipeline/` and `data/aggregates/`. `ui/` may read ONLY `data/aggregates/yield_benchmarks.json`
+and `data/aggregates/input_use.json`, through the single loader `src/benchmarks.py`; the test allow-lists exactly those
+two files. The harvest band is computed on the fly, shown only to the farmer on screen, and NEVER written into a
+record, the JSON backup, the share file or the loan pack (tested). Every survey number shown to a farmer carries the
+source line "AHS 2024, plots of the same crop and season, for guidance only". No "vulnerable" label, no savings
+advice, no fertilizer doses. The improved-seed share is labelled "seasonal-crop plots where seed type was recorded". Pages: `Home` (landing, TypeScript + Tailwind), **for farmers** `My farm records`
 (record harvests, sales, expenses, savings; seasonal summary with visible formulas; downloadable report; JSON backup,
 nothing stored server-side) and the USSD simulator; **for lenders** `Open a farmer's report` (opens the locked `.fbshare` file a
 farmer chose to share, with the farmer's one-time code: summary, details, all entries, evidence mix, what to check, questions to ask); `About`.
@@ -71,7 +75,7 @@ streamlit run app.py
 
 ## Non-negotiable rules
 
-1. **Never commit microdata** (`.dta`, `.zip`, `data/raw/`, `*.pkl`). The app reads no survey data at all.
+1. **Never commit microdata** (`.dta`, `.zip`, `data/raw/`, `*.pkl`). The app reads no survey data except the two benchmark files above.
 2. **Every estimate is weighted.** AHS: weight=`weight`, PSU=`clust`, stratum=`district`. FinScope: weight=`pop_wt`, no PSU in public file, so CIs are understated; always say so.
 3. Cells with n < 30 are suppressed; CV > 0.30 is flagged "caution" (ochre bars).
 4. **No record linkage** between AHS and FinScope. Compare aggregates side by side only.
@@ -93,14 +97,20 @@ streamlit run app.py
 
 Tea green `#2F6B4F` = formal finance; sorghum ochre `#C2922A` = informal; soil red `#8E3B2E` = the gap; mist `#EEF2EC` background; grey `#9AA8A0` = government/other. Font: Atkinson Hyperlegible. Sentence case, plain verbs, no all-caps labels. Every chart shows CIs and n, and every page ends with a source note.
 
-## Backlog (priority order, from 24 Oct)
+## Backlog (priority order, updated 28 Oct from `docs/03_combined_build_plan.md` section 5)
 
-1. DONE: landing page, farmer tool, USSD preview, lender view, about page; dataset pages removed from the product.
-2. **Deploy** on Streamlit Community Cloud (`app.py`, Python 3.11+), then put the URL in the README and demo script.
-3. **Demo video** (≤ 3 min) following `docs/demo_script.md`.
-4. Native-speaker review of every Kinyarwanda string (`src/i18n.py`).
-5. DONE (25 Oct): lender view polish: print stylesheet, session-only lender notes, evidence legend.
-6. Research stays in README/`analysis/`; keep `data/aggregates/` for reproducibility, never display it in the app.
+Done: landing page, farmer tool, USSD preview, lender view (print stylesheet, session notes, evidence legend), about page.
+Pipeline exports `yield_benchmarks.json` (B1) and `input_use.json` (B2) built 28 Oct; medians reproduce doc 03 within 2%.
+
+1. **Deploy** both tools and cross-link them; have both URLs in hand before anything else (Insights/Records on Streamlit Community Cloud, `app.py`, Python 3.11+). Never cut.
+2. F1 SACCO opportunity map (highest priority), then F3 social protection lens.
+3. 29 Oct: B1 harvest peer comparison and B4 evidence levels in the record tool; B3 loan purpose sheet; recommendations page; README.
+4. 30 Oct morning, only if all above is tested: B2 inputs reference, then B5 district shock exposure or F4 adjusted regression.
+5. **Demo video** (<= 3 min, `docs/demo_script.md`; story: Insights finds the 759k, Records shows how one farmer prepares) and submit by early evening 30 Oct. Never cut.
+6. Native-speaker review of every Kinyarwanda string (`src/i18n.py`).
+
+Cut first if late: B5, F4, F5, B2. Never cut: deployment, README, demo video, tests passing.
+Rule conflict resolved 28 Oct (see Product). Insights pages (overview, who, why, districts, methods) were removed in e9c3c48 and are NOT in the app today.
 
 ## Next (after 23 Oct)
 Record-tool pilot plan with a SACCO and a cooperative; buyer/cooperative verification; consent-based sharing;

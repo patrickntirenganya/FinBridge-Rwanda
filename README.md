@@ -342,6 +342,12 @@ and download:
   tables.
 - **Models.** Weighted logistic regression of formal loan on welfare quintile, head's sex, farm size, land title,
   cooperative membership and province, with design-based sandwich standard errors (`src/models.py`). Associations only.
+- **Yield bands (farmer tool).** From AHS Section 3, every plot x crop slot 1-7: yield = harvest kg / (plot area x crop
+  share of plot). Per crop and season the top and bottom 1% of yields are trimmed, then weighted quartiles are taken:
+  sort yields, accumulate `weight`, and take the first yield whose cumulative weight share reaches 0.25, 0.50, 0.75
+  (no interpolation). Groups under 100 plots are omitted. Bands are guidance for the farmer on screen only and are
+  never stored or exported. Input-use shares are plot-level weighted proportions; the improved-seed denominator is
+  seasonal-crop plots where seed type was recorded.
 - **No record linkage** between AHS and FinScope. They are compared side by side as aggregates.
 
 ### Validation

@@ -1,0 +1,88 @@
+{
+ "source": "AHS 2024 Section 3, plot x crop slots 1-7, weighted by 'weight'",
+ "unit": "kg per hectare of the crop's own share of the plot",
+ "method": "top and bottom 1% of yields trimmed per crop x season; groups with fewer than 100 plots omitted; national only",
+ "benchmarks": [
+  {
+   "crop": "Maize",
+   "season": "A",
+   "n": 6334,
+   "p25": 817,
+   "p50": 1547,
+   "p75": 2726,
+   "intercropped_pct": 90.5
+  },
+  {
+   "crop": "Maize",
+   "season": "B",
+   "n": 2183,
+   "p25": 590,
+   "p50": 1257,
+   "p75": 2397,
+   "intercropped_pct": 91.0
+  },
+  {
+   "crop": "Paddy rice",
+   "season": "A",
+   "n": 166,
+   "p25": 2772,
+   "p50": 3907,
+   "p75": 5055,
+   "intercropped_pct": 38.9
+  },
+  {
+   "crop": "Paddy rice",
+   "season": "B",
+   "n": 225,
+   "p25": 3355,
+   "p50": 4310,
+   "p75": 4314,
+   "intercropped_pct": 34.1
+  },
+  {
+   "crop": "Bush bean",
+   "season": "A",
+   "n": 4029,
+   "p25": 492,
+   "p50": 820,
+   "p75": 1388,
+   "intercropped_pct": 94.6
+  },
+  {
+   "crop": "Bush bean",
+   "season": "B",
+   "n": 2968,
+   "p25": 276,
+   "p50": 485,
+   "p75": 824,
+   "intercropped_pct": 93.0
+  },
+  {
+   "crop": "Bush bean",
+   "season": "C",
+   "n": 232,
+   "p25": 517,
+   "p50": 886,
+   "p75": 1274,
+   "intercropped_pct": 86.7
+  },
+  {
+   "crop": "Climbing bean",
+   "season": "A",
+   "n": 3311,
+   "p25": 524,
+   "p50": 872,
+   "p75": 1374,
+   "intercropped_pct": 78.9
+  },
+  {
+   "crop": "Climbing bean",
+   "season": "B",
+   "n": 3177,
+   "p25": 462,
+   "p50": 784,
+   "p75": 1230,
+   "intercropped_pct": 79.9
+  }
+ ]
+}

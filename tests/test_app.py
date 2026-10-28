@@ -398,9 +398,45 @@ def no_dataset_in_product():
         landing.lang = i18n.lang
         blob = " ".join(landing.props()["s"].values())
         assert not re.search(r"\d+(\.\d+)?\s?%", blob), f"statistic on landing page ({lg})"
-    for f in Path(ROOT).glob("ui/*.py"):
-        assert "aggregates" not in f.read_text() and "ui.data" not in f.read_text(), f"{f.name} reads survey data"
+    import re as _re
+    for f in list(Path(ROOT).glob("ui/*.py")) + list(Path(ROOT).glob("src/*.py")):
+        txt = f.read_text()
+        assert "ui.data" not in txt, f"{f.name} reads survey data"
+        if f.name != "benchmarks.py":  # the single allowed loader
+            assert "aggregates" not in txt, f"{f.name} reads survey data"
+    bm = (Path(ROOT) / "src" / "benchmarks.py").read_text()
+    assert set(_re.findall(r'"(\w+\.(?:json|csv))"', bm)) == {"yield_benchmarks.json", "input_use.json"}, "loader allow-list"
     assert not (Path(ROOT) / "ui" / "pages.py").exists()
+
+
+def benchmarks_ok_and_never_stored():
+    """Bands match the reference, carry a source line, and never reach a record, backup, share file or report."""
+    import json
+    from datetime import date
+    from src import benchmarks as B, records as R, share as S
+    ref = B._load(B.YIELD_FILE)["benchmarks"]
+    mz = next(b for b in ref if b["crop"] == "Maize" and b["season"] == "A")
+    assert abs(mz["p50"] - 1547) / 1547 < 0.02
+    # 1 ha, 100% maize: 500 kg is below p25, 1500 typical, 4000 above
+    got = [B.band("Maize", "A", kg, 10000, 100) for kg in (500, 1500, 4000)]
+    assert [g["band"] for g in got] == [B.BELOW, B.TYPICAL, B.ABOVE], got
+    assert all(g["source"] == B.SOURCE_LINE for g in got)
+    assert B.band("Maize", "A", 0, 10000) is None and B.band("Quinoa", "A", 100, 10000) is None
+    # crop share changes the effective area: 750 kg on 1 ha at 50% = 1500 kg/ha
+    assert B.band("Maize", "A", 750, 10000, 50)["band"] == B.TYPICAL
+    assert B.input_share("inorganic")["scope"] == "Rwanda" and B.input_share("inorganic", "Huye")["source"]
+    # nothing a farmer can export may carry a band
+    recs = R.example_records()
+    B.band("Maize", "A", 500, 10000)
+    prof = dict(R.EXAMPLE_PROFILE)
+    pkg, _ = S.make_package(prof, recs)
+    blobs = [R.export_json(prof, recs), pkg, R.report_html(prof, recs, None, example=True), json.dumps(recs)]
+    for blob in blobs:
+        for word in ("p25", "p75", "yield_kg_ha", "below most similar", "above most similar", B.SOURCE_LINE):
+            assert word not in blob, f"benchmark leaked into an export: {word}"
+    assert set(recs[0]) <= {"id", "date", "kind", "item", "quantity", "unit", "amount_rwf", "counterparty", "evidence", "retained_kg"}
+    for f in ("records.py", "share.py", "vault.py", "crypto.py"):
+        assert "benchmarks" not in (Path(ROOT) / "src" / f).read_text(), f"{f} imports benchmarks"
 
 
 def ussd_flow():
@@ -452,6 +488,10 @@ for fn in (farmer_flow, add_flow, engine_checks, vault_checks, share_checks, new
             import traceback
             failures.append((fn.__name__, LANG, [repr(e), traceback.format_exc().splitlines()[-6:]]))
 
+try:
+    benchmarks_ok_and_never_stored()
+except Exception as e:
+    failures.append(("benchmarks_ok_and_never_stored", "-", [repr(e)]))
 try:
     no_dataset_in_product()
 except Exception as e:

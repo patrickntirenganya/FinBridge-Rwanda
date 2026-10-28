@@ -11,6 +11,7 @@ from __future__ import annotations
 import json, sys
 from datetime import date
 from pathlib import Path
+import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,7 +66,84 @@ def shares(data, col, codes: dict, w="weight", psu="clust", strata="district", *
     return flag(pd.DataFrame(rows))
 
 
+CROPS = {101: "Maize", 102: "Paddy rice", 106: "Bush bean", 107: "Climbing bean"}
+SEASONS = {1: "A", 2: "B", 3: "C"}
+SLOTS = range(1, 8)          # the file carries 7 crop slots per plot
+MIN_PLOTS = 100
+TRIM = 0.01
+
+
+def wquantiles(x, w, qs):
+    o = np.argsort(x)
+    x, w = x[o], w[o]
+    c = np.cumsum(w) / w.sum()
+    return [float(x[min(np.searchsorted(c, q), len(x) - 1)]) for q in qs]
+
+
+def yield_benchmarks():
+    """Weighted yield quartiles (kg per effective ha) by crop x season, from AHS Section 3.
+
+    effective area = plot area x crop share of plot; top and bottom 1% trimmed per crop x season.
+    """
+    d, _ = ahs("Section3_4")
+    parts = []
+    for k in SLOTS:
+        t = d[[f"s3_q4_{k}", f"s3_q4_{k}a", f"s3_q20_{k}", "s2q2", "Season", "weight"]].copy()
+        t.columns = ["crop", "share", "kg", "area_m2", "season", "w"]
+        parts.append(t)
+    a = pd.concat(parts)
+    a = a[a.crop.isin(CROPS) & (a.kg > 0) & (a.area_m2 > 0)].copy()
+    a["ha"] = a.area_m2 / 1e4 * a.share.clip(1, 100) / 100
+    a["y"] = a.kg / a.ha
+    rows = []
+    for (crop, season), g in a.groupby(["crop", "season"]):
+        lo, hi = g.y.quantile([TRIM, 1 - TRIM])
+        g = g[(g.y >= lo) & (g.y <= hi)]
+        if len(g) < MIN_PLOTS:
+            continue
+        p25, p50, p75 = wquantiles(g.y.values, g.w.values, [.25, .5, .75])
+        rows.append(dict(crop=CROPS[int(crop)], season=SEASONS[int(season)], n=int(len(g)),
+                         p25=round(p25), p50=round(p50), p75=round(p75),
+                         intercropped_pct=round(100 * float(np.average(g.share < 100, weights=g.w)), 1)))
+    return dict(
+        source="AHS 2024 Section 3, plot x crop slots 1-7, weighted by 'weight'",
+        unit="kg per hectare of the crop's own share of the plot",
+        method=f"top and bottom {int(TRIM * 100)}% of yields trimmed per crop x season; "
+               f"groups with fewer than {MIN_PLOTS} plots omitted; national only",
+        benchmarks=rows)
+
+
+def input_use():
+    """Plot-level weighted shares of input use, national and by district (n < 30 suppressed)."""
+    d, _ = ahs("Section3_4")
+    m0, meta0 = ahs("Section0")
+    names = labels(meta0, "district")
+    d = d.assign(
+        organic=d.s4_q1 == 1, inorganic=d.s4_q4 == 1, pesticide=d.s4_q12 == 1,
+        improved_seed=d.s3_q9_1.isin([2, 3]).where(d.s3_q9_1.notna()),
+        irrigated=d.s4_q22 == 1, cant_afford_irrigation=(d.s4_q22 == 3).where(d.s4_q22.notna()))
+    inds = ["organic", "inorganic", "pesticide", "improved_seed", "irrigated", "cant_afford_irrigation"]
+
+    def block(sub):
+        out = {}
+        for k in inds:
+            r = wprop(sub[k], sub.weight, sub.clust, sub.district)
+            out[k] = None if r["n"] < MIN_N else dict(est=round(r["est"], 1), lo=round(r["lo"], 1),
+                                                       hi=round(r["hi"], 1), n=int(r["n"]))
+        return out
+
+    return dict(
+        source="AHS 2024 Section 3-4, plot level, weight=weight, PSU=clust, stratum=district",
+        indicators=dict(organic="Organic fertilizer used", inorganic="Inorganic fertilizer used",
+                        pesticide="Pesticide used", improved_seed="Improved seed used (main crop)",
+                        irrigated="Plot irrigated", cant_afford_irrigation="Could not afford irrigation"),
+        national=block(d),
+        districts={names.get(int(c), str(int(c))): block(g) for c, g in d.groupby("district")})
+
+
 def main():
+    (OUT / "yield_benchmarks.json").write_text(json.dumps(yield_benchmarks(), indent=1))
+    (OUT / "input_use.json").write_text(json.dumps(input_use(), indent=1))
     # ------------------------------------------------------------- AHS
     H, L, D = build_ahs()
     groups = {k: v for k, v in AHS_GROUPS.items() if k != "district"}

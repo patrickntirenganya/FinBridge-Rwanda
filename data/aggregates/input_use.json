@@ -1,0 +1,1191 @@
+{
+ "source": "AHS 2024 Section 3-4, plot level, weight=weight, PSU=clust, stratum=district",
+ "indicators": {
+  "organic": "Organic fertilizer used",
+  "inorganic": "Inorganic fertilizer used",
+  "pesticide": "Pesticide used",
+  "improved_seed": "Improved seed used (main crop)",
+  "irrigated": "Plot irrigated",
+  "cant_afford_irrigation": "Could not afford irrigation"
+ },
+ "national": {
+  "organic": {
+   "est": 63.6,
+   "lo": 62.3,
+   "hi": 64.9,
+   "n": 32616
+  },
+  "inorganic": {
+   "est": 29.5,
+   "lo": 27.0,
+   "hi": 32.0,
+   "n": 32616
+  },
+  "pesticide": {
+   "est": 15.7,
+   "lo": 14.5,
+   "hi": 16.9,
+   "n": 32616
+  },
+  "improved_seed": {
+   "est": 17.7,
+   "lo": 14.0,
+   "hi": 21.4,
+   "n": 31209
+  },
+  "irrigated": {
+   "est": 5.6,
+   "lo": 4.4,
+   "hi": 6.7,
+   "n": 32616
+  },
+  "cant_afford_irrigation": {
+   "est": 5.3,
+   "lo": 4.7,
+   "hi": 5.9,
+   "n": 32616
+  }
+ },
+ "districts": {
+  "Nyarugenge": {
+   "organic": {
+    "est": 61.3,
+    "lo": 41.2,
+    "hi": 81.4,
+    "n": 92
+   },
+   "inorganic": {
+    "est": 11.7,
+    "lo": 0.0,
+    "hi": 28.3,
+    "n": 92
+   },
+   "pesticide": {
+    "est": 7.5,
+    "lo": 3.4,
+    "hi": 11.6,
+    "n": 92
+   },
+   "improved_seed": {
+    "est": 14.4,
+    "lo": 3.0,
+    "hi": 25.8,
+    "n": 88
+   },
+   "irrigated": {
+    "est": 11.0,
+    "lo": 0.0,
+    "hi": 26.3,
+    "n": 92
+   },
+   "cant_afford_irrigation": {
+    "est": 30.9,
+    "lo": 13.4,
+    "hi": 48.4,
+    "n": 92
+   }
+  },
+  "Gasabo": {
+   "organic": {
+    "est": 68.4,
+    "lo": 56.9,
+    "hi": 79.9,
+    "n": 206
+   },
+   "inorganic": {
+    "est": 15.9,
+    "lo": 1.0,
+    "hi": 30.8,
+    "n": 206
+   },
+   "pesticide": {
+    "est": 9.9,
+    "lo": 3.6,
+    "hi": 16.3,
+    "n": 206
+   },
+   "improved_seed": {
+    "est": 9.1,
+    "lo": 1.0,
+    "hi": 17.2,
+    "n": 203
+   },
+   "irrigated": {
+    "est": 3.2,
+    "lo": 0.0,
+    "hi": 7.6,
+    "n": 206
+   },
+   "cant_afford_irrigation": {
+    "est": 3.9,
+    "lo": 0.0,
+    "hi": 8.1,
+    "n": 206
+   }
+  },
+  "Kicukiro": {
+   "organic": {
+    "est": 37.2,
+    "lo": 6.7,
+    "hi": 67.6,
+    "n": 54
+   },
+   "inorganic": {
+    "est": 16.0,
+    "lo": 0.0,
+    "hi": 48.6,
+    "n": 54
+   },
+   "pesticide": {
+    "est": 19.2,
+    "lo": 0.0,
+    "hi": 58.3,
+    "n": 54
+   },
+   "improved_seed": {
+    "est": 23.5,
+    "lo": 20.5,
+    "hi": 26.5,
+    "n": 49
+   },
+   "irrigated": {
+    "est": 7.5,
+    "lo": 0.0,
+    "hi": 22.7,
+    "n": 54
+   },
+   "cant_afford_irrigation": {
+    "est": 4.3,
+    "lo": 0.0,
+    "hi": 13.0,
+    "n": 54
+   }
+  },
+  "Nyanza": {
+   "organic": {
+    "est": 46.7,
+    "lo": 40.5,
+    "hi": 52.9,
+    "n": 1239
+   },
+   "inorganic": {
+    "est": 15.0,
+    "lo": 10.1,
+    "hi": 19.9,
+    "n": 1239
+   },
+   "pesticide": {
+    "est": 15.4,
+    "lo": 10.7,
+    "hi": 20.1,
+    "n": 1239
+   },
+   "improved_seed": {
+    "est": 14.1,
+    "lo": 9.7,
+    "hi": 18.5,
+    "n": 1159
+   },
+   "irrigated": {
+    "est": 9.1,
+    "lo": 4.9,
+    "hi": 13.3,
+    "n": 1239
+   },
+   "cant_afford_irrigation": {
+    "est": 8.1,
+    "lo": 6.1,
+    "hi": 10.1,
+    "n": 1239
+   }
+  },
+  "Gisagara": {
+   "organic": {
+    "est": 63.1,
+    "lo": 58.5,
+    "hi": 67.8,
+    "n": 1492
+   },
+   "inorganic": {
+    "est": 21.8,
+    "lo": 18.5,
+    "hi": 25.0,
+    "n": 1492
+   },
+   "pesticide": {
+    "est": 18.5,
+    "lo": 13.7,
+    "hi": 23.2,
+    "n": 1492
+   },
+   "improved_seed": {
+    "est": 25.2,
+    "lo": 19.8,
+    "hi": 30.5,
+    "n": 1454
+   },
+   "irrigated": {
+    "est": 8.1,
+    "lo": 5.2,
+    "hi": 10.9,
+    "n": 1492
+   },
+   "cant_afford_irrigation": {
+    "est": 1.4,
+    "lo": 0.6,
+    "hi": 2.2,
+    "n": 1492
+   }
+  },
+  "Nyaruguru": {
+   "organic": {
+    "est": 77.9,
+    "lo": 74.1,
+    "hi": 81.7,
+    "n": 1575
+   },
+   "inorganic": {
+    "est": 39.2,
+    "lo": 31.0,
+    "hi": 47.5,
+    "n": 1575
+   },
+   "pesticide": {
+    "est": 15.4,
+    "lo": 10.8,
+    "hi": 20.0,
+    "n": 1575
+   },
+   "improved_seed": {
+    "est": 9.2,
+    "lo": 6.9,
+    "hi": 11.5,
+    "n": 1505
+   },
+   "irrigated": {
+    "est": 4.8,
+    "lo": 2.1,
+    "hi": 7.4,
+    "n": 1575
+   },
+   "cant_afford_irrigation": {
+    "est": 2.9,
+    "lo": 0.6,
+    "hi": 5.2,
+    "n": 1575
+   }
+  },
+  "Huye": {
+   "organic": {
+    "est": 58.2,
+    "lo": 50.6,
+    "hi": 65.7,
+    "n": 1367
+   },
+   "inorganic": {
+    "est": 25.6,
+    "lo": 18.8,
+    "hi": 32.4,
+    "n": 1367
+   },
+   "pesticide": {
+    "est": 16.5,
+    "lo": 12.1,
+    "hi": 21.0,
+    "n": 1367
+   },
+   "improved_seed": {
+    "est": 20.2,
+    "lo": 17.1,
+    "hi": 23.3,
+    "n": 1259
+   },
+   "irrigated": {
+    "est": 12.2,
+    "lo": 8.9,
+    "hi": 15.5,
+    "n": 1367
+   },
+   "cant_afford_irrigation": {
+    "est": 10.9,
+    "lo": 7.5,
+    "hi": 14.4,
+    "n": 1367
+   }
+  },
+  "Nyamagabe": {
+   "organic": {
+    "est": 74.9,
+    "lo": 69.3,
+    "hi": 80.5,
+    "n": 1495
+   },
+   "inorganic": {
+    "est": 36.2,
+    "lo": 24.7,
+    "hi": 47.8,
+    "n": 1495
+   },
+   "pesticide": {
+    "est": 15.5,
+    "lo": 6.0,
+    "hi": 25.0,
+    "n": 1495
+   },
+   "improved_seed": {
+    "est": 9.2,
+    "lo": 6.8,
+    "hi": 11.6,
+    "n": 1405
+   },
+   "irrigated": {
+    "est": 2.3,
+    "lo": 0.7,
+    "hi": 3.9,
+    "n": 1495
+   },
+   "cant_afford_irrigation": {
+    "est": 6.8,
+    "lo": 4.6,
+    "hi": 9.0,
+    "n": 1495
+   }
+  },
+  "Ruhango": {
+   "organic": {
+    "est": 66.3,
+    "lo": 58.2,
+    "hi": 74.3,
+    "n": 1290
+   },
+   "inorganic": {
+    "est": 12.1,
+    "lo": 5.1,
+    "hi": 19.2,
+    "n": 1290
+   },
+   "pesticide": {
+    "est": 11.7,
+    "lo": 6.7,
+    "hi": 16.8,
+    "n": 1290
+   },
+   "improved_seed": {
+    "est": 12.0,
+    "lo": 6.7,
+    "hi": 17.2,
+    "n": 1242
+   },
+   "irrigated": {
+    "est": 8.1,
+    "lo": 4.5,
+    "hi": 11.7,
+    "n": 1290
+   },
+   "cant_afford_irrigation": {
+    "est": 5.7,
+    "lo": 2.5,
+    "hi": 8.9,
+    "n": 1290
+   }
+  },
+  "Muhanga": {
+   "organic": {
+    "est": 68.3,
+    "lo": 64.4,
+    "hi": 72.1,
+    "n": 1530
+   },
+   "inorganic": {
+    "est": 13.6,
+    "lo": 8.7,
+    "hi": 18.5,
+    "n": 1530
+   },
+   "pesticide": {
+    "est": 8.5,
+    "lo": 4.3,
+    "hi": 12.8,
+    "n": 1530
+   },
+   "improved_seed": {
+    "est": 8.5,
+    "lo": 5.1,
+    "hi": 11.9,
+    "n": 1437
+   },
+   "irrigated": {
+    "est": 4.1,
+    "lo": 2.0,
+    "hi": 6.2,
+    "n": 1530
+   },
+   "cant_afford_irrigation": {
+    "est": 1.7,
+    "lo": 0.7,
+    "hi": 2.8,
+    "n": 1530
+   }
+  },
+  "Kamonyi": {
+   "organic": {
+    "est": 62.7,
+    "lo": 56.3,
+    "hi": 69.2,
+    "n": 1449
+   },
+   "inorganic": {
+    "est": 13.6,
+    "lo": 8.3,
+    "hi": 18.8,
+    "n": 1449
+   },
+   "pesticide": {
+    "est": 13.6,
+    "lo": 10.0,
+    "hi": 17.3,
+    "n": 1449
+   },
+   "improved_seed": {
+    "est": 14.6,
+    "lo": 10.6,
+    "hi": 18.7,
+    "n": 1362
+   },
+   "irrigated": {
+    "est": 8.6,
+    "lo": 6.5,
+    "hi": 10.7,
+    "n": 1449
+   },
+   "cant_afford_irrigation": {
+    "est": 2.3,
+    "lo": 0.9,
+    "hi": 3.8,
+    "n": 1449
+   }
+  },
+  "Karongi": {
+   "organic": {
+    "est": 65.7,
+    "lo": 61.4,
+    "hi": 70.0,
+    "n": 1373
+   },
+   "inorganic": {
+    "est": 29.6,
+    "lo": 23.4,
+    "hi": 35.8,
+    "n": 1373
+   },
+   "pesticide": {
+    "est": 8.7,
+    "lo": 4.5,
+    "hi": 12.9,
+    "n": 1373
+   },
+   "improved_seed": {
+    "est": 10.5,
+    "lo": 7.3,
+    "hi": 13.7,
+    "n": 1328
+   },
+   "irrigated": {
+    "est": 3.3,
+    "lo": 1.6,
+    "hi": 5.0,
+    "n": 1373
+   },
+   "cant_afford_irrigation": {
+    "est": 4.2,
+    "lo": 2.9,
+    "hi": 5.5,
+    "n": 1373
+   }
+  },
+  "Rutsiro": {
+   "organic": {
+    "est": 74.7,
+    "lo": 68.7,
+    "hi": 80.7,
+    "n": 957
+   },
+   "inorganic": {
+    "est": 29.6,
+    "lo": 21.1,
+    "hi": 38.1,
+    "n": 957
+   },
+   "pesticide": {
+    "est": 11.7,
+    "lo": 4.7,
+    "hi": 18.8,
+    "n": 957
+   },
+   "improved_seed": {
+    "est": 9.9,
+    "lo": 4.8,
+    "hi": 15.0,
+    "n": 894
+   },
+   "irrigated": {
+    "est": 0.8,
+    "lo": 0.3,
+    "hi": 1.2,
+    "n": 957
+   },
+   "cant_afford_irrigation": {
+    "est": 4.7,
+    "lo": 1.8,
+    "hi": 7.6,
+    "n": 957
+   }
+  },
+  "Rubavu": {
+   "organic": {
+    "est": 40.7,
+    "lo": 25.9,
+    "hi": 55.4,
+    "n": 371
+   },
+   "inorganic": {
+    "est": 45.3,
+    "lo": 32.4,
+    "hi": 58.3,
+    "n": 371
+   },
+   "pesticide": {
+    "est": 41.4,
+    "lo": 19.4,
+    "hi": 63.4,
+    "n": 371
+   },
+   "improved_seed": {
+    "est": 19.1,
+    "lo": 11.8,
+    "hi": 26.5,
+    "n": 352
+   },
+   "irrigated": {
+    "est": 1.5,
+    "lo": 0.5,
+    "hi": 2.5,
+    "n": 371
+   },
+   "cant_afford_irrigation": {
+    "est": 1.7,
+    "lo": 0.0,
+    "hi": 3.7,
+    "n": 371
+   }
+  },
+  "Nyabihu": {
+   "organic": {
+    "est": 72.2,
+    "lo": 66.8,
+    "hi": 77.5,
+    "n": 548
+   },
+   "inorganic": {
+    "est": 51.8,
+    "lo": 36.1,
+    "hi": 67.5,
+    "n": 548
+   },
+   "pesticide": {
+    "est": 50.8,
+    "lo": 32.0,
+    "hi": 69.5,
+    "n": 548
+   },
+   "improved_seed": {
+    "est": 16.8,
+    "lo": 12.1,
+    "hi": 21.5,
+    "n": 536
+   },
+   "irrigated": {
+    "est": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 548
+   },
+   "cant_afford_irrigation": {
+    "est": 2.2,
+    "lo": 0.3,
+    "hi": 4.2,
+    "n": 548
+   }
+  },
+  "Ngororero": {
+   "organic": {
+    "est": 83.7,
+    "lo": 79.1,
+    "hi": 88.3,
+    "n": 1375
+   },
+   "inorganic": {
+    "est": 25.1,
+    "lo": 19.4,
+    "hi": 30.7,
+    "n": 1375
+   },
+   "pesticide": {
+    "est": 10.1,
+    "lo": 6.0,
+    "hi": 14.2,
+    "n": 1375
+   },
+   "improved_seed": {
+    "est": 10.7,
+    "lo": 8.3,
+    "hi": 13.0,
+    "n": 1310
+   },
+   "irrigated": {
+    "est": 2.5,
+    "lo": 0.8,
+    "hi": 4.2,
+    "n": 1375
+   },
+   "cant_afford_irrigation": {
+    "est": 8.4,
+    "lo": 5.5,
+    "hi": 11.4,
+    "n": 1375
+   }
+  },
+  "Rusizi": {
+   "organic": {
+    "est": 59.4,
+    "lo": 52.5,
+    "hi": 66.3,
+    "n": 1010
+   },
+   "inorganic": {
+    "est": 38.7,
+    "lo": 30.7,
+    "hi": 46.7,
+    "n": 1010
+   },
+   "pesticide": {
+    "est": 4.9,
+    "lo": 2.3,
+    "hi": 7.5,
+    "n": 1010
+   },
+   "improved_seed": {
+    "est": 17.4,
+    "lo": 12.9,
+    "hi": 21.9,
+    "n": 960
+   },
+   "irrigated": {
+    "est": 3.4,
+    "lo": 1.6,
+    "hi": 5.2,
+    "n": 1010
+   },
+   "cant_afford_irrigation": {
+    "est": 0.4,
+    "lo": 0.0,
+    "hi": 0.8,
+    "n": 1010
+   }
+  },
+  "Nyamasheke": {
+   "organic": {
+    "est": 69.5,
+    "lo": 62.3,
+    "hi": 76.7,
+    "n": 1408
+   },
+   "inorganic": {
+    "est": 35.6,
+    "lo": 27.9,
+    "hi": 43.3,
+    "n": 1408
+   },
+   "pesticide": {
+    "est": 8.3,
+    "lo": 5.3,
+    "hi": 11.3,
+    "n": 1408
+   },
+   "improved_seed": {
+    "est": 10.9,
+    "lo": 7.5,
+    "hi": 14.3,
+    "n": 1324
+   },
+   "irrigated": {
+    "est": 2.2,
+    "lo": 0.6,
+    "hi": 3.9,
+    "n": 1408
+   },
+   "cant_afford_irrigation": {
+    "est": 3.7,
+    "lo": 2.3,
+    "hi": 5.1,
+    "n": 1408
+   }
+  },
+  "Rulindo": {
+   "organic": {
+    "est": 79.9,
+    "lo": 76.6,
+    "hi": 83.2,
+    "n": 1143
+   },
+   "inorganic": {
+    "est": 30.8,
+    "lo": 24.4,
+    "hi": 37.2,
+    "n": 1143
+   },
+   "pesticide": {
+    "est": 19.4,
+    "lo": 15.2,
+    "hi": 23.5,
+    "n": 1143
+   },
+   "improved_seed": {
+    "est": 15.0,
+    "lo": 11.6,
+    "hi": 18.3,
+    "n": 1103
+   },
+   "irrigated": {
+    "est": 6.6,
+    "lo": 2.9,
+    "hi": 10.3,
+    "n": 1143
+   },
+   "cant_afford_irrigation": {
+    "est": 2.8,
+    "lo": 1.5,
+    "hi": 4.2,
+    "n": 1143
+   }
+  },
+  "Gakenke": {
+   "organic": {
+    "est": 75.7,
+    "lo": 72.2,
+    "hi": 79.1,
+    "n": 1822
+   },
+   "inorganic": {
+    "est": 40.0,
+    "lo": 35.0,
+    "hi": 45.0,
+    "n": 1822
+   },
+   "pesticide": {
+    "est": 16.1,
+    "lo": 11.6,
+    "hi": 20.6,
+    "n": 1822
+   },
+   "improved_seed": {
+    "est": 10.9,
+    "lo": 8.3,
+    "hi": 13.6,
+    "n": 1716
+   },
+   "irrigated": {
+    "est": 1.8,
+    "lo": 0.8,
+    "hi": 2.8,
+    "n": 1822
+   },
+   "cant_afford_irrigation": {
+    "est": 2.4,
+    "lo": 1.3,
+    "hi": 3.6,
+    "n": 1822
+   }
+  },
+  "Musanze": {
+   "organic": {
+    "est": 65.4,
+    "lo": 57.0,
+    "hi": 73.9,
+    "n": 1035
+   },
+   "inorganic": {
+    "est": 41.5,
+    "lo": 31.3,
+    "hi": 51.7,
+    "n": 1035
+   },
+   "pesticide": {
+    "est": 40.6,
+    "lo": 31.2,
+    "hi": 50.0,
+    "n": 1035
+   },
+   "improved_seed": {
+    "est": 15.1,
+    "lo": 10.3,
+    "hi": 19.9,
+    "n": 1019
+   },
+   "irrigated": {
+    "est": 0.8,
+    "lo": 0.1,
+    "hi": 1.6,
+    "n": 1035
+   },
+   "cant_afford_irrigation": {
+    "est": 2.8,
+    "lo": 1.2,
+    "hi": 4.4,
+    "n": 1035
+   }
+  },
+  "Burera": {
+   "organic": {
+    "est": 71.5,
+    "lo": 64.7,
+    "hi": 78.3,
+    "n": 1207
+   },
+   "inorganic": {
+    "est": 44.5,
+    "lo": 37.7,
+    "hi": 51.2,
+    "n": 1207
+   },
+   "pesticide": {
+    "est": 38.6,
+    "lo": 27.2,
+    "hi": 50.0,
+    "n": 1207
+   },
+   "improved_seed": {
+    "est": 14.8,
+    "lo": 11.2,
+    "hi": 18.4,
+    "n": 1190
+   },
+   "irrigated": {
+    "est": 0.9,
+    "lo": 0.0,
+    "hi": 2.0,
+    "n": 1207
+   },
+   "cant_afford_irrigation": {
+    "est": 12.2,
+    "lo": 7.8,
+    "hi": 16.6,
+    "n": 1207
+   }
+  },
+  "Gicumbi": {
+   "organic": {
+    "est": 80.4,
+    "lo": 76.5,
+    "hi": 84.3,
+    "n": 1830
+   },
+   "inorganic": {
+    "est": 23.0,
+    "lo": 18.4,
+    "hi": 27.6,
+    "n": 1830
+   },
+   "pesticide": {
+    "est": 11.3,
+    "lo": 7.3,
+    "hi": 15.3,
+    "n": 1830
+   },
+   "improved_seed": {
+    "est": 12.6,
+    "lo": 9.3,
+    "hi": 15.8,
+    "n": 1790
+   },
+   "irrigated": {
+    "est": 4.4,
+    "lo": 1.8,
+    "hi": 7.1,
+    "n": 1830
+   },
+   "cant_afford_irrigation": {
+    "est": 2.2,
+    "lo": 1.1,
+    "hi": 3.4,
+    "n": 1830
+   }
+  },
+  "Rwamagana": {
+   "organic": {
+    "est": 54.5,
+    "lo": 49.3,
+    "hi": 59.7,
+    "n": 493
+   },
+   "inorganic": {
+    "est": 31.6,
+    "lo": 25.5,
+    "hi": 37.6,
+    "n": 493
+   },
+   "pesticide": {
+    "est": 12.5,
+    "lo": 8.9,
+    "hi": 16.0,
+    "n": 493
+   },
+   "improved_seed": {
+    "est": 25.1,
+    "lo": 14.4,
+    "hi": 35.9,
+    "n": 472
+   },
+   "irrigated": {
+    "est": 4.7,
+    "lo": 2.5,
+    "hi": 6.9,
+    "n": 493
+   },
+   "cant_afford_irrigation": {
+    "est": 2.2,
+    "lo": 0.0,
+    "hi": 5.6,
+    "n": 493
+   }
+  },
+  "Nyagatare": {
+   "organic": {
+    "est": 48.5,
+    "lo": 43.6,
+    "hi": 53.4,
+    "n": 867
+   },
+   "inorganic": {
+    "est": 49.2,
+    "lo": 31.4,
+    "hi": 66.9,
+    "n": 867
+   },
+   "pesticide": {
+    "est": 15.3,
+    "lo": 6.4,
+    "hi": 24.1,
+    "n": 867
+   },
+   "improved_seed": {
+    "est": 56.5,
+    "lo": 32.0,
+    "hi": 81.1,
+    "n": 861
+   },
+   "irrigated": {
+    "est": 12.6,
+    "lo": 1.5,
+    "hi": 23.7,
+    "n": 867
+   },
+   "cant_afford_irrigation": {
+    "est": 2.7,
+    "lo": 0.0,
+    "hi": 5.7,
+    "n": 867
+   }
+  },
+  "Gatsibo": {
+   "organic": {
+    "est": 62.4,
+    "lo": 56.9,
+    "hi": 67.9,
+    "n": 1100
+   },
+   "inorganic": {
+    "est": 28.6,
+    "lo": 23.9,
+    "hi": 33.3,
+    "n": 1100
+   },
+   "pesticide": {
+    "est": 15.3,
+    "lo": 11.7,
+    "hi": 18.8,
+    "n": 1100
+   },
+   "improved_seed": {
+    "est": 23.1,
+    "lo": 18.8,
+    "hi": 27.4,
+    "n": 1062
+   },
+   "irrigated": {
+    "est": 6.7,
+    "lo": 3.9,
+    "hi": 9.5,
+    "n": 1100
+   },
+   "cant_afford_irrigation": {
+    "est": 12.5,
+    "lo": 8.0,
+    "hi": 17.0,
+    "n": 1100
+   }
+  },
+  "Kayonza": {
+   "organic": {
+    "est": 44.3,
+    "lo": 38.2,
+    "hi": 50.3,
+    "n": 819
+   },
+   "inorganic": {
+    "est": 28.2,
+    "lo": 19.9,
+    "hi": 36.5,
+    "n": 819
+   },
+   "pesticide": {
+    "est": 12.2,
+    "lo": 6.7,
+    "hi": 17.6,
+    "n": 819
+   },
+   "improved_seed": {
+    "est": 23.5,
+    "lo": 18.4,
+    "hi": 28.6,
+    "n": 806
+   },
+   "irrigated": {
+    "est": 5.8,
+    "lo": 2.1,
+    "hi": 9.5,
+    "n": 819
+   },
+   "cant_afford_irrigation": {
+    "est": 13.9,
+    "lo": 8.0,
+    "hi": 19.8,
+    "n": 819
+   }
+  },
+  "Kirehe": {
+   "organic": {
+    "est": 43.2,
+    "lo": 39.1,
+    "hi": 47.3,
+    "n": 1080
+   },
+   "inorganic": {
+    "est": 30.0,
+    "lo": 23.6,
+    "hi": 36.5,
+    "n": 1080
+   },
+   "pesticide": {
+    "est": 11.7,
+    "lo": 6.0,
+    "hi": 17.4,
+    "n": 1080
+   },
+   "improved_seed": {
+    "est": 20.8,
+    "lo": 15.5,
+    "hi": 26.0,
+    "n": 1039
+   },
+   "irrigated": {
+    "est": 7.4,
+    "lo": 3.2,
+    "hi": 11.6,
+    "n": 1080
+   },
+   "cant_afford_irrigation": {
+    "est": 10.1,
+    "lo": 7.2,
+    "hi": 13.1,
+    "n": 1080
+   }
+  },
+  "Ngoma": {
+   "organic": {
+    "est": 43.2,
+    "lo": 38.1,
+    "hi": 48.2,
+    "n": 1213
+   },
+   "inorganic": {
+    "est": 20.2,
+    "lo": 16.3,
+    "hi": 24.1,
+    "n": 1213
+   },
+   "pesticide": {
+    "est": 9.1,
+    "lo": 5.5,
+    "hi": 12.6,
+    "n": 1213
+   },
+   "improved_seed": {
+    "est": 15.8,
+    "lo": 12.1,
+    "hi": 19.5,
+    "n": 1159
+   },
+   "irrigated": {
+    "est": 5.4,
+    "lo": 2.8,
+    "hi": 8.0,
+    "n": 1213
+   },
+   "cant_afford_irrigation": {
+    "est": 5.6,
+    "lo": 2.7,
+    "hi": 8.5,
+    "n": 1213
+   }
+  },
+  "Bugesera": {
+   "organic": {
+    "est": 36.6,
+    "lo": 31.7,
+    "hi": 41.5,
+    "n": 1176
+   },
+   "inorganic": {
+    "est": 25.9,
+    "lo": 21.8,
+    "hi": 30.1,
+    "n": 1176
+   },
+   "pesticide": {
+    "est": 12.7,
+    "lo": 8.7,
+    "hi": 16.6,
+    "n": 1176
+   },
+   "improved_seed": {
+    "est": 28.5,
+    "lo": 21.2,
+    "hi": 35.8,
+    "n": 1125
+   },
+   "irrigated": {
+    "est": 10.8,
+    "lo": 6.4,
+    "hi": 15.1,
+    "n": 1176
+   },
+   "cant_afford_irrigation": {
+    "est": 8.1,
+    "lo": 5.0,
+    "hi": 11.3,
+    "n": 1176
+   }
+  }
+ }
+}

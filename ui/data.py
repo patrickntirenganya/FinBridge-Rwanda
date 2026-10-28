@@ -7,7 +7,7 @@ import streamlit as st
 AGG = Path(__file__).resolve().parents[1] / "data" / "aggregates"
 TABLES = ["ahs_national", "ahs_by_group", "ahs_segments", "ahs_loan_sources", "ahs_loan_purpose",
           "ahs_denial_reasons", "fs_national", "fs_by_group", "fs_barriers", "fs_farmer_digital",
-          "fs_records_link", "models", "validation"]
+          "fs_records_link", "models", "validation", "ahs_district_opportunity"]
 
 # display order for categorical groups (anything not listed keeps file order)
 ORDER = {

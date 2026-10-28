@@ -7,7 +7,7 @@ from streamlit.testing.v1 import AppTest
 
 logging.disable(logging.WARNING)
 ROOT = str(Path(__file__).resolve().parents[1])
-PAGES = ["pages:overview", "pages:who", "pages:why", "pages:farmers", "pages:districts", "pages:methods",
+PAGES = ["pages:overview", "pages:who", "pages:opportunity", "pages:why", "pages:farmers", "pages:districts", "pages:methods",
          "pages:recommendations", "farmer:phone_preview", "farmer:my_records", "landing:home", "lender:lender_view", "about:about"]
 
 
@@ -438,6 +438,27 @@ def zones_do_not_cross():
         assert "src.load" not in _imports(root / f), f"{f} imports the microdata loader"
 
 
+def opportunity_map_ok():
+    """F1: all 30 districts match the boundary file; reportable totals reconcile with the national segment."""
+    import json
+    import pandas as pd
+    agg = Path(ROOT) / "data" / "aggregates"
+    d = pd.read_csv(agg / "ahs_district_opportunity.csv")
+    geo = json.loads((Path(ROOT) / "data" / "geo" / "rwanda_districts.geojson").read_text())
+    names = {f["properties"]["shapeName"] for f in geo["features"]}
+    assert len(d) == 30 and set(d.district) == names, set(d.district) ^ names
+    assert (d[d.reliability == "suppressed"].n < 30).all() and (d[d.reliability != "suppressed"].n >= 30).all()
+    assert d[d.reliability == "suppressed"].households.isna().all(), "suppressed district reports a count"
+    meta = json.loads((agg / "meta.json").read_text())
+    seg = pd.read_csv(agg / "ahs_segments.csv").set_index("segment").est["Account, borrowed only informally"]
+    national = seg / 100 * meta["ahs_weighted_households"]
+    assert 740e3 < national < 780e3, national                     # about 759k
+    assert abs(d.households.sum() - national) / national < 0.03, (d.households.sum(), national)
+    top = d.sort_values("households", ascending=False).iloc[0]
+    assert top.district == "Nyagatare" and abs(top.households - 48761) < 50
+    assert (d.hh_lo.dropna() <= d.households.dropna()).all() and (d.households.dropna() <= d.hh_hi.dropna()).all()
+
+
 def no_stats_on_landing():
     """The landing page copy carries no percentage."""
     import re
@@ -533,7 +554,7 @@ try:
     benchmarks_ok_and_never_stored()
 except Exception as e:
     failures.append(("benchmarks_ok_and_never_stored", "-", [repr(e)]))
-for _f in (zones_do_not_cross, no_stats_on_landing):
+for _f in (zones_do_not_cross, no_stats_on_landing, opportunity_map_ok):
     try:
         _f()
     except Exception as e:

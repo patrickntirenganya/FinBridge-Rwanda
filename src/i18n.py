@@ -553,6 +553,11 @@ STR: dict[str, tuple[str, str]] = {
                  "The Kinyarwanda text is a working draft and needs native-speaker review."),
     # ---- evidence pages (restored 28 Oct; aggregate statistics with CIs)
     "home.see_evidence": ("Reba ibimenyetso", "See the evidence"),
+    "nav.opportunity": ("Aho SACCO yagera ku bazigama", "Where SACCOs could reach savers"),
+    "opp.title": ("Aho SACCO zagera ku bazigama basanzwe bakeneye inguzanyo",
+                  "Where SACCOs could reach existing savers with credit"),
+    "sum.opportunity": ("Incamake: ingo zifite konti ariko zafashe inguzanyo zo mu bimina gusa ni {pct}% by'ingo z'abahinzi. "
+                        "Ikarita yerekana aho ziherereye. Ntivuga ko zose zikeneye cyangwa zujuje ibisabwa.", ""),
     'nav.evidence': ('Ibimenyetso', 'Evidence'),
     'nav.overview': ('Incamake', 'Overview'),
     'nav.why_records': ("Impamvu y'igikoresho cyo kwandika", 'Why a record tool'),

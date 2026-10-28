@@ -166,6 +166,19 @@ def main():
         rows.append(dict(segment=s, **wprop(H.segment == s, H.weight, H.clust, H.district)))
     flag(pd.DataFrame(rows)).to_csv(OUT / "ahs_segments.csv", index=False)
 
+    # F1: where the "account, borrowed only informally" households are, by district
+    rows = []
+    for name, g in H.groupby("district_name"):
+        r = wprop(g.segment == "Account, borrowed only informally", g.weight, g.clust, g.district)
+        hh = float(g.weight.sum())
+        rows.append(dict(district=name, province=g.province.mode().iat[0], est=r["est"], lo=r["lo"], hi=r["hi"],
+                         se=r["se"], district_households=round(hh), households=r["est"] / 100 * hh,
+                         hh_lo=r["lo"] / 100 * hh, hh_hi=r["hi"] / 100 * hh, n=r["n"]))
+    opp = flag(pd.DataFrame(rows)).rename(columns={"est": "pct"})
+    opp[["district_households", "households", "hh_lo", "hh_hi"]] = opp[["district_households", "households", "hh_lo", "hh_hi"]].round(0)
+    opp.loc[opp.reliability == "suppressed", ["households", "hh_lo", "hh_hi"]] = None
+    opp.sort_values("households", ascending=False).to_csv(OUT / "ahs_district_opportunity.csv", index=False)
+
     _, cm = ahs("Credits")
     src = shares(L, "s10q6", labels(cm, "s10q6"))
     src["formal"] = src.code.isin(FORMAL_LOAN_SOURCES)

@@ -1,4 +1,5 @@
 """Page functions for FinBridge Insights. Each reads only aggregate tables."""
+import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 from src.i18n import t
@@ -167,6 +168,72 @@ def farmers():
            "strands (see Methods), so use these for comparing groups rather than as national totals. " + FS_SRC)
 
 
+def opportunity():
+    T.hero(t("opp.title"), photo="farmer-field")
+    T.summary("sum.opportunity", pct=f"{D['ahs_segments'].set_index('segment').est['Account, borrowed only informally']:.1f}")
+    d = D["ahs_district_opportunity"].copy()
+    ok = d[d.reliability != "suppressed"]
+    seg = D["ahs_segments"].set_index("segment").loc["Account, borrowed only informally"]
+    national = seg.est / 100 * D["meta"]["ahs_weighted_households"]
+    st.markdown(
+        '<p class="lede">These are households that already save with a bank, SACCO or microfinance institution '
+        "but borrowed only informally, for example from a tontine. Nationally that is "
+        f"<b>{seg.est:.1f}%</b> of agricultural households, about <b>{national / 1000:,.0f}k</b>. "
+        "The map shows where they live. It does not say they want or qualify for a loan.</p>", unsafe_allow_html=True)
+    mode = st.radio("Show", ["Number of households", "Share of district households"], horizontal=True,
+                    key="opp_mode")
+    counts = mode.startswith("Number")
+    c1, c2 = st.columns([1, 1])
+    with c1:
+        st.plotly_chart(_opportunity_map(d, counts), use_container_width=True, config={"displayModeBar": False})
+    with c2:
+        tab = d.sort_values("households", ascending=False, na_position="last").assign(
+            Households=lambda x: x.households.map(lambda v: "" if pd.isna(v) else f"{v:,.0f}"),
+            Range=lambda x: [("not reported" if pd.isna(a) else f"{a:,.0f}–{b:,.0f}") for a, b in zip(x.hh_lo, x.hh_hi)],
+            Share=lambda x: [("" if pd.isna(a) else f"{a:.1f}% ({b:.1f}–{c:.1f})") for a, b, c in zip(x.pct, x.lo, x.hi)],
+            Note=lambda x: x.reliability.map({"ok": "", "caution": "Interpret with caution",
+                                              "suppressed": "Too few sampled households"}))
+        st.dataframe(tab[["district", "province", "Households", "Range", "Share", "n", "Note"]].rename(
+            columns={"district": "District", "province": "Province", "Range": "95% range", "Share": "Share (95% CI)",
+                     "n": "Sampled"}), hide_index=True, height=520, use_container_width=True)
+    st.caption(f"The {len(ok)} districts with enough sampled households add up to {ok.households.sum() / 1000:,.0f}k of "
+               f"the national ≈{national / 1000:,.0f}k. The remainder is in the {len(d) - len(ok)} Kigali districts "
+               "shown in grey (fewer than 30 sampled households each), so their counts are not reported.")
+    shaky = d[d.reliability == "caution"]
+    if len(shaky):
+        st.warning("Estimates for " + ", ".join(shaky.district) + " are imprecise (coefficient of variation above 0.30). "
+                   "Do not rank them against other districts.")
+    T.note("Districts are sorted by estimated count, not ranked: intervals overlap, so neighbouring districts often do "
+           "not differ clearly. Counts = district share x weighted households in the district. "
+           + AHS_SRC + " Boundaries: geoBoundaries (CC BY 4.0), simplified; for display only.")
+
+
+def _opportunity_map(d, counts):
+    from ui.data import districts_geojson
+    geo = districts_geojson()
+    ok = d[d.reliability != "suppressed"]
+    grey = d[d.reliability == "suppressed"]
+    z, unit = (ok.households, "households") if counts else (ok.pct, "%")
+    fig = go.Figure(go.Choroplethmap(
+        geojson=geo, featureidkey="properties.shapeName", locations=ok.district, z=z, zmin=0,
+        colorscale=[[0, "#E6EEE8"], [1, T.TEA]], marker_line_color="white", marker_line_width=0.8, marker_opacity=0.95,
+        colorbar=dict(title="" if counts else "%", thickness=12, len=0.6, ticksuffix="" if counts else "%"),
+        customdata=ok[["hh_lo", "hh_hi", "pct", "lo", "hi", "n"]].values,
+        hovertemplate="%{location}<br>" + ("%{z:,.0f} households (95% %{customdata[0]:,.0f}–%{customdata[1]:,.0f})"
+                                           if counts else "%{z:.1f}% (95% CI %{customdata[3]:.1f}–%{customdata[4]:.1f})")
+                      + "<br>sampled n = %{customdata[5]}<extra></extra>"))
+    if len(grey):
+        fig.add_trace(go.Choroplethmap(
+            geojson=geo, featureidkey="properties.shapeName", locations=grey.district, z=[0] * len(grey),
+            colorscale=[[0, "#B9C3BC"], [1, "#B9C3BC"]], showscale=False, marker_line_color="white",
+            marker_line_width=0.8, marker_opacity=0.95, customdata=grey[["n"]].values,
+            hovertemplate="%{location}<br>Too few sampled households<br>n = %{customdata[0]}<extra></extra>"))
+    fig.update_layout(map=dict(style="white-bg", center=dict(lat=-1.95, lon=29.88), zoom=6.45), height=520,
+                      margin=dict(l=0, r=0, t=10, b=0), paper_bgcolor="rgba(0,0,0,0)",
+                      font=dict(family=T.FONT, color=T.INK, size=13))
+    return fig
+
+
 def districts():
     T.hero("District patterns", photo="farmer-field")
     T.summary("sum.districts")
@@ -253,6 +320,11 @@ It describes patterns across groups of households.
     st.markdown("""
 **District map.** Boundaries from [geoBoundaries](https://www.geoboundaries.org) (source: Open Data Rwanda / NISR,
 2012 boundaries), licence CC BY 4.0, simplified for display. Runfola et al. (2020), *PLoS ONE* 15(4): e0231866.
+
+**Opportunity counts.** Households with a bank, SACCO or MFI account that borrowed only informally, per district:
+the weighted district share (design-based CI) multiplied by the district's weighted household count. Districts with
+fewer than 30 sampled households are not reported, so the 27 reported districts sum to slightly less than the national
+total.
 """)
     st.subheader("Checks against published figures")
     st.dataframe(D["validation"], hide_index=True, use_container_width=True)

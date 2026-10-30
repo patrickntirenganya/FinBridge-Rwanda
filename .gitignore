@@ -16,3 +16,7 @@ __pycache__/
 # Landing page build (frontend/ -> ui/landing/landing.html is committed)
 frontend/node_modules/
 frontend/dist/
+
+# Local demo recordings: only docs/FinBridgeDemo.webm is committed
+/FinBridgeDemovideo.mkv
+/FinBridgeDemo-1.7x.webm

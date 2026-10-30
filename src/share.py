@@ -6,6 +6,7 @@ included, and how long the share stays valid. What we cannot promise: a lender w
 what they saw (as with a printed report). Expiry is enforced by FinBridge when opening, not by the file itself.
 """
 from __future__ import annotations
+import hashlib
 import json
 import re
 import secrets
@@ -73,6 +74,14 @@ def make_package(profile: dict, records: list[dict], *, season: str | None = Non
                       "salt": crypto.b64e(salt), "nonce": crypto.b64e(nonce), "ct": crypto.b64e(ct)},
                      separators=(",", ":"))
     return pkg, code
+
+
+def file_tag(pkg: str) -> str:
+    """Short public tag of a share file (from its salt), so a farmer and a lender can check they hold the same one."""
+    try:
+        return hashlib.sha256(crypto.b64d(json.loads(pkg)["salt"])).hexdigest()[:4].upper()
+    except Exception:
+        return ""
 
 
 def claim(registry, meta: dict, now: datetime | None = None) -> None:

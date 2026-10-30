@@ -271,6 +271,9 @@ def lender_view():
                 except Exception:
                     ss.lender_lock = V.register_fail(lock)
                     st.error(t("ld.bad"))
+                    tag = share.file_tag(up.getvalue().decode("utf-8", "ignore")) if up else ""
+                    if tag:
+                        st.caption(t("ld.file_id", id=tag))
                 else:
                     ss.lender_lock = {"fails": 0, "until": 0.0}
                     ss.lender_profile, ss.lender_records, ss.lender_example = prof, recs, False

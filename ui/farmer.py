@@ -316,7 +316,9 @@ def _share_tab(ss):
             st.markdown(f"**{t('sh.code')}**")
             st.code(ls["code"], language=None)
             st.caption(t("sh.code_note"))
-            st.download_button(t("sh.dl"), ls["pkg"], "finbridge_share.fbshare", "application/json",
+            tag = share.file_tag(ls["pkg"])
+            st.caption(t("sh.file_id", id=tag))
+            st.download_button(t("sh.dl"), ls["pkg"], f"finbridge_share_{tag}.fbshare", "application/json",
                                type="primary", width="stretch")
             st.caption(t("sh.limit"))
 

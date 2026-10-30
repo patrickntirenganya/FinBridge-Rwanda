@@ -16,7 +16,7 @@ Built for the **NISR 2026 Big Data Hackathon**, **Track 2: Financial Inclusion a
 
 | | |
 |---|---|
-| **Live app** | _paste the Streamlit Community Cloud URL here_ |
+| **Live app** | https://finbridge-rwanda.streamlit.app/ |
 | **Demo video (≤ 3 min)** | _paste the link here_ |
 | **Judges: how to log in** | No account is needed, see [Trying the live app](#trying-the-live-app) |
 | **Screenshots** | [`docs/screenshots/`](docs/screenshots): every page at 1280 px and 390 px |

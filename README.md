@@ -21,6 +21,7 @@ Built for the **NISR 2026 Big Data Hackathon**, **Track 2: Financial Inclusion a
 | **Judges: how to log in** | No account is needed, see [Trying the live app](#trying-the-live-app) |
 | **Screenshots** | [`docs/screenshots/`](docs/screenshots): every page at 1280 px and 390 px |
 | **Source code** | https://github.com/patrickntirenganya/FinBridge-Rwanda |
+| **Team and eligibility** | [Student ID cards of both members](#team-and-eligibility) |
 | **Security note** | [`docs/security.md`](docs/security.md) |
 | **Demo script** | [`docs/demo_script.md`](docs/demo_script.md) |
 | **Evidence and feature plan** | [`docs/02_evidence_and_features.md`](docs/02_evidence_and_features.md), [`docs/03_combined_build_plan.md`](docs/03_combined_build_plan.md) |
@@ -30,6 +31,15 @@ Built for the **NISR 2026 Big Data Hackathon**, **Track 2: Financial Inclusion a
 > intervals); the **farmer** pages show no survey statistics except an optional peer reference for harvests and inputs.
 > A test enforces that the zones never import each other. Nothing gives a **score, a default prediction or a lending
 > decision**.
+
+## Team and eligibility
+
+Both team members are undergraduate students at the Adventist University of Central Africa (AUCA), Faculty of
+Information Technology, Network and Communication. Student ID cards are in [`eligibility/`](eligibility).
+
+| Member 1 (team leader): Ntirenganya Patrick | Member 2: Taylor Chongo |
+|---|---|
+| ![Student ID card of Ntirenganya Patrick](eligibility/member1_patrick_ntirenganya_student_card.jpg) | ![Student ID card of Taylor Chongo](eligibility/member2_taylor_chongo_student_card.jpg) |
 
 ## Trying the live app
 

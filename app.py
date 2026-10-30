@@ -19,10 +19,9 @@ _q = st.query_params.get("lang")
 if _q in LANGS and "lang" not in st.session_state:  # landing-page links carry the chosen language
     st.session_state["lang"] = _q
 st.session_state.setdefault("lang", DEFAULT)
-_codes = list(LANGS)
-_pick = st.sidebar.radio(t("lang.label"), [LANGS[c] for c in _codes],
-                         index=_codes.index(st.session_state["lang"]), horizontal=True, key="lang_pick")
-st.session_state["lang"] = _codes[[LANGS[c] for c in _codes].index(_pick)]
+from ui import topbar  # noqa: E402
+
+topbar.render()  # language + light/dark, fixed top-right
 
 from ui import about as A  # noqa: E402
 from ui import farmer as F  # noqa: E402

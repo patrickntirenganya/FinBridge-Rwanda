@@ -9,7 +9,7 @@ must review it before field use. Keep every screen short and use words farmers a
 from __future__ import annotations
 
 LANGS = {"rw": "Kinyarwanda", "en": "English"}
-DEFAULT = "rw"
+DEFAULT = "en"  # prototype opens in English; switch to "rw" for production
 
 # key: (kinyarwanda, english)
 STR: dict[str, tuple[str, str]] = {
@@ -19,6 +19,8 @@ STR: dict[str, tuple[str, str]] = {
     "nav.records": ("Ibyanditswe by'umurima wanjye", "My farm records"),
     "nav.ussd": ("Kuri telefone isanzwe (USSD)", "Basic-phone (USSD) preview"),
     "lang.label": ("Ururimi", "Language"),
+    "theme.dark": ("Umwijima", "Dark"),
+    "theme.light": ("Umucyo", "Light"),
     # ---- common
     "rwf": ("Frw", "RWF"),
     "yes": ("Yego", "Yes"),

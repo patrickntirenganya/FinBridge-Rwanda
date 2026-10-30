@@ -577,7 +577,7 @@ The app deploys to **Streamlit Community Cloud** from this public repository.
 6. After it is live: create a profile, reload and sign in again (this checks browser storage on the live domain),
    then try the lender page and the demo. Check a real phone.
 
-**Live app.** _paste the URL here after deploying._ The deployed app needs no login: see [Trying the live app](#trying-the-live-app).
+**Live app.** https://finbridge-rwanda.streamlit.app/ The deployed app needs no login: see [Trying the live app](#trying-the-live-app).
 
 Notes: apps that get no visits go to sleep and need a click to wake, so open the app shortly before judging. One
 sign-up briefly uses about 64 MB for key derivation.

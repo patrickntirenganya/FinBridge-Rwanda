@@ -431,6 +431,77 @@ def auth_flow():
     assert at.session_state["auth"]["phone"] == "0788123456" and len(at.session_state["records"]) == 1
 
 
+def accounts_checks():
+    """Server registry: one claim per phone, id hides the number, lock and save persist, outages raise AccountError."""
+    from src import accountdb as AD
+    db = AD.Accounts(AD.Memory(), "pepper")
+    assert db.get("0788123456") is None
+    assert db.create("0788123456", "VAULT1") is True and db.create("0788123456", "OTHER") is False, "number claimed twice"
+    assert db.get("0788123456")["vault"] == "VAULT1", "second claim overwrote the first"
+    db.save("0788123456", "VAULT2"); db.set_lock("0788123456", {"fails": 5, "until": 99.0})
+    a = db.get("0788123456")
+    assert a == {"vault": "VAULT2", "fails": 5, "until": 99.0}, a
+    assert all("0788123456" not in k for k in db._b.docs), "document id exposes the phone number"
+    assert db.get("0788123457") is None
+
+    class Down:
+        def get(self, *_): raise OSError("offline")
+    try:
+        AD.Accounts(Down()).get("0788123456"); raise AssertionError("outage not reported")
+    except AD.AccountError:
+        pass
+
+
+def server_account_flow():
+    """With a registry: sign up on one device, a second device cannot claim the number, a third signs in with phone + PIN."""
+    global renders
+    from src import accountdb as AD, vault as V
+    from src.i18n import t
+    from ui import auth
+    db = AD.Accounts(AD.Memory(), "pepper")
+    old, auth._db = auth._db, (lambda: db)
+    try:
+        def new_device():
+            at = fresh("farmer:my_records")
+            return at
+        def tin(at, lbl, i=0): return [w for w in at.text_input if w.label == t(lbl, LANG)][i]
+        def click(at, lbl): [b for b in at.button if b.label == t(lbl, LANG)][0].click().run()
+        def verify(at, phone):
+            tin(at, "au.phone", 1).set_value(phone); click(at, "otp.send")
+            tin(at, "otp.code").set_value(at.session_state["otp_demo"]); click(at, "otp.check")
+            assert at.session_state["verified_phone"], "phone not verified"
+        # device 1: sign up
+        a = new_device(); verify(a, "0788123456")
+        tin(a, "au.pin", 1).set_value("829104"); tin(a, "au.pin2").set_value("829104")
+        [c for c in a.checkbox if c.label == t("au.ack", LANG)][0].set_value(True)
+        click(a, "au.create"); renders += 1
+        assert a.session_state["auth"]["phone"] == "0788123456" and not a.exception, a.exception
+        assert db.get("0788123456") is not None, "account was not stored on the server"
+        # device 2: same number cannot be claimed
+        b = new_device(); verify(b, "0788123456")
+        tin(b, "au.pin", 1).set_value("517390"); tin(b, "au.pin2").set_value("517390")
+        [c for c in b.checkbox if c.label == t("au.ack", LANG)][0].set_value(True)
+        click(b, "au.create"); renders += 1
+        assert not b.session_state.get("auth"), "second device claimed an existing number"
+        assert any(t("au.taken", LANG) in e.value for e in b.error), "no 'already registered' message"
+        assert V.unlock(db.get("0788123456")["vault"], "0788123456", "829104"), "first account was overwritten"
+        # device 3: nothing stored locally, signs in with phone + PIN from the server copy
+        c = new_device()
+        tin(c, "au.phone", 0).set_value("0788 123 456"); tin(c, "au.pin", 0).set_value("000000")
+        for _ in range(5):
+            click(c, "au.sign_in"); renders += 1
+        assert not c.session_state.get("auth") and db.get("0788123456")["fails"] >= 5, "wrong PINs not counted on the server"
+        d = new_device()                                      # a fresh browser cannot reset the server lock-out
+        tin(d, "au.phone", 0).set_value("0788123456"); tin(d, "au.pin", 0).set_value("829104"); click(d, "au.sign_in")
+        assert not d.session_state.get("auth"), "server lock-out bypassed with a fresh browser"
+        db.set_lock("0788123456", {"fails": 0, "until": 0.0})
+        e = new_device()
+        tin(e, "au.phone", 0).set_value("0788123456"); tin(e, "au.pin", 0).set_value("829104"); click(e, "au.sign_in"); renders += 1
+        assert e.session_state["auth"]["phone"] == "0788123456" and not e.exception, e.exception
+    finally:
+        auth._db = old
+
+
 def lender_open_flow():
     """The lender page opens a real share through the form, and escapes hostile text from the file."""
     global renders
@@ -472,11 +543,11 @@ def lender_flow():
 
 
 EVIDENCE_ZONE = ["ui/pages.py", "ui/data.py"]
-FARMER_ZONE = ["src/records.py", "src/share.py", "src/vault.py", "src/crypto.py", "src/usedcodes.py", "src/otp.py",
+FARMER_ZONE = ["src/records.py", "src/share.py", "src/vault.py", "src/crypto.py", "src/usedcodes.py", "src/otp.py", "src/accountdb.py",
                "src/ussd.py", "src/benchmarks.py", "ui/farmer.py", "ui/auth.py", "ui/lender.py", "ui/landing.py"]
-FARMER_ONLY_MODULES = {"src.records", "src.share", "src.vault", "src.crypto", "src.usedcodes", "src.otp", "src.ussd",
+FARMER_ONLY_MODULES = {"src.records", "src.share", "src.vault", "src.crypto", "src.usedcodes", "src.otp", "src.accountdb", "src.ussd",
                        "src.benchmarks", "ui.farmer", "ui.auth", "ui.lender", "ui.landing", "records", "share", "vault",
-                       "crypto", "usedcodes", "otp", "ussd", "benchmarks"}
+                       "crypto", "usedcodes", "otp", "ussd", "benchmarks", "accountdb"}
 EVIDENCE_MODULES = {"ui.data", "ui.pages", "data", "pages"}
 
 
@@ -689,7 +760,7 @@ try:
     benchmarks_ok_and_never_stored()
 except Exception as e:
     failures.append(("benchmarks_ok_and_never_stored", "-", [repr(e)]))
-for _f in (zones_do_not_cross, no_stats_on_landing, opportunity_map_ok, social_protection_ok, tontine_bridge_ok, recommendation_cards_ok):
+for _f in (accounts_checks, server_account_flow, zones_do_not_cross, no_stats_on_landing, opportunity_map_ok, social_protection_ok, tontine_bridge_ok, recommendation_cards_ok):
     try:
         _f()
     except Exception as e:

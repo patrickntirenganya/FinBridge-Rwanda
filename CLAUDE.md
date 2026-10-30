@@ -33,10 +33,10 @@ Regenerate with `python analysis/key_findings.py`. These figures live in the REA
 Nav order: Home; Evidence; For farmers (My farm records, USSD simulator, Open a farmer's report); About.
 Pages: `Home` (landing, TypeScript + Tailwind), **for farmers** `My farm records`
 (record harvests, sales, expenses, savings; seasonal summary with visible formulas; downloadable report; JSON backup,
-nothing stored server-side) and the USSD simulator; **for lenders** `Open a farmer's report` (opens the locked `.fbshare` file a
+the encrypted vault is also kept per phone in Firestore via `src/accountdb.py` when Secrets `[firebase]` exist, else browser-only) and the USSD simulator; **for lenders** `Open a farmer's report` (opens the locked `.fbshare` file a
 farmer chose to share, with the farmer's one-time code: summary, details, all entries, evidence mix, what to check, questions to ask); `About`.
 Auth (24 Oct): farmers sign in with phone + PIN; data is encrypted (scrypt + AES-256-GCM) in the browser's local
-storage via a tiny JS bridge (`ui/auth.py`), never stored server-side; sharing is a locked file + single-use code (`src/share.py`, `src/usedcodes.py`); sign-up verifies the phone with a one-time code (`src/otp.py`, DEMO: shown on screen, no SMS gateway yet).
+storage via a tiny JS bridge (`ui/auth.py`), the server holds only the encrypted vault and wrong-PIN counter; sharing is a locked file + single-use code (`src/share.py`, `src/usedcodes.py`); sign-up verifies the phone with a one-time code (`src/otp.py`, DEMO: shown on screen, no SMS gateway yet).
 Verified lender accounts and a server audit log need a database and are NOT built. See `docs/security.md`.
 Loan plan (28 Oct): purpose, items, cost, planting/harvest months, repayment, groups; self-reported; no score; never in the records report.
 Record fields (25 Oct): saving records carry a place in `item` (MoMo, Ibimina, SACCO, Bank); harvests may carry `retained_kg`

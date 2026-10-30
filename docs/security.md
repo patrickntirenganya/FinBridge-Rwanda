@@ -5,8 +5,11 @@ how, and, just as important, what we do not and cannot protect. It is written fo
 
 ## Principles
 
-1. **Data minimisation.** No server database. Records are kept in the farmer's own browser (encrypted) and in server
-   memory only while the farmer is signed in. Nothing is written to disk, logged or sent elsewhere.
+1. **Data minimisation.** The server keeps one record per account: the farmer's vault, already encrypted in the
+   browser with a key derived from phone + PIN (`src/accountdb.py`, Firestore; the document id is an HMAC of the
+   phone, and the PIN and key are never sent). A phone number can be claimed once and the farmer signs in from any
+   device; wrong-PIN lock-out is counted on the server. Plaintext records exist only in session memory while signed in.
+   Without the database secret the app falls back to browser-only storage. The database rules deny all client access.
 2. **Consent first.** A lender sees records only when the farmer creates a share, chooses what it contains and gives
    the lender a one-time code. Names of buyers and sellers are left out unless the farmer ticks the box.
 3. **Easy for farmers, strong underneath.** Phone number + PIN on the surface; scrypt and AES-256-GCM underneath.
@@ -47,6 +50,8 @@ how, and, just as important, what we do not and cannot protect. It is written fo
 ## What we do not claim
 
 - It is a prototype, not an audited product. No independent security review has been done.
+- Whoever can read the account database can copy encrypted vaults and guess PINs offline (same limit as a copied
+  browser vault). A forgotten PIN cannot be reset: that needs a real SMS gateway, otherwise anyone could reset it.
 - A verified lender identity, a server-side audit log and revocable access need a small database. That is the planned
   next step (lender accounts with email and password, and a log of every share opened).
 - The farmer's phone number is only verified in demo form (the code is shown on screen, not texted).

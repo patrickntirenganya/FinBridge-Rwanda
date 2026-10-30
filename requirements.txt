@@ -4,3 +4,4 @@ plotly>=5.20
 pandas>=2.0
 numpy>=1.24
 cryptography>=42
+google-cloud-firestore>=2.16

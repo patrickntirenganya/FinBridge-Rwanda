@@ -13,6 +13,7 @@ import uuid
 
 import streamlit as st
 
+from src import accountdb as AD
 from src import otp as O
 from src import records as R
 from src import vault as V
@@ -61,6 +62,27 @@ def _mount(key: str, data: dict, report: bool = True):
         _bridge = st.components.v2.component("finbridge_store", js=_JS)
         return _bridge(key=key, data=data, **kw)
 _EMPTY = {"vault": "", "phone": "", "lock": "", "ok": True}
+
+
+@st.cache_resource
+def _db():
+    """Server-side account registry from Streamlit Secrets [firebase], or None (browser-only accounts)."""
+    try:
+        info = dict(st.secrets["firebase"])
+        return AD.Accounts(AD.Firestore(info), info.get("account_pepper", ""))
+    except Exception:
+        return None
+
+
+def _remote(fn, *a):
+    """Call the registry; None when it is not configured or unreachable (the app then works browser-only)."""
+    db = _db()
+    if db is None:
+        return None
+    try:
+        return getattr(db, fn)(*a)
+    except AD.AccountError:
+        return None
 _RESET_LOCK = json.dumps({"fails": 0, "until": 0})
 
 
@@ -104,6 +126,10 @@ def in_demo() -> bool:
     return bool(st.session_state.get("demo"))
 
 
+def _why() -> str:
+    return t("au.why_srv") if _db() is not None else t("au.why")
+
+
 def _hash(ss) -> str:
     return hashlib.sha256(json.dumps([ss.profile, ss.records], sort_keys=True, default=str).encode()).hexdigest()
 
@@ -119,6 +145,7 @@ def persist():
         blob = V.reseal(a["key"], a["salt"], a["phone"], ss.profile, ss.records)
         ss["_hash"], ss["blob"] = h, blob
         _write(vault=blob)
+        _remote("save", a["phone"], blob)
 
 
 def lock_session():
@@ -162,11 +189,13 @@ def _wait_msg(lock) -> bool:
     return bool(left)
 
 
-def _failed(lock):
+def _failed(lock, phone=None, remote=False):
     ss = st.session_state
     lock = V.register_fail(lock)
     ss.lock = lock
     _write(lock=json.dumps(lock))
+    if remote and phone:
+        _remote("set_lock", phone, lock)
     st.error(t("au.fail"))
     left = V.MAX_FAILS_FREE + 1 - lock["fails"]
     if left > 0:
@@ -196,14 +225,26 @@ def _sign_in_form(stored):
         if _wait_msg(lock):
             return
         phone = V.normalise_phone(phone_raw)
-        if not phone or not stored.get("vault"):
+        acct = _remote("get", phone) if phone else None          # the server copy wins; None = browser-only
+        if acct:
+            lock = max((lock, {"fails": acct["fails"], "until": acct["until"]}), key=lambda x: (x["until"], x["fails"]))
+            if _wait_msg(lock):
+                return
+        blob = acct["vault"] if acct else stored.get("vault")
+        if not phone or not blob:
             _failed(lock)
             return
         try:
-            prof, recs, key, salt = V.unlock(stored["vault"], phone, pin)
+            prof, recs, key, salt = V.unlock(blob, phone, pin)
         except V.VaultError:
-            _failed(lock)
+            _failed(lock, phone, remote=bool(acct))
             return
+        if acct is None and _db() is not None:                   # an older browser-only profile moves to the server
+            _remote("create", phone, blob)
+        elif acct:
+            _remote("set_lock", phone, {"fails": 0, "until": 0.0})
+        st.session_state["blob"] = blob
+        _write(vault=blob)
         _start(phone, prof, recs, key, salt)
 
 
@@ -253,7 +294,7 @@ def _verify_phone() -> str | None:
 def _sign_up_form(stored):
     phone_ok = _verify_phone()
     if not phone_ok:
-        st.caption(t("au.why"))
+        st.caption(_why())
         return
     with st.form("signup"):
         phone_raw = phone_ok
@@ -261,12 +302,12 @@ def _sign_up_form(stored):
         pin = st.text_input(t("au.pin"), type="password", max_chars=6, autocomplete="new-password")
         pin2 = st.text_input(t("au.pin2"), type="password", max_chars=6, autocomplete="new-password")
         replace = False
-        if stored.get("vault"):
+        if stored.get("vault") and _db() is None:
             st.warning(t("au.exists"))
             replace = st.checkbox(t("au.replace"))
         ack = st.checkbox(t("au.ack"))
         go = st.form_submit_button(t("au.create"), type="primary", width="stretch")
-    st.caption(t("au.why"))
+    st.caption(_why())
     if not go:
         return
     phone = V.normalise_phone(phone_raw)
@@ -274,13 +315,17 @@ def _sign_up_form(stored):
           (None if pin == pin2 else "au.pin_mismatch")
     if err:
         st.error(t(err))
-    elif stored.get("vault") and not replace:
+    elif stored.get("vault") and not replace and _db() is None:
         st.error(t("au.exists"))
     elif not ack:
         st.error(t("au.ack"))
     else:
         prof = dict(name=name.strip(), district="", crops="", farm_ha=0.0)
         blob, key, salt = V.create(phone, pin, prof, [])
+        taken = _remote("get", phone) is not None or _remote("create", phone, blob) is False
+        if taken:                                                # the number already has an account on the server
+            st.error(t("au.taken"))
+            return
         st.session_state["blob"] = blob
         _write(vault=blob)
         _start(phone, prof, [], key, salt)
@@ -356,7 +401,7 @@ def gate() -> bool:
         st.warning(t("au.nostore"))
     st.markdown(f"### {t('au.title')}")
     labels = [t("au.tab_in"), t("au.tab_new"), t("au.tab_restore")]
-    order = labels if stored.get("vault") else [labels[1], labels[0], labels[2]]
+    order = labels if stored.get("vault") or _db() is not None else [labels[1], labels[0], labels[2]]
     for label, tab in zip(order, st.tabs(order, default=order[0])):
         with tab:
             {labels[0]: _sign_in_form, labels[1]: _sign_up_form, labels[2]: _restore_form}[label](stored)

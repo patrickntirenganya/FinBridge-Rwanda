@@ -345,7 +345,7 @@ plainly what it cannot protect. The full threat model is in [`docs/security.md`]
 - The phone check is demo-only: the code is shown on screen, so it proves nothing until an SMS gateway is connected.
 - "Works once" is remembered in server memory, so an app restart forgets it. A database would make it permanent.
 - A lender who has opened a share can keep what they saw, like a printed report. The farmer is told this first.
-- Lender identity and a server-side audit log need a database; they are not built.
+- Farmer accounts (phone + PIN, encrypted vault) are stored in Firestore. Lender identity and a server-side audit log are not built.
 - The prototype has **not been independently audited**.
 
 ## 5. Architecture
@@ -598,7 +598,7 @@ sign-up briefly uses about 64 MB for key derivation.
 | **Problem relevance (NST2 / Vision 2050)** | A direct response to the gap between financial access and formal credit among farm households, supporting agricultural transformation and financial inclusion |
 | **Data use and methodology** | Two NISR surveys analysed with survey weights and design-based errors, with a district map of the 759k gap, a tontine bridge and a social-protection lens; adjusted models; estimates validated against NISR's published tables; every recommendation split into finding and hypothesis; findings traced to each design choice ([section 2](#2-from-research-to-product)) |
 | **Tangible impact** | A working tool that farmers and lenders can use today, built for basic phones; honest about what a pilot must still prove |
-| **Technical innovation** | Evidence and tools in one app with a tested boundary between them; local-first encryption with consent-based sharing and no server database; one record engine across web and USSD; a lender story generated from the farmer's own records; TypeScript and Tailwind front end |
+| **Technical innovation** | Evidence and tools in one app with a tested boundary between them; local-first encryption with consent-based sharing and encrypted farmer accounts in Firestore (the server cannot read them); one record engine across web and USSD; a lender story generated from the farmer's own records; TypeScript and Tailwind front end |
 | **Usability** | Three-tap recording, plain-language summaries, large targets, Kinyarwanda first, phone-number-and-PIN sign-in, a one-click demo |
 
 ## 12. Roadmap

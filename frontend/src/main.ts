@@ -8,6 +8,7 @@ import hands from "./img/hands-phone.webp";
 
 const props: Props = JSON.parse(document.getElementById("fb-data")!.textContent || "{}");
 const { s, links } = props;
+document.documentElement.classList.toggle("dark", !!props.dark);
 
 const btn = (href: string, label: string, primary: boolean) =>
   `<a href="${href}" target="_top" class="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-base font-bold transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-4 focus-visible:outline-sorghum ${

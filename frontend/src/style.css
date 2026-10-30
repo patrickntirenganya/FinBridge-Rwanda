@@ -12,3 +12,15 @@ html { scroll-behavior: smooth; background: transparent; }
   .reveal { opacity: 1; transform: none; }
   *, *::before, *::after { animation: none !important; }
 }
+
+/* Dark mode: the dark-green hero and phone sections already work on dark; flip the light surfaces and text. */
+html.dark body { color: #E6EEE8; }
+html.dark .bg-white { background-color: #182922; }
+html.dark .bg-white\/95 { background-color: rgba(24,41,34,.95); }
+html.dark .text-ink { color: #E6EEE8; }
+html.dark .text-slate { color: #A9BAB0; }
+html.dark .text-tea { color: #6FBF98; }
+html.dark .border-line { border-color: #34483E; }
+html.dark .hover\:bg-mist:hover { background-color: #1E3329; }
+html.dark .shadow-lg, html.dark .shadow-xl { --tw-shadow-color: rgba(0,0,0,.5); }
+html.dark .text-soil { color: #E08A78; }

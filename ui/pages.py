@@ -62,7 +62,7 @@ def overview():
         fig.add_bar(y=[t("ov.hh")], x=[r.est], name=name, orientation="h",
                     marker_color=col, text=f"{r.est:.0f}%", textposition="inside",
                     insidetextanchor="middle",
-                    textfont=dict(color="white" if col in (T.TEA, T.SOIL) else T.INK, size=16),
+                    textfont=dict(color="white" if col in (T.TEA, T.SOIL) else "#1C2B24" if col == "#8FB5A0" else T.INK, size=16),
                     hovertemplate=f"{name}: {r.est:.1f}% (95% CI {r.lo:.1f}–{r.hi:.1f})<extra></extra>")
     T.layout(fig, height=240, barmode="stack", showlegend=True,
              legend=dict(orientation="h", y=-0.6, x=0, font=dict(size=13), traceorder="normal"))
@@ -234,7 +234,7 @@ def _opportunity_map(d, counts):
     z, unit = (ok.households, "households") if counts else (ok.pct, "%")
     fig = go.Figure(go.Choroplethmap(
         geojson=geo, featureidkey="properties.shapeName", locations=ok.district, z=z, zmin=0,
-        colorscale=[[0, "#E6EEE8"], [1, T.TEA]], marker_line_color="white", marker_line_width=0.8, marker_opacity=0.95,
+        colorscale=[[0, T.LOW], [1, T.TEA]], marker_line_color=T.CARD, marker_line_width=0.8, marker_opacity=0.95,
         colorbar=dict(title="" if counts else "%", thickness=12, len=0.6, ticksuffix="" if counts else "%",
                       x=0.95, xanchor="left"),
         customdata=ok[["hh_lo", "hh_hi", "pct", "lo", "hi", "n"]].values,
@@ -244,10 +244,10 @@ def _opportunity_map(d, counts):
     if len(grey):
         fig.add_trace(go.Choroplethmap(
             geojson=geo, featureidkey="properties.shapeName", locations=grey.district, z=[0] * len(grey),
-            colorscale=[[0, "#B9C3BC"], [1, "#B9C3BC"]], showscale=False, marker_line_color="white",
+            colorscale=[[0, "#B9C3BC"], [1, "#B9C3BC"]], showscale=False, marker_line_color=T.CARD,
             marker_line_width=0.8, marker_opacity=0.95, customdata=grey[["n"]].values,
             hovertemplate="%{location}<br>Too few sampled households<br>n = %{customdata[0]}<extra></extra>"))
-    fig.update_layout(map=dict(style="white-bg", center=dict(lat=-1.95, lon=29.88), zoom=6.75), height=520,
+    fig.update_layout(map=dict(style=T.map_style(), center=dict(lat=-1.95, lon=29.88), zoom=6.75), height=520,
                       margin=dict(l=0, r=44, t=10, b=0), paper_bgcolor="rgba(0,0,0,0)",
                       font=dict(family=T.FONT, color=T.INK, size=13))
     return fig
@@ -374,7 +374,7 @@ def _district_map(d, national):
     fig = go.Figure()
     fig.add_trace(go.Choroplethmap(
         geojson=geo, featureidkey="properties.shapeName", locations=ok.name, z=ok.est, zmin=0, zmax=hi,
-        colorscale=[[0, "#E6EEE8"], [1, T.TEA]], marker_line_color="white", marker_line_width=0.8,
+        colorscale=[[0, T.LOW], [1, T.TEA]], marker_line_color=T.CARD, marker_line_width=0.8,
         marker_opacity=0.95, colorbar=dict(title="%", thickness=12, len=0.6, ticksuffix="%", x=0.95, xanchor="left"),
         customdata=ok[["lo", "hi", "n"]].values,
         hovertemplate="%{location}: %{z:.1f}%<br>95% CI %{customdata[0]:.1f}–%{customdata[1]:.1f}"
@@ -383,10 +383,10 @@ def _district_map(d, national):
         gd = d.set_index("name").reindex(grey)
         fig.add_trace(go.Choroplethmap(
             geojson=geo, featureidkey="properties.shapeName", locations=grey, z=[0] * len(grey),
-            colorscale=[[0, "#B9C3BC"], [1, "#B9C3BC"]], showscale=False, marker_line_color="white",
+            colorscale=[[0, "#B9C3BC"], [1, "#B9C3BC"]], showscale=False, marker_line_color=T.CARD,
             marker_line_width=0.8, marker_opacity=0.95, customdata=gd[["n"]].fillna(0).values,
             hovertemplate="%{location}<br>Estimate unreliable or suppressed<br>n = %{customdata[0]:.0f}<extra></extra>"))
-    fig.update_layout(map=dict(style="white-bg", center=dict(lat=-1.95, lon=29.88), zoom=6.75),
+    fig.update_layout(map=dict(style=T.map_style(), center=dict(lat=-1.95, lon=29.88), zoom=6.75),
                       height=520, margin=dict(l=0, r=44, t=10, b=0), paper_bgcolor="rgba(0,0,0,0)",
                       font=dict(family=T.FONT, color=T.INK, size=13))
     return fig

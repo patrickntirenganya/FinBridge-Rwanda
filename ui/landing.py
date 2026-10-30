@@ -9,6 +9,7 @@ from pathlib import Path
 import streamlit as st
 
 from src.i18n import t, lang
+from ui import theme as T
 
 EVIDENCE_PAGE = None  # set by app.py: the st.Page that "See the evidence" opens
 BUNDLE = Path(__file__).parent / "landing" / "landing.html"
@@ -26,7 +27,7 @@ def props() -> dict:
     s = {k: t(f"home.{k}") for k in KEYS}
     s["h1"], s["lede"] = t("hero.title"), t("hero.lede")
     q = f"?lang={lang()}"
-    return dict(lang=lang(), s=s,
+    return dict(lang=lang(), dark=T.mode() == "dark", s=s,
                 links=dict(records="/records" + q, ussd="/ussd" + q, lender="/lender" + q, about="/about" + q))
 
 

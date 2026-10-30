@@ -1,34 +1,79 @@
 # Demo video script
 
-**Target length: 2 minutes 50 seconds (hard limit 3:00). Screen-recorded with voice-over. Deliver as `.webm`.**
+**Target length: 2 minutes 47 seconds (hard limit 3:00). Screen-recorded with voice-over. Deliver as `.webm`.**
 
-The farmer pages show no survey statistics. The Evidence pages do; show one (Overview) for a few seconds at the start,
-then move to the farmer tool. The full numbers are in the README.
+**Story in one line:** the evidence shows where Rwanda's farmers are banked but not financed, and the farmer tools are
+the response. The Evidence pages show survey statistics; the farmer pages do not.
 
-**Story in one line:** farmers have accounts but no way to show their income; FinBridge lets them keep records they
-own and share by choice, and lets a lender read those records without scores or decisions.
+**Narration note.** The spoken line in scene 7 ("no database or account on our server; what's saved is an encrypted
+copy in the farmer's own browser") is true. Do not widen it to "the server never sees the data" or "records never
+leave the phone": while a farmer is signed in, the records sit in the app's memory for that session. Do not call the
+share code "one-time forever": it works once while the app keeps running (see `docs/security.md`).
 
 ---
 
 ## 1. Scene-by-scene plan
 
-Speaking pace is about 145 words a minute. Each scene lists what to click, then the words to say. Say the words while
-you click; do not wait in silence.
+Speaking pace is about 145 words a minute (2.4 words a second). Each row gives the clicks, then the words to say. Say
+the words while you click. Times include the clicking, so they run longer than the speech alone.
 
 | # | Time | Screen and clicks | Narration | Words |
 |---|---|---|---|---|
-| 1 | 0:00–0:20 | **Home.** Hero visible, mouse still. | "Most Rwandan farmers already have a bank or SACCO account, but about half of farm households have no formal loan. Lenders can't see what a farm earns, and farmers have nothing to show them. We found this gap in NISR's survey data. FinBridge is the solution." | 46 |
-| 2 | 0:20–0:30 | **Home.** Scroll slowly past *For farmers*, *For lenders* and the phone section. | "Farmers keep simple records on any phone. Lenders read what a farmer chooses to share. No scores. No loan decisions." | 20 |
-| 3 | 0:30–0:45 | Click **Start recording**. The sign-in screen appears. Pause one second on it, then click **Just looking? Try the demo**. | "A farmer signs in with a phone number and a PIN. Their records are encrypted and stay on their own phone, not on our server. For this demo I'll use the demo profile." | 33 |
-| 4 | 0:45–1:10 | **My farm records.** Click **I sold**, click **Maize**, click the money box and type **50000**, click **Save**. Hold on the green confirmation. | "Recording takes three taps: what happened, which crop, and how much. Big buttons, plain words, in Kinyarwanda or English. The farmer sees a clear confirmation." | 25 |
-| 5 | 1:10–1:20 | Click the tab **2 · My summary**. | "The summary is a plain sentence, with the sums shown. Nothing is a black box." | 15 |
-| 6 | 1:20–1:45 | Click the tab **3 · Share**. Leave **7 days** and the names box **off**. Click **Create a share**. Point at the code, then click **Download the locked file**. | "When the farmer chooses to apply for credit, they share. Buyer names are off by default. They get a locked file and a one-time code, and give the code to the lender separately. Nothing goes through our server." | 38 |
-| 7 | 1:45–2:25 | Open **Open a farmer's report**. Choose the downloaded file, type the code, click **Open**. Pause on **At a glance** (the story). Scroll to the money in and out chart. Click **Repayment worksheet**, then stop on the chart. | "The lender opens the file with the code. FinBridge turns the records into a plain story: income, costs, where the money came from. Charts show money in and out each month. The repayment worksheet lets the lender set a loan, and compare the farmer's recorded income with the monthly repayment. There is no score and no verdict. The lender decides." | 60 |
-| 8 | 2:25–2:40 | Open **Basic-phone (USSD) preview**. Type **1**, send; **1**, send; **50000**, send; **30**, send. | "Not every farmer has a smartphone, so the same tool runs on any phone by USSD, with the same records and the same rules." | 24 |
-| 9 | 2:40–2:50 | Open **About** (limits visible), then the README or GitHub page for one second. | "FinBridge: farm records farmers own and lenders can read. Limits, security and the research are open on GitHub." | 18 |
+| 1 | 0:00–0:12 | **Home.** Hero visible, mouse still. | "FinBridge uses NISR's Agricultural Household Survey and FinScope 2024 to show where Rwanda's farmers are banked but not financed, and gives farmers a tool to respond." | 26 |
+| 2 | 0:12–0:34 | Click **See the evidence**. On **Overview**, hover the red segment of the bar, then rest on the three figure cards. | "62.7% of farm households have a bank, SACCO or microfinance account, but only 14.1% have a formal loan. About 759,000 households hold a formal account yet borrowed only from informal sources. Every figure is weighted with a confidence range, and the household figures reproduce NISR's published tables." | 47 |
+| 3 | 0:34–0:54 | Click **Where SACCOs could reach savers**. Hover **Nyagatare**, point at the grey Kigali districts, then scroll to **Tontines: an existing bridge** and rest on the three figures. | "The map shows which districts they are in, and hides districts with too few respondents. Eight in ten farm households have a member in a tontine, and more than half of tontine borrowers already have a SACCO account." | 38 |
+| 4 | 0:54–1:08 | Click **Social protection and finance**. Rest on the first chart (bank account bars). | "Adults in households receiving VUP cash transfers have bank accounts at 7%, against 21% for everyone else. That is an association, not an effect of the programme." | 27 |
+| 5 | 1:08–1:22 | Click **What the evidence suggests**. Scroll slowly past cards 1 and 2 so the *Finding* and *Hypothesis* lines are visible. | "NST2 aims to raise agriculture's share of national lending from 6 to 10 percent by 2029. Each recommendation separates what the data show from what still needs a pilot." | 29 |
+| 6 | 1:22–1:30 | Click **My farm records**, then **Just looking? Try the demo**. | "The response is a record tool. Here we use invented demo records." | 12 |
+| 7 | 1:30–1:43 | Click **I sold**, **Maize**, click the money box and type **50000**, click **Save**. Hold on the green confirmation. | "Recording a sale takes three taps. There's no database or account on our server; what's saved is an encrypted copy in the farmer's own browser." | 25 |
+| 8 | **CUT** | _(Tab **4 · Harvest check**: Maize, Season A, 500 kg, 1 hectare.)_ Cut first: with it the video runs 3:02. | _"A harvest check compares this harvest with similar survey plots, for guidance only, and is never saved or shared."_ | 19 |
+| 9 | 1:43–1:58 | Click tab **5 · Loan plan** (already filled with the example). Scroll once to show purpose, items, cost and repayment. | "A loan plan states what the money is for and how it would be repaid, since an unclear purpose is among the most common reasons loans are refused. It does not guarantee a loan." | 34 |
+| 10 | 1:58–2:12 | Click tab **3 · Share**. **Tick "Include my loan plan"**, click **Create a share**, click **Download the locked file (.fbshare)**. Point at the code. | "To apply, the farmer shares a locked file and a separate code. The loan plan goes only if they choose." | 20 |
+| 11 | 2:12–2:39 | Open **Open a farmer's report**. Choose the downloaded file, type the code, click **Open**. Rest on **At a glance**, then click **Repayment worksheet** (the loan plan is at the top). | "The lender sees the farmer's story, the loan plan and a repayment worksheet. No score, no decision. Entries are self-reported, and references are marked not checked." | 26 |
+| 12 | 2:39–2:47 | Open **About**, then the GitHub page for one second. | "FinBridge: evidence for policy, records farmers own. Code, methods and limits are on GitHub." | 14 |
 
-Total narration is about 280 words, roughly 1:55 of speaking, which leaves room for clicks and pauses inside the
-2:50. If you finish early, that is fine. If you run long, use the cut list in section 5.
+**Totals.** Narration with scene 8 cut is 298 words, about 2:03 of speech, inside a 2:47 timeline. With scene 8 kept
+the narration is 317 words and the timeline is about 3:02, which is over the limit, so scene 8 stays out.
+
+**If your take runs over 2:50:** shorten scene 5 to the NST2 sentence only (saves about 6 s). Do not cut scenes 10
+and 11: sharing and the lender view are the core of the product.
+
+### Narration only (to read straight through)
+
+"FinBridge uses NISR's Agricultural Household Survey and FinScope 2024 to show where Rwanda's farmers are banked but not financed, and gives farmers a tool to respond.
+
+62.7% of farm households have a bank, SACCO or microfinance account, but only 14.1% have a formal loan. About 759,000 households hold a formal account yet borrowed only from informal sources. Every figure is weighted with a confidence range, and the household figures reproduce NISR's published tables.
+
+The map shows which districts they are in, and hides districts with too few respondents. Eight in ten farm households have a member in a tontine, and more than half of tontine borrowers already have a SACCO account.
+
+Adults in households receiving VUP cash transfers have bank accounts at 7%, against 21% for everyone else. That is an association, not an effect of the programme.
+
+NST2 aims to raise agriculture's share of national lending from 6 to 10 percent by 2029. Each recommendation separates what the data show from what still needs a pilot.
+
+The response is a record tool. Here we use invented demo records.
+
+Recording a sale takes three taps. There's no database or account on our server; what's saved is an encrypted copy in the farmer's own browser.
+
+A loan plan states what the money is for and how it would be repaid, since an unclear purpose is among the most common reasons loans are refused. It does not guarantee a loan.
+
+To apply, the farmer shares a locked file and a separate code. The loan plan goes only if they choose.
+
+The lender sees the farmer's story, the loan plan and a repayment worksheet. No score, no decision. Entries are self-reported, and references are marked not checked.
+
+FinBridge: evidence for policy, records farmers own. Code, methods and limits are on GitHub."
+
+### Where each spoken number comes from
+
+| Said in the video | Value | Source |
+|---|---|---|
+| "62.7% ... account" | 62.7% | AHS 2024; matches NISR Main Report Table 32 |
+| "14.1% ... formal loan" | 14.1% | AHS 2024, weighted |
+| "About 759,000 households" | 35.1% of 2.16 M households | AHS 2024 (account, borrowed only informally) |
+| "Eight in ten ... tontine" | 81.1% (CI 79.2–83.1) | AHS 2024 |
+| "More than half of tontine borrowers ... SACCO account" | 57.8% (CI 55.3–60.2, n = 1,850) | AHS 2024 |
+| "7% against 21%" | 7.1% vs 21.3% bank account | FinScope 2024, VUP transfer households (n = 1,078); intervals understated |
+| "6 to 10 percent by 2029" | NST2 and PSTA5 target | MINAGRI; it is about loan value, so say it only as context |
+| "among the most common reasons loans are refused" | unclear purpose 29.7% of 295 refusals | AHS 2024; wide intervals |
 
 ---
 
@@ -37,23 +82,26 @@ Total narration is about 280 words, roughly 1:55 of speaking, which leaves room 
 Do this once, 10 minutes before.
 
 **Prepare the app**
-- Run the app (`streamlit run app.py`) or open the deployed link. Use the **English** interface for the main take.
+- Run the app (`streamlit run app.py`) or open the deployed link a few minutes early so it is awake. Use the
+  **English** interface for the main take.
 - Open it in a **clean browser window**: close other tabs, hide the bookmarks bar, turn on *Do Not Disturb*, and quit
   chat and email apps so no notification appears.
 - Your screen is 1366×768. Set the browser zoom to **100%** (use 110% only if text looks small after you test).
-- Keep the sidebar visible; it shows the Home, farmers and lenders structure.
+- Keep the sidebar visible; it shows the Evidence and farmer groups.
 - Use the **demo profile**, not a real farmer or a real phone number. Never show real personal data.
 
-**Do a dry run of the share file**
-1. Open *My farm records*, click **Try the demo**, then in the *Share* tab click **Create a share**.
-2. Click **Download the locked file** and note where it lands (usually `~/Downloads/finbridge_share.fbshare`).
-3. Delete that file afterwards, so the real take downloads a fresh one with a fresh code.
+**Do a dry run of the share file (this is scene 10, and it makes scene 11 work)**
+1. Open *My farm records*, click **Try the demo**, then open the *Share* tab.
+2. **Tick "Include my loan plan"**, click **Create a share**, click **Download the locked file (.fbshare)** and note
+   where it lands (usually `~/Downloads/finbridge_share.fbshare`).
+3. Delete that file afterwards. A code works once while the app is running, so the real take needs a fresh file and
+   a fresh code. If you forget to tick the box, scene 11 will show "the farmer did not include a loan plan".
 
-**Know the file picker.** In scene 7 the file dialog opens. Practise choosing `finbridge_share.fbshare` quickly. Keep
+**Know the file picker.** In scene 11 the file dialog opens. Practise choosing `finbridge_share.fbshare` quickly. Keep
 the dialog on your *Downloads* folder so it appears already in place.
 
-**Reset between takes.** Reload the page, or click **Leave the demo** and open the lender page's **Close this report**
-button so both sides start empty.
+**Reset between takes.** Reload the page, or click **Leave the demo**, and press the lender page's **Close this
+report** button so both sides start empty. Open each Evidence page once before the take, so charts are cached.
 
 ---
 
@@ -74,7 +122,7 @@ You have OBS installed. The built-in GNOME recorder can stop early, so OBS is th
 **Record**
 1. Click **Start Recording**. Count to two in silence.
 2. Follow the table, speaking as you click. Move the mouse slowly and keep it still when you want viewers to read.
-3. After scene 9, count to two, then **Stop Recording**. The file is in your `Videos` folder.
+3. After scene 12, count to two, then **Stop Recording**. The file is in your `Videos` folder.
 
 **Convert to `.webm`** (the submission needs `.webm` or `.gif`)
 
@@ -98,12 +146,12 @@ If the file is too large, raise `-crf` to `36`. For a silent preview GIF, option
 - **Warm and plain.** Say it as if telling a SACCO manager, not reading. Short sentences.
 - **Say it slightly slower than feels natural**; screen recordings feel fast.
 - **Do not read the screen aloud.** Say why it matters, let the screen show what it is.
-- **No numbers you cannot defend.** The only figure is "about half of farm households", from the README.
+- **No numbers you cannot defend.** Say only the figures in the table "Where each spoken number comes from" in section 1.
 - **Never promise results.** Do not say it "gets farmers loans". Say it "gives lenders something to read".
 - **Do not call anything a score or approval.** The tool does neither, and saying it clearly is a strength.
 
 If a native Kinyarwanda speaker can record a second, shorter version (scenes 1, 3, 4, 6, 9), it makes the pitch
-stronger for local judges. Have them review the wording first.
+stronger for local judges. Have them review the wording first. Good scenes to translate: 1, 3, 4, 6, 10.
 
 ---
 
@@ -111,8 +159,8 @@ stronger for local judges. Have them review the wording first.
 
 | Problem | Fix |
 |---|---|
-| The file picker is slow or fails | In scene 7, click **See an example farmer** instead, and say "In a real case the lender opens the farmer's file with the code." Cut the file step |
-| Over 3:00 | Cut scene 2 (10 s) and shorten scene 8 to the menu only (save 8 s) |
+| The file picker is slow or fails | In scene 11, click **See an example farmer** instead, and say "In a real case the lender opens the farmer's file with the code." Cut the file step |
+| Over 3:00 | Scene 8 is already cut. Then shorten scene 5 to the NST2 sentence only (saves about 6 s) |
 | Sound is quiet or noisy | Re-record only the narration over the finished screen capture with OBS or Audacity, and mux with `ffmpeg` |
 | A wrong click | Keep going and trim later, or reload and restart the scene. Take 2 to 3 attempts |
 | The app is asleep (Streamlit Cloud) | Open the link a few minutes before and click the wake button |

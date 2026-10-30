@@ -1,12 +1,20 @@
-[theme]
-base = "light"
+# Streamlit themes the native widgets (inputs, tables, menus); ui/theme.py reads st.context.theme.type
+# and swaps the custom CSS and chart colours to match. Users switch under Settings in the top-right menu
+# (Light, Dark, or Use system setting).
+[theme.light]
 primaryColor = "#2F6B4F"
 backgroundColor = "#EEF2EC"
 secondaryBackgroundColor = "#E0E8E1"
 textColor = "#1C2B24"
 
+[theme.dark]
+primaryColor = "#5FAE88"
+backgroundColor = "#0E1914"
+secondaryBackgroundColor = "#182922"
+textColor = "#E6EEE8"
+
 [server]
 headless = true
 
 [client]
-toolbarMode = "minimal"
+toolbarMode = "viewer"

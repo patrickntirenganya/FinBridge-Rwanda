@@ -8,11 +8,36 @@ Palette drawn from Rwanda's terraced farmland:
 import plotly.graph_objects as go
 import streamlit as st
 
-INK = "#1C2B24"
-SLATE = "#56665E"
-MIST = "#EEF2EC"
-PAPER = "#FFFFFF"
-LINE = "#C9D3CC"
+# Neutrals depend on the mode; read them as T.INK, T.LINE ... (resolved per run by __getattr__ below).
+_NEUTRALS = {
+    "light": dict(INK="#1C2B24", SLATE="#56665E", MIST="#EEF2EC", PAPER="#FFFFFF", LINE="#C9D3CC",
+                  CARD="#FFFFFF", EDGE="#DDE6DF", TRACK="#E3EBE5", LOW="#E6EEE8", BG1="#F5F8F4", BG2="#EAF0EA",
+                  TEA_UI="#2F6B4F", SHADOW="31,77,56"),
+    "dark": dict(INK="#E6EEE8", SLATE="#A9BAB0", MIST="#0E1914", PAPER="#182922", LINE="#34483E",
+                 CARD="#182922", EDGE="#2A4035", TRACK="#13221B", LOW="#1E3329", BG1="#0E1914", BG2="#0A130F",
+                 TEA_UI="#6FBF98", SHADOW="0,0,0"),
+}
+
+
+def mode() -> str:
+    """'dark' or 'light': the Streamlit theme the viewer picked (Settings menu or system setting)."""
+    try:
+        return "dark" if st.context.theme.type == "dark" else "light"
+    except Exception:
+        return "light"
+
+
+def _n(name: str) -> str:
+    return _NEUTRALS[mode()][name]
+
+
+def __getattr__(name: str):
+    n = _NEUTRALS[mode()]
+    if name in n:
+        return n[name]
+    raise AttributeError(name)
+
+
 TEA = "#2F6B4F"
 SORGHUM = "#C2922A"
 SOIL = "#8E3B2E"
@@ -21,11 +46,11 @@ FONT = "Atkinson Hyperlegible, 'Segoe UI', system-ui, sans-serif"
 CSS_TEMPLATE = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
-:root{--ink:@INK;--slate:@SLATE;--mist:@MIST;--line:@LINE;--tea:@TEA;--tea-d:#1F4D38;--ochre:@SORGHUM;--soil:@SOIL;
- --card:#FFFFFF;--shadow:0 6px 24px rgba(31,77,56,.08);--shadow-h:0 12px 32px rgba(31,77,56,.16);--r:16px}
+:root{--ink:@INK;--slate:@SLATE;--mist:@MIST;--line:@LINE;--tea:@TEAUI;--tea-d:#1F4D38;--ochre:@SORGHUM;--soil:@SOIL;
+ --card:@CARD;--shadow:@SH;--shadow-h:@SHH;--r:16px}
 html,body,.stApp p,.stApp li,.stApp label,.stApp h1,.stApp h2,.stApp h3,.stApp h4,.stApp button,
 .stApp [data-testid="stMarkdownContainer"],[data-testid="stSidebarNav"] a{font-family:@FONT !important}
-.stApp{background:linear-gradient(180deg,#F5F8F4 0%,#EAF0EA 100%)}
+.stApp{background:linear-gradient(180deg,@BG1 0%,@BG2 100%)}
 header[data-testid="stHeader"]{background:transparent}
 .block-container{max-width:1100px;padding-top:1.4rem;padding-bottom:4rem}
 h1{font-size:2.1rem;line-height:1.15;letter-spacing:-.01em;color:var(--ink);max-width:30ch}
@@ -85,26 +110,26 @@ h2::after{content:"";display:block;width:44px;height:4px;border-radius:4px;margi
 .fact b{font-size:1.6rem;color:var(--ink);display:block;line-height:1.1}
 .fact>span{color:var(--slate);font-size:.95rem}
 [data-testid="stVerticalBlockBorderWrapper"]:has(> div > [data-testid="stVerticalBlock"]){border-radius:var(--r)}
-div[data-testid="stVerticalBlockBorderWrapper"]{background:var(--card);border:1px solid #DDE6DF !important;border-radius:var(--r);
+div[data-testid="stVerticalBlockBorderWrapper"]{background:var(--card);border:1px solid @EDGE !important;border-radius:var(--r);
  box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s}
 div[data-testid="stVerticalBlockBorderWrapper"]:hover{box-shadow:var(--shadow-h);transform:translateY(-2px)}
 [data-testid="stPlotlyChart"]{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:.6rem .4rem 0;overflow:hidden}
 [data-testid="stAlert"]{border-radius:14px;border:none;box-shadow:var(--shadow)}
-[data-testid="stExpander"]{border-radius:14px;background:var(--card);border:1px solid #DDE6DF}
+[data-testid="stExpander"]{border-radius:14px;background:var(--card);border:1px solid @EDGE}
 [data-testid="stDataFrame"]{border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
 
 /* ---------- controls ---------- */
 .stButton>button,.stDownloadButton>button,[data-testid="stBaseButton-secondaryFormSubmit"],[data-testid="stBaseButton-primaryFormSubmit"]{
- border-radius:12px;font-weight:700;border:1.5px solid #CBD8CF;transition:transform .2s,box-shadow .2s,background .2s}
+ border-radius:12px;font-weight:700;border:1.5px solid @LINE;transition:transform .2s,box-shadow .2s,background .2s}
 .stButton>button:hover,.stDownloadButton>button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(31,77,56,.18);border-color:var(--tea)}
 button[kind="primary"],button[data-testid="stBaseButton-primary"],button[data-testid="stBaseButton-primaryFormSubmit"]{
  background:linear-gradient(135deg,#2F6B4F,#1F4D38) !important;color:#fff !important;border:none !important;box-shadow:0 6px 16px rgba(31,77,56,.28)}
 button[kind="primary"]:hover,button[data-testid="stBaseButton-primary"]:hover{background:linear-gradient(135deg,#3A7F5E,#2F6B4F) !important}
 button:active{transform:scale(.98) !important}
-[role="tablist"]{gap:.4rem;background:#E3EBE5;padding:.3rem;border-radius:14px;border:none;box-shadow:none}
+[role="tablist"]{gap:.4rem;background:@TRACK;padding:.3rem;border-radius:14px;border:none;box-shadow:none}
 [data-testid="stTab"],button[role="tab"]{border-radius:11px;padding:.5rem 1.1rem;color:var(--slate);font-weight:700;cursor:pointer;transition:background .2s,color .2s,box-shadow .2s}
-[data-testid="stTab"]:hover,button[role="tab"]:hover{background:rgba(255,255,255,.65)}
-[data-testid="stTab"][aria-selected="true"],button[role="tab"][aria-selected="true"]{background:#fff !important;color:var(--tea) !important;box-shadow:0 2px 8px rgba(31,77,56,.14)}
+[data-testid="stTab"]:hover,button[role="tab"]:hover{background:@HOVER}
+[data-testid="stTab"][aria-selected="true"],button[role="tab"][aria-selected="true"]{background:@CARD !important;color:var(--tea) !important;box-shadow:0 2px 8px rgba(31,77,56,.14)}
 [data-testid="stTab"][aria-selected="true"] p{color:var(--tea)}
 .react-aria-SelectionIndicator,[data-baseweb="tab-highlight"],[data-baseweb="tab-border"]{display:none !important}
 input,textarea,[data-baseweb="select"]>div{border-radius:11px !important}
@@ -144,12 +169,23 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(-
  *,*::before,*::after{animation:none !important;transition:none !important}}
 </style>
 """
-CSS = (CSS_TEMPLATE.replace("@INK", INK).replace("@SLATE", SLATE).replace("@MIST", MIST).replace("@LINE", LINE)
-       .replace("@TEA", TEA).replace("@SORGHUM", SORGHUM).replace("@SOIL", SOIL).replace("@FONT", FONT))
+def css() -> str:
+    n = _NEUTRALS[mode()]
+    dark = mode() == "dark"
+    sh = "rgba(0,0,0,.35)" if dark else "rgba(31,77,56,.08)"
+    shh = "rgba(0,0,0,.5)" if dark else "rgba(31,77,56,.16)"
+    out = CSS_TEMPLATE
+    for k, v in dict(
+            INK=n["INK"], SLATE=n["SLATE"], MIST=n["MIST"], LINE=n["LINE"], CARD=n["CARD"], EDGE=n["EDGE"],
+            TRACK=n["TRACK"], BG1=n["BG1"], BG2=n["BG2"], TEAUI=n["TEA_UI"], SH=f"0 6px 24px {sh}",
+            SHH=f"0 12px 32px {shh}", HOVER="rgba(255,255,255,.08)" if dark else "rgba(255,255,255,.65)",
+            TEA=TEA, SORGHUM=SORGHUM, SOIL=SOIL, FONT=FONT).items():
+        out = out.replace("@" + k, v)
+    return out
 
 
 def apply():
-    st.markdown(CSS, unsafe_allow_html=True)
+    st.markdown(css(), unsafe_allow_html=True)
 
 
 def count_html(text: str) -> str:
@@ -195,12 +231,18 @@ def note(text: str):
     st.markdown(f'<p class="note">{text}</p>', unsafe_allow_html=True)
 
 
+def map_style():
+    """Blank basemap in the card colour (the stock "white-bg" style stays white in dark mode)."""
+    return {"version": 8, "sources": {}, "layers": [
+        {"id": "bg", "type": "background", "paint": {"background-color": _n("CARD")}}]}
+
+
 def layout(fig: go.Figure, height=360, showlegend=False, **kw) -> go.Figure:
     fig.update_layout(
         height=height, margin=dict(l=10, r=20, t=30, b=10),
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(family=FONT, color=INK, size=14), showlegend=showlegend, **kw)
-    fig.update_xaxes(gridcolor=LINE, zeroline=False)
+        font=dict(family=FONT, color=_n("INK"), size=14), showlegend=showlegend, **kw)
+    fig.update_xaxes(gridcolor=_n("LINE"), zeroline=False)
     fig.update_yaxes(gridcolor="rgba(0,0,0,0)")
     return fig
 
@@ -212,14 +254,14 @@ def ci_bars(df, label_col="group", color=TEA, height=None, xmax=None, ticksuffix
     fig = go.Figure(go.Bar(
         y=shown[label_col], x=shown.est, orientation="h", marker_color=colors,
         error_x=dict(type="data", symmetric=False, array=shown.hi - shown.est,
-                     arrayminus=shown.est - shown.lo, color=INK, thickness=1.2, width=4),
+                     arrayminus=shown.est - shown.lo, color=_n("INK"), thickness=1.2, width=4),
         customdata=shown[["lo", "hi", "n"]].values,
         hovertemplate="%{y}: %{x:.1f}%<br>95% CI %{customdata[0]:.1f}–%{customdata[1]:.1f}"
                       "<br>n = %{customdata[2]}<extra></extra>"))
     # value labels sit just past the upper confidence limit so they never collide with whiskers
     fig.add_trace(go.Scatter(
         y=shown[label_col], x=shown.hi, mode="text", text=[f"  {v:.1f}%" for v in shown.est],
-        textposition="middle right", textfont=dict(color=INK, size=13), hoverinfo="skip"))
+        textposition="middle right", textfont=dict(color=_n("INK"), size=13), hoverinfo="skip"))
     fig.update_yaxes(autorange="reversed")
     fig.update_xaxes(ticksuffix=ticksuffix, range=[0, xmax or max(5, (shown.hi.max() or 0) * 1.35)])
     return layout(fig, height=height or 70 + 42 * len(shown))

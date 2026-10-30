@@ -258,6 +258,8 @@ def lender_view():
             left = V.wait_left(lock)
             if left:
                 st.warning(t("au.wait", s=left))
+            elif not up:
+                st.error(t("ld.nofile"))
             else:
                 try:
                     if not (up and code):

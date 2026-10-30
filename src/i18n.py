@@ -489,6 +489,8 @@ STR: dict[str, tuple[str, str]] = {
                    "File ID: {id}. The lender must open the file with this same ID, because each share has its own code."),
     "ld.file_id": ("Nomero ya dosiye wohereje: {id}. Igereranye n'iyo umuhinzi yabonye iruhande rwa kode.",
                    "The file you uploaded has ID {id}. Compare it with the File ID the farmer sees next to the code. If they differ, ask for the newest file."),
+    "ld.nofile": ("Banza uhitemo dosiye (.fbshare) umuhinzi yaguhaye, hanyuma wandike kode.",
+                  "First choose the locked file (.fbshare) the farmer gave you, then type the code. The file box is empty."),
     "ld.bad": ("Kode si yo cyangwa dosiye yangiritse.", "Wrong code or damaged file."),
     "ld.expired": ("Iyi dosiye yararangiye. Saba umuhinzi indi nshya.", "This share has expired. Ask the farmer for a new one."),
     "ld.receipt": ("Raporo y'ifunguwe: ifunguwe {t}; yakozwe {c}; ifunguye kugeza {e}; igihe: {p}; amazina {n}.",

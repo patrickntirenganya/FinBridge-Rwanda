@@ -17,7 +17,7 @@ Built for the **NISR 2026 Big Data Hackathon**, **Track 2: Financial Inclusion a
 | | |
 |---|---|
 | **Live app** | https://finbridge-rwanda.streamlit.app/ |
-| **Demo video** | [`docs/FinBridgeDemo.webm`](docs/FinBridgeDemo.webm) (4:50, screen recording with narration) |
+| **Demo video** | [Watch on Google Drive](https://drive.google.com/file/d/1WS41Qvg3aIe3Rta7RvEzPc9l4nx2rud3/view?usp=sharing) (4:50, screen recording with narration); file in the repo: [`docs/FinBridgeDemo.webm`](docs/FinBridgeDemo.webm) |
 | **Judges: how to log in** | No account is needed, see [Trying the live app](#trying-the-live-app) |
 | **Screenshots** | [`docs/screenshots/`](docs/screenshots): every page at 1280 px and 390 px |
 | **Source code** | https://github.com/patrickntirenganya/FinBridge-Rwanda |

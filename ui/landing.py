@@ -11,6 +11,7 @@ import streamlit as st
 from src.i18n import t, lang
 from ui import theme as T
 
+ROLE_PAGES: dict = {}   # set by app.py: farmer / lender / evidence st.Page targets of the role chooser
 EVIDENCE_PAGE = None  # set by app.py: the st.Page that "See the evidence" opens
 BUNDLE = Path(__file__).parent / "landing" / "landing.html"
 
@@ -31,11 +32,30 @@ def props() -> dict:
                 links=dict(records="/records" + q, ussd="/ussd" + q, lender="/lender" + q, about="/about" + q))
 
 
+def _chooser():
+    """First thing on Home: who are you? Each card opens the right tool."""
+    if not ROLE_PAGES:
+        return
+    st.markdown(f"### {t('home.who')}")
+    cards = [("farmer", ":material/agriculture:"), ("lender", ":material/account_balance:"),
+             ("evidence", ":material/bar_chart:")]
+    for col, (k, icon) in zip(st.columns(3), cards):
+        with col, st.container(border=True, height=235):
+            st.markdown(f"**{t(f'home.role_{k}')}**")
+            st.caption(t(f"home.role_{k}_d"))
+            st.page_link(ROLE_PAGES[k], label=t(f"home.role_{k}_go"), icon=icon, width="stretch")
+
+
 def home():
     if not BUNDLE.exists():
         st.error("Landing bundle missing. Run `cd frontend && npm install && npm run build`.")
         return
-    st.markdown("<style>.block-container{max-width:1240px}</style>", unsafe_allow_html=True)
+    st.markdown("<style>.block-container{max-width:1240px}"
+                "[data-testid='stPageLink'] a{background:#2F6B4F;color:#fff !important;border-radius:12px;"
+                "padding:.7rem 1.1rem;justify-content:center;font-weight:700}"
+                "[data-testid='stPageLink'] a:hover{background:#245640}"
+                "[data-testid='stPageLink'] a *{color:#fff !important}</style>", unsafe_allow_html=True)
+    _chooser()
     # '</' inside JSON would end the script tag early
     data = json.dumps(props(), ensure_ascii=False).replace("</", "<\\/")
     # st.iframe replaces the retired components.v1.html; height="content" fits the page to what it renders

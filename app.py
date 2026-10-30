@@ -34,16 +34,24 @@ except FileNotFoundError as e:
     st.error(str(e))
     st.stop()
 
+_records = st.Page(F.my_records, title=t("nav.records"), url_path="records")
+_lender = st.Page(LD.lender_view, title=t("nav.lender"), url_path="lender")
 _overview = st.Page(P.overview, title=t("nav.overview"), url_path="overview")
 _who = st.Page(P.who, title=t("nav.who"), url_path="who")
 _opp = st.Page(P.opportunity, title=t("nav.opportunity"), url_path="opportunity")
 _why = st.Page(P.why, title=t("nav.why"), url_path="why")
 _social = st.Page(P.social, title=t("nav.social"), url_path="social")
 _recs = st.Page(P.recommendations, title=t("nav.actions"), url_path="recommendations")
+L.ROLE_PAGES.update(farmer=_records, lender=_lender, evidence=_overview)
 P.LINKS.update(opportunity=_opp, who=_who, why=_why, social=_social)
 L.EVIDENCE_PAGE = _overview  # target of the "See the evidence" button on Home
 pg = st.navigation(expanded=True, pages={
     "": [st.Page(L.home, title=t("nav.home"), url_path="home", default=True)],
+    t("nav.farmers"): [
+        _records,
+        st.Page(F.phone_preview, title=t("nav.ussd"), url_path="ussd"),
+    ],
+    t("nav.lenders"): [_lender],
     t("nav.evidence"): [
         _overview,
         _who,
@@ -54,11 +62,6 @@ pg = st.navigation(expanded=True, pages={
         st.Page(P.districts, title=t("nav.districts"), url_path="districts"),
         _recs,
         st.Page(P.methods, title=t("nav.methods"), url_path="methods"),
-    ],
-    t("nav.farmers"): [
-        st.Page(F.my_records, title=t("nav.records"), url_path="records"),
-        st.Page(F.phone_preview, title=t("nav.ussd"), url_path="ussd"),
-        st.Page(LD.lender_view, title=t("nav.lender"), url_path="lender"),
     ],
     " ": [st.Page(A.about, title=t("nav.about"), url_path="about")],
 })

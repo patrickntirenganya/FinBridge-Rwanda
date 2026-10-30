@@ -30,7 +30,7 @@ Regenerate with `python analysis/key_findings.py`. These figures live in the REA
   (tested). Every survey number shown to a farmer carries "AHS 2024, plots of the same crop and season, for guidance
   only". No "vulnerable" label, no savings advice, no fertilizer doses. The improved-seed share is labelled "seasonal-crop
   plots where seed type was recorded". The landing copy carries no percentage; Home has a "See the evidence" page link.
-Nav order: Home; Evidence; For farmers (My farm records, USSD simulator, Open a farmer's report); About.
+Nav order (30 Oct): Home (role chooser: farmer / lender / evidence); For farmers (My farm records, USSD simulator); For lenders (Open a farmer's report); Evidence; About.
 Pages: `Home` (landing, TypeScript + Tailwind), **for farmers** `My farm records`
 (record harvests, sales, expenses, savings; seasonal summary with visible formulas; downloadable report; JSON backup,
 the encrypted vault is also kept per phone in Firestore via `src/accountdb.py` when Secrets `[firebase]` exist, else browser-only) and the USSD simulator; **for lenders** `Open a farmer's report` (opens the locked `.fbshare` file a
